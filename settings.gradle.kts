@@ -29,3 +29,4 @@ dependencyResolutionManagement {
 }
 
 include(":base")
+include(":launchers:connector")

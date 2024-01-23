@@ -3,7 +3,7 @@ format.version = "1.1"
 
 [versions]
 assertj = "3.25.1"
-edc = "0.4.1"
+edc = "0.5.0"
 junit-pioneer = "2.2.0"
 jupiter = "5.10.1"
 rsApi = "3.1.0"
@@ -15,7 +15,25 @@ edc-boot = { module = "org.eclipse.edc:boot", version.ref = "edc" }
 edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin", version.ref = "edc" }
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
 edc-connector-core = { module = "org.eclipse.edc:connector-core", version.ref = "edc" }
+edc-control-plane-api = { module = "org.eclipse.edc:control-plane-api", version.ref = "edc" }
+edc-control-plane-api-client = { module = "org.eclipse.edc:control-plane-api-client", version.ref = "edc" }
+edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
+edc-data-plane-api = { module = "org.eclipse.edc:data-plane-api", version.ref = "edc" }
+edc-data-plane-control-api = { module = "org.eclipse.edc:data-plane-control-api", version.ref = "edc" }
+edc-data-plane-core = { module = "org.eclipse.edc:data-plane-core", version.ref = "edc" }
+edc-data-plane-http = { module = "org.eclipse.edc:data-plane-http", version.ref = "edc" }
+edc-data-plane-public-api = { module = "org.eclipse.edc:data-plane-public-api", version.ref = "edc" }
+edc-data-plane-selector-api = { module = "org.eclipse.edc:data-plane-selector-api", version.ref = "edc" }
+edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-core", version.ref = "edc" }
+edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
 edc-http = { module = "org.eclipse.edc:http", version.ref = "edc" }
+edc-iam-mock = { module = "org.eclipse.edc:iam-mock", version.ref = "edc" }
+edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
+edc-micrometer-core = { module = "org.eclipse.edc:micrometer-core", version.ref = "edc" }
+edc-transfer-data-plane = { module = "org.eclipse.edc:transfer-data-plane", version.ref = "edc" }
+edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-receiver", version.ref = "edc" }
+edc-vault-filesystem = { module = "org.eclipse.edc:vault-filesystem", version.ref = "edc" }
+edc-web-spi = { module = "org.eclipse.edc:web-spi", version.ref = "edc" }
 jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiter" }

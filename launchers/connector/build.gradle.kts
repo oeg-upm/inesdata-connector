@@ -28,9 +28,9 @@ dependencies {
     implementation(libs.edc.web.spi)
     implementation(libs.edc.dsp)
     implementation(libs.edc.management.api)
-    implementation(libs.edc.vault.filesystem)
-
+    
     // Temporary libs
+    implementation(libs.edc.vault.filesystem)
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
 
@@ -50,6 +50,7 @@ dependencies {
     // Transferencia
     implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.transfer.data.plane)
+
 }
 
 application {

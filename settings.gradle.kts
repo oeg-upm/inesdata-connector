@@ -6,3 +6,4 @@ pluginManagement {
 rootProject.name = "inesdata-connector"
 
 include(":base")
+include(":launchers:connector")

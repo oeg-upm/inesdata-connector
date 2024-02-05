@@ -41,9 +41,6 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
 junit-pioneer = { module = "org.junit-pioneer:junit-pioneer", version.ref = "junit-pioneer" }
 
-#Policy monitor
-edc-core-policy-monitor = { module = "org.eclipse.edc:policy-monitor-core", version.ref = "edc" }
-
 #SQL Extensions
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
@@ -55,7 +52,6 @@ edc-sql-contract-negotiation-store = { module = "org.eclipse.edc:contract-negoti
 edc-sql-policy-definition-store = { module = "org.eclipse.edc:policy-definition-store-sql", version.ref = "edc" }
 edc-sql-transfer-process-store = { module = "org.eclipse.edc:transfer-process-store-sql", version.ref = "edc" }
 edc-sql-data-plane-store = { module = "org.eclipse.edc:data-plane-store-sql", version.ref = "edc" }
-edc-sql-policy-monitor-store = { module = "org.eclipse.edc:policy-monitor-store-sql", version.ref = "edc" }
 
 # no EDC references
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }

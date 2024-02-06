@@ -3,6 +3,7 @@ format.version = "1.1"
 
 [versions]
 assertj = "3.25.1"
+aws = "2.23.12"
 edc = "0.5.0"
 junit-pioneer = "2.2.0"
 jupiter = "5.10.1"
@@ -53,7 +54,13 @@ edc-sql-policy-definition-store = { module = "org.eclipse.edc:policy-definition-
 edc-sql-transfer-process-store = { module = "org.eclipse.edc:transfer-process-store-sql", version.ref = "edc" }
 edc-sql-data-plane-store = { module = "org.eclipse.edc:data-plane-store-sql", version.ref = "edc" }
 
+# EDC aws s3 stuff
+edc-aws-s3-core = { module = "org.eclipse.edc:aws-s3-core", version.ref = "edc" }
+edc-data-plane-aws-s3 = { module = "org.eclipse.edc:data-plane-aws-s3", version.ref = "edc" }
+
 # no EDC references
+aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws" }
+aws-s3-transfer = { module = "software.amazon.awssdk:s3-transfer-manager", version.ref = "aws" }
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 
 [plugins]

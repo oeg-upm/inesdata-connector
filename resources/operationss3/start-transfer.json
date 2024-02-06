@@ -1,0 +1,23 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@type": "TransferRequestDto",
+  "connectorId": "provider",
+  "counterPartyAddress": "http://localhost:19194/protocol",
+  "contractId": "94ef53b4-548c-47d3-bce3-e17f62820c5e",
+  "assetId": "s3asset",
+  "protocol": "dataspace-protocol-http",
+  "dataDestination": {
+    "type": "AmazonS3",
+    "region": "us-east-1",
+    "bucketName": "bucket-connector-2",
+    "endpointOverride": "http://localhost:9010",
+    "accessKeyId": "wEfyrv2vH7Wj3ON03g8V",
+    "secretAccessKey": "JlHVGgSgeRkbs6WtKTugR4I5uU7oA1VRf8kBtrGd"
+  },
+  "transferType": {
+    "contentType": "application/octet-stream",
+    "isFinite": true
+  }
+}

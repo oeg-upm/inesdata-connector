@@ -1,0 +1,16 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@id": "s3asset",
+  "properties": {
+    "name": "product description",
+    "contenttype": "application/json"
+  },
+  "dataAddress": {
+    "type": "AmazonS3",
+    "region": "eu-south-2",
+    "keyName": "text-document-provider-dataset.txt",
+    "bucketName": "bucket-connector-1"
+  }
+}

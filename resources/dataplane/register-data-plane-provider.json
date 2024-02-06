@@ -5,11 +5,13 @@
   "@id": "http-pull-provider-dataplane",
   "url": "http://localhost:19192/control/transfer",
   "allowedSourceTypes": [
-    "HttpData"
+    "HttpData",
+    "AmazonS3"
   ],
   "allowedDestTypes": [
     "HttpProxy",
-    "HttpData"
+    "HttpData",
+    "AmazonS3"
   ],
   "properties": {
     "https://w3id.org/edc/v0.0.1/ns/publicApiUrl": "http://localhost:19291/public/"

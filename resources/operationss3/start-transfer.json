@@ -3,21 +3,26 @@
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@type": "TransferRequestDto",
-  "connectorId": "provider",
   "counterPartyAddress": "http://localhost:19194/protocol",
-  "contractId": "94ef53b4-548c-47d3-bce3-e17f62820c5e",
-  "assetId": "s3asset",
   "protocol": "dataspace-protocol-http",
+  "connectorId": "consumer",
+  "assetId": "s3asset",
+  "contractId": "af9c225e-8a19-442d-abde-8c8d0af9f044",
   "dataDestination": {
-    "type": "AmazonS3",
-    "region": "us-east-1",
-    "bucketName": "bucket-connector-2",
+    "properties": {
+      "type": "AmazonS3",
+      "region": "us-east-1",
+      "bucketName": "bucket-connector-2",
+      "folderName": "descargas",
+      "accessKeyId": "ymapc4WGhWrgaywwSyq1",
+      "secretAccessKey": "wxwo6F4WTTi9q5Gts7Ve57TnxO29p1waJua6xpvT"
+    },
     "endpointOverride": "http://localhost:9010",
-    "accessKeyId": "wEfyrv2vH7Wj3ON03g8V",
-    "secretAccessKey": "JlHVGgSgeRkbs6WtKTugR4I5uU7oA1VRf8kBtrGd"
+    "type": "AmazonS3"
   },
+  "managedResources": true,
   "transferType": {
-    "contentType": "application/octet-stream",
+    "contentType": "text/plain",
     "isFinite": true
   }
 }

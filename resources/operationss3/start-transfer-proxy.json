@@ -5,7 +5,7 @@
   "@type": "TransferRequestDto",
   "connectorId": "provider",
   "counterPartyAddress": "http://localhost:19194/protocol",
-  "contractId": "7c507b6a-828b-4948-a2b9-a7e4bcd392de",
+  "contractId": "af9c225e-8a19-442d-abde-8c8d0af9f044",
   "assetId": "s3asset",
   "protocol": "dataspace-protocol-http",
   "dataDestination": {

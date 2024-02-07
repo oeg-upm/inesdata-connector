@@ -5,11 +5,11 @@
   "@id": "s3asset",
   "properties": {
     "name": "product description",
-    "contenttype": "application/json"
+    "contenttype": "text/plain"
   },
   "dataAddress": {
     "type": "AmazonS3",
-    "region": "eu-south-2",
+    "region": "us-east-1",
     "keyName": "text-document-provider-dataset.txt",
     "bucketName": "bucket-connector-1"
   }

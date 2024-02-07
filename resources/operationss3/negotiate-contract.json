@@ -10,11 +10,11 @@
   "protocol": "dataspace-protocol-http",
   "policy": {
     "@context": "http://www.w3.org/ns/odrl.jsonld",
-    "@id": "MQ==:czNhc3NldA==:NDBkMjY1ZDAtNjljOS00ZWY1LTg4NzktM2QxNmVlYWU1NTZk",
+    "@id": "MQ==:czNhc3NldA==:ZDU2M2VkNjQtNGU4MS00YTk0LWI4ODctNzU5N2NiYjlmNDM0",
     "@type": "Set",
     "permission": [],
     "prohibition": [],
     "obligation": [],
-    "target": "assetId"
+    "target": "s3asset"
   }
 }

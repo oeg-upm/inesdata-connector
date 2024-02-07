@@ -51,6 +51,27 @@ dependencies {
     implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.transfer.data.plane)
 
+    // Persistencia comun
+    implementation(libs.edc.sql.core)
+    implementation(libs.edc.sql.lease)
+    implementation(libs.edc.sql.pool)
+    // Persistencia control plane
+    implementation(libs.edc.sql.asset.index)
+    implementation(libs.edc.sql.contract.definition.store)
+    implementation(libs.edc.sql.contract.negotiation.store)
+    implementation(libs.edc.sql.policy.definition.store)
+    implementation(libs.edc.sql.transfer.process.store)
+    // Persistencia data plane
+    implementation(libs.edc.sql.data.plane.store)
+
+    // Persistencia de objetos
+    implementation(libs.edc.aws.s3.core)
+    implementation(libs.edc.data.plane.aws.s3)
+    //implementation(libs.edc.provision.aws.s3)
+
+    runtimeOnly(libs.edc.transaction.local)
+    runtimeOnly(libs.postgres)
+
 
 }
 

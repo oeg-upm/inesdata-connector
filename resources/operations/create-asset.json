@@ -9,7 +9,7 @@
   },
   "dataAddress": {
     "type": "HttpData",
-    "name": "Test asset",
+    "name": "JSON place holder users",
     "baseUrl": "https://jsonplaceholder.typicode.com/users",
     "proxyPath": "true"
   }

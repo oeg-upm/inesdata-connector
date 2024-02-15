@@ -14,4 +14,3 @@ Dataspaces connector for the InesData project, based on the EDC dataspaces frame
   java -jar base/build/libs/connector-app.jar
   ```
 
-

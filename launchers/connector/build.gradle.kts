@@ -64,8 +64,13 @@ dependencies {
     // Persistencia data plane
     implementation(libs.edc.sql.data.plane.store)
 
+    // Persistencia de objetos
+    implementation(libs.edc.aws.s3.core)
+    implementation(libs.edc.data.plane.aws.s3)
+    
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)
+
 
 }
 

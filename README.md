@@ -10,9 +10,6 @@ Dataspaces connector for the InesData project, based on the EDC dataspaces frame
   ```
 
 - Launch:
-  ```
-  java <opts> -jar launchers/connector/build/libs/connector-app.jar
-  ```
 
   Example:
   ```

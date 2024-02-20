@@ -67,10 +67,12 @@ dependencies {
     // Persistencia de objetos
     implementation(libs.edc.aws.s3.core)
     implementation(libs.edc.data.plane.aws.s3)
+
+    // Observability
+    implementation(libs.edc.observability.api)
     
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)
-
 
 }
 

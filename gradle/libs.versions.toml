@@ -58,6 +58,9 @@ edc-sql-data-plane-store = { module = "org.eclipse.edc:data-plane-store-sql", ve
 edc-aws-s3-core = { module = "org.eclipse.edc:aws-s3-core", version.ref = "edc" }
 edc-data-plane-aws-s3 = { module = "org.eclipse.edc:data-plane-aws-s3", version.ref = "edc" }
 
+# EDC Observability
+edc-observability-api = { module = "org.eclipse.edc:api-observability", version.ref = "edc" }
+
 # no EDC references
 aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws" }
 aws-s3-transfer = { module = "software.amazon.awssdk:s3-transfer-manager", version.ref = "aws" }

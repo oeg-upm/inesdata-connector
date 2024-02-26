@@ -1,15 +1,15 @@
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:17-jre
 ARG CONNECTOR_JAR
 
 # System env vars
+ENV USER_GROUP=connectorgroup
 ENV USER_NAME=connectoruser
-ENV USER_UID=200
 ENV JVM_ARGS=""
 ENV CONNECTOR_HOME=/opt/connector
 ENV CONNECTOR_RESOURCES=${CONNECTOR_HOME}/resources
 
 # Add the user who executes the connector. The user belongs to the group with gui 0
-RUN adduser -G root -s /bin/sh -D -u ${USER_UID} ${USER_NAME}
+RUN addgroup ${USER_GROUP} && adduser --no-create-home --disabled-password --ingroup ${USER_GROUP} ${USER_NAME} 
 
 # Create the connector and resources directories
 RUN mkdir -p ${CONNECTOR_HOME}

@@ -5,4 +5,8 @@ pluginManagement {
 
 rootProject.name = "inesdata-connector"
 
+// Extensions
+include(":extensions:participants-from-configuration")
+
+// Connector
 include(":launchers:connector")

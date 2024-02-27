@@ -70,6 +70,12 @@ dependencies {
 
     // Observability
     implementation(libs.edc.observability.api)
+
+    // Federated Catalog
+    implementation(project(":extensions:participants-from-configuration"))
+    implementation(libs.edc.federated.catalog.spi)
+    implementation(libs.edc.federated.catalog.core)
+    implementation(libs.edc.federated.catalog.api)
     
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)

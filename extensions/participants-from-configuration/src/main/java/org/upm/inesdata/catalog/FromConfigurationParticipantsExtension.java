@@ -15,15 +15,15 @@ public class FromConfigurationParticipantsExtension implements ServiceExtension 
     @Provider
     public TargetNodeDirectory federatedCacheNodeDirectory(ServiceExtensionContext context) {
 
-        var participantConfig = new ParticipantConfiguration();
-
-        // Maybe is much clerarer with a classic for loop
-        // InMemoryNodeDirectory dir = participantConfig.getTargetNodes(context.getConfig()).stream()
-        //     .collect(InMemoryNodeDirectory::new, (x, y) -> x.insert(y), null);
+        var monitor = context.getMonitor();
+        var participantConfig = new ParticipantConfiguration(monitor);
 
         var dir = new InMemoryNodeDirectory();
         for (var target : participantConfig.getTargetNodes(context.getConfig())) {
-            dir.insert(target);
+            // skipping null target nodes
+            if (target != null){
+                dir.insert(target);
+            }
         }
         return dir;
     }

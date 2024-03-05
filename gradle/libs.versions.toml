@@ -4,14 +4,14 @@ format.version = "1.1"
 [versions]
 assertj = "3.25.1"
 aws = "2.23.12"
-edc = "0.5.0"
+edc = "0.5.1"
 junit-pioneer = "2.2.0"
 jupiter = "5.10.1"
+mockito = "5.2.0"
 postgres = "42.7.1"
 rsApi = "3.1.0"
 
 [libraries]
-assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
 edc-boot = { module = "org.eclipse.edc:boot", version.ref = "edc" }
 edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin", version.ref = "edc" }
@@ -37,12 +37,8 @@ edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http
 edc-vault-filesystem = { module = "org.eclipse.edc:vault-filesystem", version.ref = "edc" }
 edc-web-spi = { module = "org.eclipse.edc:web-spi", version.ref = "edc" }
 jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
-junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiter" }
-junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
-junit-pioneer = { module = "org.junit-pioneer:junit-pioneer", version.ref = "junit-pioneer" }
 
-#SQL Extensions
+# SQL Extensions
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
 edc-sql-lease = { module = "org.eclipse.edc:sql-lease", version.ref = "edc" }
@@ -61,10 +57,26 @@ edc-data-plane-aws-s3 = { module = "org.eclipse.edc:data-plane-aws-s3", version.
 # EDC Observability
 edc-observability-api = { module = "org.eclipse.edc:api-observability", version.ref = "edc" }
 
-# no EDC references
+# EDC Federated Catalog
+edc-federated-catalog-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref = "edc" }
+edc-federated-catalog-core = { module = "org.eclipse.edc:federated-catalog-core", version.ref = "edc" }
+edc-federated-catalog-spi = { module = "org.eclipse.edc:federated-catalog-spi", version.ref = "edc" }
+
+# EDC testing
+edc-core-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
+
+# No EDC references
 aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws" }
 aws-s3-transfer = { module = "software.amazon.awssdk:s3-transfer-manager", version.ref = "aws" }
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+
+# No EDC testing references
+assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiter" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
+junit-pioneer = { module = "org.junit-pioneer:junit-pioneer", version.ref = "junit-pioneer" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

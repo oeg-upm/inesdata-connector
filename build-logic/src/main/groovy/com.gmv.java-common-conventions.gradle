@@ -34,6 +34,10 @@ repositories {
     mavenCentral()
     // Tried to use composite builds, but there is no support in VSCode
     mavenLocal()
+    // SNAPSHOTS to use version with corrected known bugs
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
 }
 
 dependencies {

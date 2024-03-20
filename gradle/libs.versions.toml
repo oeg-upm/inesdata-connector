@@ -13,6 +13,7 @@ rsApi = "3.1.0"
 
 [libraries]
 edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
+edc-auth-spi = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
 edc-boot = { module = "org.eclipse.edc:boot", version.ref = "edc" }
 edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin", version.ref = "edc" }
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
@@ -29,7 +30,7 @@ edc-data-plane-selector-api = { module = "org.eclipse.edc:data-plane-selector-ap
 edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-core", version.ref = "edc" }
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
 edc-http = { module = "org.eclipse.edc:http", version.ref = "edc" }
-edc-iam-mock = { module = "org.eclipse.edc:iam-mock", version.ref = "edc" }
+edc-iam-oauth2-core = { module = "org.eclipse.edc:oauth2-core", version.ref = "edc" }
 edc-iam-oauth2-service = { module = "org.eclipse.edc:oauth2-service", version.ref = "edc" }
 edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
 edc-micrometer-core = { module = "org.eclipse.edc:micrometer-core", version.ref = "edc" }

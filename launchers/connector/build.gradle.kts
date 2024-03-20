@@ -69,6 +69,7 @@ dependencies {
 
     // IAM Identity
     implementation(libs.edc.iam.oauth2.service)
+    implementation(project(":extensions:auth-oauth2-jwt"))
 
     // Observability
     implementation(libs.edc.observability.api)

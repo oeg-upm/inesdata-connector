@@ -36,31 +36,31 @@ class Oauth2JwtAuthenticationServiceTest {
     }
 
     @Test
-    void isAuthorized_headerNotPresent_throwsException() {
+    void isAuthenticated_headerNotPresent_throwsException() {
         var map = Map.of("header1", List.of("val1, val2"),
-                "header2", List.of("anotherval1", "anotherval2"));
+                         "header2", List.of("anotherval1", "anotherval2"));
         assertThatThrownBy(() -> service.isAuthenticated(map)).isInstanceOf(AuthenticationFailedException.class).hasMessage(HttpHeaders.AUTHORIZATION + " header not found");
     }
 
     @Test
-    void isAuthorized_headersEmpty_throwsException() {
+    void isAuthenticated_headersEmpty_throwsException() {
         Map<String, List<String>> map = Collections.emptyMap();
         assertThatThrownBy(() -> service.isAuthenticated(map)).isInstanceOf(AuthenticationFailedException.class).hasMessage(HttpHeaders.AUTHORIZATION + " header not found");
     }
 
     @Test
-    void isAuthorized_headersNull_throwsException() {
+    void isAuthenticated_headersNull_throwsException() {
         assertThatThrownBy(() -> service.isAuthenticated(null)).isInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void isAuthorized_authorizationNotBearer() {
+    void isAuthenticated_authorizationNoBearerToken() {
         var map = Map.of(HttpHeaders.AUTHORIZATION, List.of("no-bearer-token"));
         assertThatThrownBy(() -> service.isAuthenticated(map)).isInstanceOf(AuthenticationFailedException.class).hasMessage("Bearer token not found");
     }
 
     @Test
-    void isAuthorized_correctAuthorized() {
+    void iisAuthenticated_correctAuthorized() {
         var map = Map.of(HttpHeaders.AUTHORIZATION, List.of("Bearer valid-token-key"));
 
         // Mock verification token result
@@ -77,7 +77,7 @@ class Oauth2JwtAuthenticationServiceTest {
     }
 
     @Test
-    void isAuthorized_incorrectConnectorIdAuthorized() {
+    void isAuthenticated_incorrectConnectorIdAuthorized() {
         var map = Map.of(HttpHeaders.AUTHORIZATION, List.of("Bearer invalid-token-key"));
 
         // Mock verification token result
@@ -94,7 +94,7 @@ class Oauth2JwtAuthenticationServiceTest {
     }
 
     @Test
-    void isAuthorized_incorrectRolesAuthorized() {
+    void isAuthenticated_incorrectRolesAuthorized() {
         var map = Map.of(HttpHeaders.AUTHORIZATION, List.of("Bearer invalid-token-key"));
 
         // Mock verification token result
@@ -111,7 +111,7 @@ class Oauth2JwtAuthenticationServiceTest {
     }
 
     @Test
-    void isAuthorized_badTokenValidation() {
+    void isAuthenticated_badTokenValidation() {
         var map = Map.of(HttpHeaders.AUTHORIZATION, List.of("Bearer invalid-token-key"));
 
         when(identityService.verifyJwtToken(any(TokenRepresentation.class), isNull())).thenReturn(Result.failure("Expired token"));

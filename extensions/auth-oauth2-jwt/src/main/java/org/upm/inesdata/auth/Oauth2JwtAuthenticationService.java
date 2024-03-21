@@ -69,23 +69,15 @@ public class Oauth2JwtAuthenticationService implements AuthenticationService {
 
         var tokenRepresentation = TokenRepresentation.Builder.newInstance().token(jwtToken.replace(BEARER_PREFIX, "")).build();
         var tokenValidation = identityService.verifyJwtToken(tokenRepresentation, null);
-System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         if (!tokenValidation.failed()) {
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX1");
             var claimToken = tokenValidation.getContent();
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX2");
             var realmAccess = (Map<String, Object>) claimToken.getClaim(REALM_ACCESS_CLAIM_NAME);
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX3");
             var roles = (List<String>) realmAccess.get(ROLES_NAME);
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX4");
 
             if (roles.contains(participantId) && roles.stream().anyMatch(allowedRoles::contains)) {
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX5");
                 valid = true;
             }
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX6");
         }
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7");
 
         return valid;
     }

@@ -2,6 +2,10 @@
 
 This extension provides the capability to authorizate the request to the connector management API. The extension will access the Bearer token provided in the Authorization header and validate that it is a valid JWT-encoded bearer token. It is necessary to have the `org.eclipse.edc:oauth2-core` extension correctly configured.
 
+To authorize a user, the roles of the provided JWT token must contain:
+- a valid role from those configured in `allowedRoles`
+- a role with the `connector name`
+
 ## Configuration
 
 Example configuration:

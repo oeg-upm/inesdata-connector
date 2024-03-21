@@ -22,7 +22,7 @@ plugins {
 dependencies {
     // Librerias base
     implementation(libs.edc.boot)
-    implementation(libs.edc.connector.core)
+    implementation(libs.edc.connector.core) 
 
     // Common libs
     implementation(libs.edc.web.spi)

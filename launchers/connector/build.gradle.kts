@@ -67,7 +67,7 @@ dependencies {
     implementation(libs.edc.aws.s3.core)
     implementation(libs.edc.data.plane.aws.s3)
 
-    // IAM Identity
+    // IAM Identity and authorization
     implementation(libs.edc.iam.oauth2.service)
     implementation(project(":extensions:auth-oauth2-jwt"))
 

@@ -17,5 +17,9 @@ repositories {
 dependencies {
     implementation "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:4.4.1.3373"
     implementation "org.owasp:dependency-check-gradle:8.4.2"
-    implementation "pl.allegro.tech.build:axion-release-plugin:1.16.1"
+    implementation ("pl.allegro.tech.build:axion-release-plugin:1.16.1") {
+        // https://stackoverflow.com/questions/72743823/public-key-authentication-fails-with-jsch-but-work-with-openssh-with-the-same-ke
+        exclude group: "com.jcraft", module: "jsch"
+    }
+    implementation "com.github.mwiede:jsch:0.2.17"
 }

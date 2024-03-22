@@ -74,6 +74,7 @@ sonar {
 
 dependencyCheck {
     failBuildOnCVSS = 7
+    suppressionFile "suppressions.xml"
     analyzers {
 		// To avoid trying to analyze DLL files
 		assemblyEnabled=false

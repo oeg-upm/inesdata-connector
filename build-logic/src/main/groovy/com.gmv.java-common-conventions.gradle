@@ -22,13 +22,15 @@ scmVersion {
 version = scmVersion.version
 
 repositories {
-	// mavenRepoUrl, mavenRepoUsername and mavenRepoPassword must be configured in ~/.gradle/gradle.properties, 
+	// If using an org repo, mavenRepoUrl, mavenRepoUsername and mavenRepoPassword must be configured in ~/.gradle/gradle.properties, 
     //  project gradle.properties, env vars or command line.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:handling_credentials
-	maven {
-		name = 'mavenRepo'
-        url mavenRepoUrl
-		credentials(PasswordCredentials)
+    if (project.hasProperty('mavenRepoUrl')) {
+        maven {
+            name = 'mavenRepo'
+            url mavenRepoUrl
+            credentials(PasswordCredentials)
+        }
     }
     // As a fallback, use Maven Central for resolving dependencies.
     mavenCentral()
@@ -76,6 +78,7 @@ sonar {
 
 dependencyCheck {
     failBuildOnCVSS = 7
+    suppressionFile "suppressions.xml"
     analyzers {
 		// To avoid trying to analyze DLL files
 		assemblyEnabled=false
@@ -90,10 +93,12 @@ dependencyCheck {
 publishing {
 
     repositories {
-        maven {
-			name = 'mavenPublishRepo'
-			credentials(PasswordCredentials)
-            url = version.endsWith('SNAPSHOT') ? mavenPublishRepoSnapshotsUrl : mavenPublishRepoReleasesUrl
+        if (project.hasProperty('mavenPublishRepoSnapshotsUrl')) {
+            maven {
+                name = 'mavenPublishRepo'
+                credentials(PasswordCredentials)
+                url = version.endsWith('SNAPSHOT') ? mavenPublishRepoSnapshotsUrl : mavenPublishRepoReleasesUrl
+            }
         }
     }
 }

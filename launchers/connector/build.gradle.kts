@@ -32,8 +32,7 @@ dependencies {
     // Temporary libs
     implementation(libs.edc.vault.filesystem)
     implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.iam.mock)
-
+    
     // Control Plane
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
@@ -67,6 +66,10 @@ dependencies {
     // Persistencia de objetos
     implementation(libs.edc.aws.s3.core)
     implementation(libs.edc.data.plane.aws.s3)
+
+    // IAM Identity and authorization
+    implementation(libs.edc.iam.oauth2.service)
+    implementation(project(":extensions:auth-oauth2-jwt"))
 
     // Observability
     implementation(libs.edc.observability.api)

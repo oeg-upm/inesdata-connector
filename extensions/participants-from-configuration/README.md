@@ -7,7 +7,12 @@ This extension provides the capability to obtain the list of participants of a d
 Example configuration:
 
 ```properties
-edc.catalog.configuration.participant.list=100210;connector-company-sample;http://targe-url-cs:9194/protocol|561349;connector-company-example;http://targe-url-ce:9194/protocol
+edc.catalog.configuration.participant.1.name = connector-c1
+edc.catalog.configuration.participant.1.id = connector-c1
+edc.catalog.configuration.participant.1.targetUrl = http://localhost:19194/protocol
+edc.catalog.configuration.participant.2.name = connector-c2
+edc.catalog.configuration.participant.2.id = connector-c2
+edc.catalog.configuration.participant.2.targetUrl = http://localhost:29194/protocol
 ```
 
-The `edc.catalog.configuration.participant.list` will be used by the federated catalog to retrieve the list of participants whose catalog will be obtained for federating it.
+The `edc.catalog.configuration.participant` will be used by the federated catalog to retrieve the list of participants whose catalog will be obtained for federating it.

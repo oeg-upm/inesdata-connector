@@ -5,7 +5,12 @@ plugins {
 
 dependencies {
     api(libs.edc.auth.spi)
-    implementation(libs.edc.iam.oauth2.core)
+    // Temporal workaround to solve a vulnerability. Remove when using edc version > 0.6.0
+    implementation(libs.edc.iam.oauth2.core) {
+        exclude("org.bouncycastle", "bcprov-jdk18on")
+    }
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78")        
+
 
     implementation(libs.jakarta.rsApi)
 

@@ -5,7 +5,11 @@ plugins {
 
 dependencies {
     implementation(libs.edc.federated.catalog.spi)
-    implementation(libs.edc.federated.catalog.core)
+    // Temporal workaround to solve a vulnerability. Remove when using edc version > 0.6.0
+    implementation(libs.edc.federated.catalog.core) {
+        exclude("org.bouncycastle", "bcprov-jdk18on")
+    }
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78")        
 
     testImplementation(libs.edc.core.junit)
     testImplementation(libs.junit.jupiter.api)

@@ -5,6 +5,13 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
+// Temporal workaround to solve a vulnerability. Remove when using edc version > 0.6.0
+configurations {
+    "compileClasspath" {
+        resolutionStrategy.force("org.bouncycastle:bcprov-jdk18on:1.78")
+    }
+}
+
 dependencies {
     // Librerias base
     implementation(libs.edc.boot)

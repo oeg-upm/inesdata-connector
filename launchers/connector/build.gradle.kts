@@ -38,6 +38,7 @@ dependencies {
 
     // Persistencia comun
     implementation(libs.edc.sql.core)
+    implementation(libs.edc.sql.edr)
     implementation(libs.edc.sql.lease)
     implementation(libs.edc.sql.pool)
     // Persistencia control plane

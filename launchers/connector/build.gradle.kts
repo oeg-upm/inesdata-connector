@@ -36,6 +36,9 @@ dependencies {
     implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.transfer.data.plane)
 
+    // Vocabularios
+    implementation(project(":extensions:vocabulary-api"))
+
     // Persistencia comun
     implementation(libs.edc.sql.core)
     implementation(libs.edc.sql.edr)
@@ -47,6 +50,7 @@ dependencies {
     implementation(libs.edc.sql.contract.negotiation.store)
     implementation(libs.edc.sql.policy.definition.store)
     implementation(libs.edc.sql.transfer.process.store)
+    implementation(project(":extensions:vocabulary-index-sql"))
     // Persistencia data plane
     implementation(libs.edc.sql.data.plane.store)
 

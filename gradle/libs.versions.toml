@@ -4,13 +4,13 @@ format.version = "1.1"
 [versions]
 assertj = "3.25.3"
 aws = "2.23.12"
-edc = "0.6.2"
+edc = "0.6.3"
 junit-pioneer = "2.2.0"
 jupiter = "5.10.2"
 mockito = "5.2.0"
 postgres = "42.7.3"
-rsApi = "3.1.0"
-swagger-annotations-jakarta = "2.2.20"
+rsApi = "4.0.0"
+swagger-annotations-jakarta = "2.2.21"
 
 [libraries]
 edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }

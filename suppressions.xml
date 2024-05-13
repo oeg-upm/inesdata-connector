@@ -2,9 +2,10 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
    <suppress>
       <notes><![CDATA[
-      file name: asset-index-sql-0.5.1.jar
+		  This false positive doesn't stop appearing with evrything with "sql" in its name. We are never going to use
+		  that library, so we supress it for every maven package
       ]]></notes>
-      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/.*sql.*@.*$</packageUrl>
+      <packageUrl regex="true">^pkg:maven/.*sql.*@.*$</packageUrl>
       <cpe>cpe:/a:www-sql_project:www-sql</cpe>
    </suppress>
    <suppress>

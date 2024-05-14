@@ -1,10 +1,10 @@
 -- table: edc_vocabulary
 CREATE TABLE IF NOT EXISTS edc_vocabulary
 (
-    id           VARCHAR NOT NULL,
+    id                 VARCHAR NOT NULL,
     created_at         BIGINT  NOT NULL,
     json_schema        JSON    DEFAULT '{}',
-    vocabulary_name    VARCHAR NOT NULL,
+    name               VARCHAR NOT NULL,
     PRIMARY KEY (id)
 );
 

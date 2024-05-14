@@ -71,7 +71,7 @@ public interface VocabularyStatements extends SqlStatements {
     /**
      * Generates a SQL query using sub-select statements out of the query spec.
      *
-     * @param query query to be executed
+     * @param query querySpec to be executed
      * @return A {@link SqlQueryStatement} that contains the SQL and statement parameters
      */
     SqlQueryStatement createQuery(QuerySpec query);

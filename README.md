@@ -29,7 +29,7 @@ The connector is prepared to be executed inside a container. The following steps
 
 - Create a local Docker image:
   ```
-  docker build --tag inesdata/connector:0.1 --build-arg CONNECTOR_JAR=./launchers/connector/build/libs/connector-app.jar -f docker/Dockerfile .
+  docker build --tag inesdata/connector:0.2.0 --build-arg CONNECTOR_JAR=./launchers/connector/build/libs/connector-app.jar -f docker/Dockerfile .
   ```
 
 ## Database

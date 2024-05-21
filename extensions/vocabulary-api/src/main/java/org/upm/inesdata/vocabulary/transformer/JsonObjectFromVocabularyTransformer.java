@@ -16,6 +16,9 @@ import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.EDC_VOCABULARY_TYPE;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_JSON_SCHEMA;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_NAME;
+import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_CATEGORY;
+import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_DEFAULT_VOCABULARY;
+
 
 /**
  * Creates a JsonObject from a {@link Vocabulary} 
@@ -39,7 +42,9 @@ public class JsonObjectFromVocabularyTransformer extends AbstractJsonLdTransform
                 .add(ID, vocabulary.getId())
                 .add(TYPE, EDC_VOCABULARY_TYPE)
                 .add(PROPERTY_NAME, vocabulary.getName())
-                .add(PROPERTY_JSON_SCHEMA, vocabulary.getJsonSchema());
+                .add(PROPERTY_JSON_SCHEMA, vocabulary.getJsonSchema())
+                .add(PROPERTY_CATEGORY, vocabulary.getCategory())
+                .add(PROPERTY_DEFAULT_VOCABULARY, vocabulary.isDefaultVocabulary());
 
         return builder.build();
     }

@@ -104,4 +104,17 @@ public class InMemoryVocabularyIndex implements VocabularyIndex {
         return cache.remove(vocabularyId);
     }
 
+    @Override
+    public Vocabulary getDefaultVocabulary() {
+        lock.readLock().lock();
+        try {
+            return cache.values().stream()
+                    .filter(vocabulary -> vocabulary.isDefaultVocabulary())
+                    .findFirst()
+                    .orElse(null);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
 }

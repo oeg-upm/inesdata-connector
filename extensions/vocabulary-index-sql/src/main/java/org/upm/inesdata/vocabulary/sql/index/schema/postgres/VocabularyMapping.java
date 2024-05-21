@@ -14,6 +14,8 @@ public class VocabularyMapping extends TranslationMapping {
         add("id", statements.getVocabularyIdColumn());
         add("createdAt", statements.getCreatedAtColumn());
         add("name", statements.getNameColumn());
+        add("category", statements.getCategoryColumn());
+        add("default_vocabulary", statements.getDefaultVocabularyColumn());
         add("json_schema", new JsonFieldTranslator(statements.getJsonSchemaColumn()));
     }
 

@@ -24,6 +24,8 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
                 .column(getVocabularyIdColumn())
                 .column(getCreatedAtColumn())
                 .column(getNameColumn())
+                .column(getCategoryColumn())
+                .column(getDefaultVocabularyColumn())
                 .jsonColumn(getJsonSchemaColumn())
                 .insertInto(getVocabularyTable());
     }
@@ -33,6 +35,8 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
         return executeStatement()
                 .column(getNameColumn())
                 .jsonColumn(getJsonSchemaColumn())
+                .column(getCategoryColumn())
+                .column(getDefaultVocabularyColumn())
                 .update(getVocabularyTable(), getVocabularyIdColumn());
     }
 

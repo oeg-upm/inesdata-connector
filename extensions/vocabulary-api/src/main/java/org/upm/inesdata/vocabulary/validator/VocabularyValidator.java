@@ -8,6 +8,7 @@ import org.eclipse.edc.validator.spi.Validator;
 
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_JSON_SCHEMA;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_NAME;
+import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_CATEGORY;
 
 /**
  * Validator for Vocabulary
@@ -21,6 +22,7 @@ public class VocabularyValidator {
         return JsonObjectValidator.newValidator()
                 .verifyId(OptionalIdNotBlank::new)
                 .verify(PROPERTY_NAME, MandatoryObject::new)
+                .verify(PROPERTY_CATEGORY, MandatoryObject::new)
                 .verify(PROPERTY_JSON_SCHEMA, MandatoryJsonField::new)
                 .build();
     }

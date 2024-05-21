@@ -58,4 +58,12 @@ public interface VocabularyIndex {
      */
     StoreResult<Vocabulary> updateVocabulary(Vocabulary vocabulary);
 
+    /**
+     * Fetches the default {@link Vocabulary} from the metadata backend.
+     *
+     * @return The {@link Vocabulary} if one was found, or null otherwise.
+     * @throws NullPointerException If {@code vocabularyId} was null or empty.
+     */
+    Vocabulary getDefaultVocabulary();
+
 }

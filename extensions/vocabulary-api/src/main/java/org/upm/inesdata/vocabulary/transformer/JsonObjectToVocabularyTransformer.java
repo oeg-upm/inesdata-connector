@@ -7,10 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 
+import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_CATEGORY;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_JSON_SCHEMA;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_NAME;
-import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_CATEGORY;
-import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_DEFAULT_VOCABULARY;
 
 /**
  * Converts from an {@link Vocabulary} as a {@link JsonObject} in JSON-LD expanded form to an {@link Vocabulary}.
@@ -33,13 +32,8 @@ public class JsonObjectToVocabularyTransformer extends AbstractJsonLdTransformer
             case PROPERTY_NAME -> value -> builder.name(transformString(value, context));
             case PROPERTY_JSON_SCHEMA -> value -> builder.jsonSchema(transformString(value, context));
             case PROPERTY_CATEGORY -> value -> builder.category(transformString(value, context));
-            case PROPERTY_DEFAULT_VOCABULARY -> value -> builder.defaultVocabulary(transformBoolean(value, context));
             default -> doNothing();
         });
-
-        if (!jsonObject.containsKey(PROPERTY_DEFAULT_VOCABULARY)) {
-            builder.defaultVocabulary(false);
-        }
 
         return builderResult(builder::build, context);
     }

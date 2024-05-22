@@ -9,10 +9,9 @@ import org.eclipse.edc.sql.store.AbstractSqlStore;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.jetbrains.annotations.Nullable;
-
+import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
 import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 import org.upm.inesdata.vocabulary.sql.index.schema.VocabularyStatements;
-import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -83,7 +82,6 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                         vocabulary.getCreatedAt(),
                         vocabulary.getName(),
                         vocabulary.getCategory(),
-                        vocabulary.isDefaultVocabulary(),
                         toJson(vocabulary.getJsonSchema())
                 );
 
@@ -124,7 +122,6 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                             vocabulary.getName(),
                             toJson(vocabulary.getJsonSchema()),
                             vocabulary.getCategory(),
-                            vocabulary.isDefaultVocabulary(),
                             vocabularyId
                     );
 
@@ -136,18 +133,6 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                 throw new EdcPersistenceException(e);
             }
         });
-    }
-
-    @Override
-    public Vocabulary getDefaultVocabulary() {
-        try (var connection = getConnection()) {
-            var querySpec = QuerySpec.Builder.newInstance().filter(criterion("default_vocabulary", "=", true)).build();
-            var statement = vocabularyStatements.createQuery(querySpec);
-            return queryExecutor.query(connection, true, this::mapVocabulary, statement.getQueryAsString(), statement.getParameters())
-                    .findFirst().orElse(null);
-        } catch (SQLException e) {
-            throw new EdcPersistenceException(e);
-        }
     }
 
     private int mapRowCount(ResultSet resultSet) throws SQLException {
@@ -167,7 +152,6 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                 .createdAt(resultSet.getLong(vocabularyStatements.getCreatedAtColumn()))
                 .name(resultSet.getString(vocabularyStatements.getNameColumn()))
                 .category(resultSet.getString(vocabularyStatements.getCategoryColumn()))
-                .defaultVocabulary(resultSet.getBoolean(vocabularyStatements.getDefaultVocabularyColumn()))
                 .jsonSchema(resultSet.getString(vocabularyStatements.getJsonSchemaColumn()))
                 .build();
     }

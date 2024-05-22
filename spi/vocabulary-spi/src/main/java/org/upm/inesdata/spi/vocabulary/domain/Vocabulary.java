@@ -21,14 +21,12 @@ public class Vocabulary extends Entity {
     public static final String PROPERTY_NAME = EDC_NAMESPACE + "name";
     public static final String PROPERTY_JSON_SCHEMA = EDC_NAMESPACE + "jsonSchema";
     public static final String PROPERTY_CATEGORY = EDC_NAMESPACE + "category";
-    public static final String PROPERTY_DEFAULT_VOCABULARY = EDC_NAMESPACE + "defaultVocabulary";
     public static final String EDC_VOCABULARY_TYPE = EDC_NAMESPACE + "Vocabulary";
     
 
     private String name;
     private String jsonSchema;
     private String category;
-    private boolean defaultVocabulary;
 
     private Vocabulary() {
     }
@@ -45,13 +43,6 @@ public class Vocabulary extends Entity {
         return category;
     }
 
-    public boolean isDefaultVocabulary() {
-        return defaultVocabulary;
-    }
-
-    public void setDefaultVocabulary(boolean _defaultVocabulary) {
-        defaultVocabulary = _defaultVocabulary;
-    }
 
     public Builder toBuilder() {
         return Vocabulary.Builder.newInstance()
@@ -59,7 +50,6 @@ public class Vocabulary extends Entity {
                 .name(name)
                 .jsonSchema(jsonSchema)
                 .category(category)
-                .defaultVocabulary(defaultVocabulary)
                 .createdAt(createdAt);
     }
 
@@ -94,11 +84,6 @@ public class Vocabulary extends Entity {
 
         public Builder category(String category) {
             entity.category = category;
-            return self();
-        }
-
-        public Builder defaultVocabulary(boolean defaultVocabulary) {
-            entity.defaultVocabulary = defaultVocabulary;
             return self();
         }
 

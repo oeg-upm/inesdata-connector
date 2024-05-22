@@ -1,8 +1,8 @@
 package org.upm.inesdata.vocabulary.storage;
 
 import org.eclipse.edc.spi.result.StoreResult;
-import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
+import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 
 import java.util.Map;
 import java.util.Objects;
@@ -103,18 +103,4 @@ public class InMemoryVocabularyIndex implements VocabularyIndex {
     private Vocabulary delete(String vocabularyId) {
         return cache.remove(vocabularyId);
     }
-
-    @Override
-    public Vocabulary getDefaultVocabulary() {
-        lock.readLock().lock();
-        try {
-            return cache.values().stream()
-                    .filter(vocabulary -> vocabulary.isDefaultVocabulary())
-                    .findFirst()
-                    .orElse(null);
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
-
 }

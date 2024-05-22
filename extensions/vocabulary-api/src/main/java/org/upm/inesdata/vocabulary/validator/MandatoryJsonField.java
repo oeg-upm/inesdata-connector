@@ -4,11 +4,11 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.stream.JsonParsingException;
-import java.io.StringReader;
 import org.eclipse.edc.validator.jsonobject.JsonLdPath;
 import org.eclipse.edc.validator.spi.ValidationResult;
 import org.eclipse.edc.validator.spi.Validator;
 
+import java.io.StringReader;
 import java.util.Optional;
 
 import static java.lang.String.format;

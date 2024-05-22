@@ -1,9 +1,9 @@
 package org.upm.inesdata.vocabulary.sql.index.schema;
 
-import org.upm.inesdata.vocabulary.sql.index.schema.postgres.VocabularyMapping;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.sql.translation.SqlOperatorTranslator;
 import org.eclipse.edc.sql.translation.SqlQueryStatement;
+import org.upm.inesdata.vocabulary.sql.index.schema.postgres.VocabularyMapping;
 
 import static java.lang.String.format;
 
@@ -25,7 +25,6 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
                 .column(getCreatedAtColumn())
                 .column(getNameColumn())
                 .column(getCategoryColumn())
-                .column(getDefaultVocabularyColumn())
                 .jsonColumn(getJsonSchemaColumn())
                 .insertInto(getVocabularyTable());
     }
@@ -36,7 +35,6 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
                 .column(getNameColumn())
                 .jsonColumn(getJsonSchemaColumn())
                 .column(getCategoryColumn())
-                .column(getDefaultVocabularyColumn())
                 .update(getVocabularyTable(), getVocabularyIdColumn());
     }
 

@@ -13,6 +13,7 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.api.model.ApiCoreSchema;
 import org.eclipse.edc.connector.controlplane.contract.spi.types.offer.ContractOffer;
+import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
@@ -126,8 +127,7 @@ public interface VocabularyApi {
                     "@id": "vocabularyId",
                     "name": "vocabulary name",
                     "jsonSchema":  "{ \\"title\\": \\"vocabulary\\", \\"type\\": \\"object\\", \\"properties\\": { \\"name\\": { \\"type\\": \\"string\\", \\"title\\": \\"Name\\" }, \\"dct:keyword\\": { \\"type\\": \\"array\\", \\"title\\": \\"Keywords\\", \\"items\\": { \\"type\\": \\"string\\" } } }, \\"required\\": [ \\"name\\" ], \\"@context\\": { \\"dct\\": \\"http:\\/\\/purl.org\\/dc\\/terms\\/\" } }",
-                    "category": "dataset",
-                    "defaultVocabulary": true
+                    "category": "dataset"
                 }
                 """;
     }

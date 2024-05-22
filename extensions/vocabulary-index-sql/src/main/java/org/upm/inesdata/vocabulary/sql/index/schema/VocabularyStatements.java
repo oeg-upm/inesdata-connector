@@ -37,10 +37,6 @@ public interface VocabularyStatements extends SqlStatements {
         return "category";
     }
 
-    default String getDefaultVocabularyColumn() {
-        return "default_vocabulary";
-    }
-
     default String getCreatedAtColumn() {
         return "created_at";
     }

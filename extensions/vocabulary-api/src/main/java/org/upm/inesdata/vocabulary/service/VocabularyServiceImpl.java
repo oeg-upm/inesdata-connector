@@ -2,7 +2,6 @@ package org.upm.inesdata.vocabulary.service;
 
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.transaction.spi.TransactionContext;
-
 import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
 import org.upm.inesdata.spi.vocabulary.VocabularyService;
 import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
@@ -43,19 +42,10 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public ServiceResult<Vocabulary> create(Vocabulary vocabulary) {
         return transactionContext.execute(() -> {
-            // Managing default vocabulary
-            var defaultVocabulary = index.getDefaultVocabulary();
-
             // Create new vocabulary
             var createResult = index.create(vocabulary);
 
             if (createResult.succeeded()) {
-                // There is only a default vocabulary
-                if (defaultVocabulary != null && vocabulary.isDefaultVocabulary()) {
-                    defaultVocabulary.setDefaultVocabulary(false);
-                    index.updateVocabulary(defaultVocabulary);
-                }
-                
                 return ServiceResult.success(vocabulary);
             }
             return ServiceResult.fromFailure(createResult);
@@ -73,19 +63,8 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public ServiceResult<Vocabulary> update(Vocabulary vocabulary) {
         return transactionContext.execute(() -> {
-            // Managing default vocabulary
-            var defaultVocabulary = index.getDefaultVocabulary();
-
             // Update vocabulary
             var updatedVocabulary = index.updateVocabulary(vocabulary);
-
-            // There is only a default vocabulary
-            if (defaultVocabulary != null && vocabulary.isDefaultVocabulary() &&
-                    ! defaultVocabulary.getId().equals(vocabulary.getId())) {
-                defaultVocabulary.setDefaultVocabulary(false);
-                index.updateVocabulary(defaultVocabulary);
-            }
-            
             return ServiceResult.from(updatedVocabulary);
         });
     }

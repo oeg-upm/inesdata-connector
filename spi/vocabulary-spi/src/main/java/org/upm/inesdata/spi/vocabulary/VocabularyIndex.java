@@ -1,9 +1,9 @@
 package org.upm.inesdata.spi.vocabulary;
 
-import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 
 import java.util.stream.Stream;
 
@@ -57,13 +57,5 @@ public interface VocabularyIndex {
      * @return {@link StoreResult#success(Object)} if the object was updated, {@link StoreResult#notFound(String)} when an object with that ID was not found.
      */
     StoreResult<Vocabulary> updateVocabulary(Vocabulary vocabulary);
-
-    /**
-     * Fetches the default {@link Vocabulary} from the metadata backend.
-     *
-     * @return The {@link Vocabulary} if one was found, or null otherwise.
-     * @throws NullPointerException If {@code vocabularyId} was null or empty.
-     */
-    Vocabulary getDefaultVocabulary();
 
 }

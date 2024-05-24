@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 
+import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_CATEGORY;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_JSON_SCHEMA;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_NAME;
 
@@ -30,6 +31,7 @@ public class JsonObjectToVocabularyTransformer extends AbstractJsonLdTransformer
         visitProperties(jsonObject, key -> switch (key) {
             case PROPERTY_NAME -> value -> builder.name(transformString(value, context));
             case PROPERTY_JSON_SCHEMA -> value -> builder.jsonSchema(transformString(value, context));
+            case PROPERTY_CATEGORY -> value -> builder.category(transformString(value, context));
             default -> doNothing();
         });
 

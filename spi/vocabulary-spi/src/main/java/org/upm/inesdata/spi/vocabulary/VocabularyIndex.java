@@ -1,9 +1,9 @@
 package org.upm.inesdata.spi.vocabulary;
 
-import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 
 import java.util.stream.Stream;
 

@@ -33,6 +33,10 @@ public interface VocabularyStatements extends SqlStatements {
         return "json_schema";
     }
 
+    default String getCategoryColumn() {
+        return "category";
+    }
+
     default String getCreatedAtColumn() {
         return "created_at";
     }

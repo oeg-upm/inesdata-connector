@@ -9,10 +9,9 @@ import org.eclipse.edc.sql.store.AbstractSqlStore;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.jetbrains.annotations.Nullable;
-
+import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
 import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 import org.upm.inesdata.vocabulary.sql.index.schema.VocabularyStatements;
-import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -74,7 +73,7 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
                 if (existsById(vocabularyId, connection)) {
-                    var msg = format(VocabularyIndex.VOCABULARY_NOT_FOUND_TEMPLATE, vocabularyId);
+                    var msg = format(VocabularyIndex.VOCABULARY_EXISTS_TEMPLATE, vocabularyId);
                     return StoreResult.alreadyExists(msg);
                 }
 
@@ -82,6 +81,7 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                         vocabularyId,
                         vocabulary.getCreatedAt(),
                         vocabulary.getName(),
+                        vocabulary.getCategory(),
                         toJson(vocabulary.getJsonSchema())
                 );
 
@@ -121,6 +121,7 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                     queryExecutor.execute(connection, vocabularyStatements.getUpdateVocabularyTemplate(),
                             vocabulary.getName(),
                             toJson(vocabulary.getJsonSchema()),
+                            vocabulary.getCategory(),
                             vocabularyId
                     );
 
@@ -150,6 +151,7 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                 .id(resultSet.getString(vocabularyStatements.getVocabularyIdColumn()))
                 .createdAt(resultSet.getLong(vocabularyStatements.getCreatedAtColumn()))
                 .name(resultSet.getString(vocabularyStatements.getNameColumn()))
+                .category(resultSet.getString(vocabularyStatements.getCategoryColumn()))
                 .jsonSchema(resultSet.getString(vocabularyStatements.getJsonSchemaColumn()))
                 .build();
     }

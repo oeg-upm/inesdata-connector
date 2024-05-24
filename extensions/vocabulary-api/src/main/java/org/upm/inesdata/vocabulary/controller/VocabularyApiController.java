@@ -11,7 +11,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-
+import org.eclipse.edc.api.model.IdResponse;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
@@ -27,8 +27,6 @@ import static jakarta.json.stream.JsonCollectors.toJsonArray;
 import static java.util.Optional.of;
 import static org.eclipse.edc.web.spi.exception.ServiceResultHandler.exceptionMapper;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.EDC_VOCABULARY_TYPE;
-
-import org.eclipse.edc.api.model.IdResponse;
 
 /**
  * Implementation of the controller for {@link Vocabulary} managing.

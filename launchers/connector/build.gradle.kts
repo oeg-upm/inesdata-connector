@@ -39,6 +39,10 @@ dependencies {
     // Vocabularios
     implementation(project(":extensions:vocabulary-api"))
 
+    // Policies
+    implementation(project(":extensions:policy-always-true"))
+    implementation(project(":extensions:policy-time-interval"))
+
     // Persistencia comun
     implementation(libs.edc.sql.core)
     implementation(libs.edc.sql.edr)

@@ -9,8 +9,10 @@ rootProject.name = "inesdata-connector"
 include(":spi:vocabulary-spi")
 
 // Extensions
-include(":extensions:participants-from-configuration")
 include(":extensions:auth-oauth2-jwt")
+include(":extensions:participants-from-configuration")
+include(":extensions:policy-always-true")
+include(":extensions:policy-time-interval")
 include(":extensions:vocabulary-api")
 include(":extensions:vocabulary-index-sql")
 

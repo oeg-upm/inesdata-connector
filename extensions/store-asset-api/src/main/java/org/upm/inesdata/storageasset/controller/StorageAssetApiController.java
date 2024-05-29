@@ -12,9 +12,9 @@ import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
 import org.eclipse.edc.connector.controlplane.services.spi.asset.AssetService;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.spi.EdcException;
-import org.eclipse.edc.spi.monitor.Monitor;
-import org.eclipse.edc.spi.system.ServiceExtensionContext;
+import org.eclipse.edc.spi.constants.CoreConstants;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
+import org.eclipse.edc.util.string.StringUtils;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
 import org.eclipse.edc.web.spi.exception.ValidationFailureException;
@@ -36,23 +36,23 @@ import static org.eclipse.edc.web.spi.exception.ServiceResultHandler.exceptionMa
 public class StorageAssetApiController implements StorageAssetApi {
   private final TypeTransformerRegistry transformerRegistry;
   private final AssetService service;
-  private final Monitor monitor;
   private final JsonObjectValidatorRegistry validator;
   private final S3Service s3Service;
 
   private final JsonLd jsonLd;
 
-  private final ServiceExtensionContext context;
+  private final String bucketName;
+  private final String region;
 
-  public StorageAssetApiController(AssetService service, TypeTransformerRegistry transformerRegistry, Monitor monitor,
-      JsonObjectValidatorRegistry validator, S3Service s3Service, JsonLd jsonLd, ServiceExtensionContext context) {
+  public StorageAssetApiController(AssetService service, TypeTransformerRegistry transformerRegistry,
+      JsonObjectValidatorRegistry validator, S3Service s3Service, JsonLd jsonLd, String bucketName, String region) {
     this.transformerRegistry = transformerRegistry;
     this.service = service;
-    this.monitor = monitor;
     this.validator = validator;
     this.s3Service = s3Service;
     this.jsonLd = jsonLd;
-    this.context = context;
+    this.bucketName = bucketName;
+    this.region = region;
   }
 
   @POST
@@ -79,9 +79,11 @@ public class StorageAssetApiController implements StorageAssetApi {
     } catch (IOException e) {
       throw new EdcException("Failed to process file size", e);
     }
-    s3Service.uploadFile(fileName, bufferedInputStream, contentLength);
+    String folder = String.valueOf(asset.getDataAddress().getProperties().get(CoreConstants.EDC_NAMESPACE+"folder"));
+    String fullKey = StringUtils.isNullOrBlank(folder) || "null".equals(folder)?fileName:(folder.endsWith("/") ? folder + fileName : folder + "/" + fileName);
+    s3Service.uploadFile(fullKey,bufferedInputStream, contentLength);
     try {
-      setStorageProperties(asset, fileName);
+      setStorageProperties(asset, fullKey);
 
       // Creación de asset
       var idResponse = service.create(asset)
@@ -92,7 +94,7 @@ public class StorageAssetApiController implements StorageAssetApi {
           .orElseThrow(f -> new EdcException(f.getFailureDetail()));
     } catch (Exception e) {
       // Eliminar el archivo en caso de fallo
-      s3Service.deleteFile(fileName);
+      s3Service.deleteFile(fullKey);
       throw new EdcException("Failed to process multipart data", e);
     }
   }
@@ -114,12 +116,10 @@ public class StorageAssetApiController implements StorageAssetApi {
   }
 
   private void setStorageProperties(Asset asset, String fileName) {
-    String regionName = context.getSetting("edc.aws.region", "");
-    String bucketName = context.getSetting("edc.aws.bucket.name", "");
     asset.getPrivateProperties().put("storageAssetFile", fileName);
     asset.getDataAddress().setKeyName(fileName);
     asset.getDataAddress().setType("InesDataStore");
-    asset.getDataAddress().getProperties().put("bucketName", bucketName);
-    asset.getDataAddress().getProperties().put("region", regionName);
+    asset.getDataAddress().getProperties().put(CoreConstants.EDC_NAMESPACE+ "bucketName", bucketName);
+    asset.getDataAddress().getProperties().put(CoreConstants.EDC_NAMESPACE+"region", region);
   }
 }

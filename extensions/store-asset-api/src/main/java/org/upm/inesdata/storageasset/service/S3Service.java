@@ -1,6 +1,7 @@
 package org.upm.inesdata.storageasset.service;
 
 import org.eclipse.edc.spi.EdcException;
+import org.eclipse.edc.web.spi.exception.ObjectConflictException;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -44,10 +45,11 @@ public class S3Service {
     }
 
     public String uploadFile(String key, InputStream inputStream, long contentLength) {
+
         // Verificar si el archivo ya existe
         boolean exists = doesObjectExist(bucketName, key).join();
         if (exists) {
-            throw new EdcException("File with key " + key + " already exists.");
+            throw new ObjectConflictException("File with key " + key + " already exists.");
         }
 
         PutObjectRequest objectRequest = PutObjectRequest.builder()
@@ -69,9 +71,10 @@ public class S3Service {
     }
 
     public void deleteFile(String key) {
+        // Ajustar la clave para incluir la carpeta
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
             .bucket(bucketName)
-            .key(key)
+            .key(fullKey)
             .build();
         s3AsyncClient.deleteObject(deleteObjectRequest).join(); // Esperar a que se complete la eliminación
     }
@@ -98,5 +101,4 @@ public class S3Service {
                 }
             });
     }
-
 }

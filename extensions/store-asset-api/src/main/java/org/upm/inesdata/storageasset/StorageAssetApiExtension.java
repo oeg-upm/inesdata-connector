@@ -92,8 +92,9 @@ public class StorageAssetApiExtension implements ServiceExtension {
         // Crear una instancia de S3Service
         S3Service s3Service = new S3Service(accessKey, secretKey, endpointOverride, region, bucketName);
 
-        var storageAssetApiController = new StorageAssetApiController(assetService, managementApiTransformerRegistry, monitor, validator,s3Service,
-            jsonLd, context);
+        var storageAssetApiController = new StorageAssetApiController(assetService, managementApiTransformerRegistry,
+            validator,s3Service,
+            jsonLd, bucketName, regionName);
         webService.registerResource(config.getContextAlias(), storageAssetApiController);
     }
 }

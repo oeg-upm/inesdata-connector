@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.aws.s3.transfer)
     implementation(libs.edc.api.asset)
     implementation(libs.edc.control.plane.transform)
+    implementation(libs.edc.aws.s3.core)
     runtimeOnly(libs.edc.spi.jsonld)
     runtimeOnly(libs.edc.json.ld.lib)
 }

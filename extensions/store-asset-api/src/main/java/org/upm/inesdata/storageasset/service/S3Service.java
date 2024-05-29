@@ -74,7 +74,7 @@ public class S3Service {
         // Ajustar la clave para incluir la carpeta
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
             .bucket(bucketName)
-            .key(fullKey)
+            .key(key)
             .build();
         s3AsyncClient.deleteObject(deleteObjectRequest).join(); // Esperar a que se complete la eliminación
     }

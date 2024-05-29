@@ -74,6 +74,9 @@ dependencies {
     implementation(libs.edc.federated.catalog.spi)
     implementation(libs.edc.federated.catalog.core)
     implementation(libs.edc.federated.catalog.api)
+
+    // Storage assets
+    implementation(project(":extensions:store-asset-api"))
     
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)

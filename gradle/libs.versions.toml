@@ -10,6 +10,9 @@ jupiter = "5.10.2"
 mockito = "5.2.0"
 postgres = "42.7.3"
 rsApi = "4.0.0"
+rseeApi = "10.0.0"
+parsson = "1.1.4"
+jersey = "3.0.0"
 swagger-annotations-jakarta = "2.2.21"
 
 [libraries]
@@ -24,6 +27,7 @@ edc-control-plane-api = { module = "org.eclipse.edc:control-plane-api", version.
 edc-control-plane-api-client = { module = "org.eclipse.edc:control-plane-api-client", version.ref = "edc" }
 edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
 edc-control-plane-spi = { module = "org.eclipse.edc:control-plane-spi", version.ref = "edc" }
+edc-control-plane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
 edc-data-plane-api = { module = "org.eclipse.edc:data-plane-api", version.ref = "edc" }
 edc-data-plane-control-api = { module = "org.eclipse.edc:data-plane-control-api", version.ref = "edc" }
 edc-data-plane-core = { module = "org.eclipse.edc:data-plane-core", version.ref = "edc" }
@@ -43,6 +47,8 @@ edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.
 edc-spi-core = { module = "org.eclipse.edc:core-spi", version.ref = "edc" }
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-spi-transform = { module = "org.eclipse.edc:transform-spi", version.ref = "edc" }
+edc-spi-asset = { module = "org.eclipse.edc:asset-spi", version.ref = "edc" }
+edc-api-asset = { module = "org.eclipse.edc:asset-api", version.ref = "edc" }
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-transaction-datasource-spi = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
 edc-transaction-spi = { module = "org.eclipse.edc:transaction-spi", version.ref = "edc" }
@@ -52,7 +58,9 @@ edc-vault-filesystem = { module = "org.eclipse.edc:vault-filesystem", version.re
 edc-validator-spi = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }
 edc-web-spi = { module = "org.eclipse.edc:web-spi", version.ref = "edc" }
 jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
-
+jakarta-eeApi = { module = "jakarta.platform:jakarta.jakartaee-api", version.ref = "rseeApi" }
+parsson = { module = "org.eclipse.parsson:jakarta.json", version.ref = "parsson" }
+jersey = { module = "org.glassfish.jersey.media:jersey-media-multipart", version.ref = "jersey" }
 edc-lib-transform = { module = "org.eclipse.edc:transform-lib", version.ref = "edc" }
 edc-lib-util = { module = "org.eclipse.edc:util-lib", version.ref = "edc" }
 edc-lib-validator = { module = "org.eclipse.edc:validator-lib", version.ref = "edc" }

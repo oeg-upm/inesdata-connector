@@ -19,6 +19,9 @@ RUN mkdir -p ${CONNECTOR_RESOURCES}
 RUN chown -R ${USER_NAME}:0 ${CONNECTOR_HOME} \
     && chmod -R g=u ${CONNECTOR_HOME}
 
+# Helpful utility while the connector is not able to create its own database
+RUN apt-get update && apt-get install -y postgresql-client
+
 # User by default
 USER ${USER_NAME} 
 
@@ -27,6 +30,8 @@ WORKDIR ${CONNECTOR_HOME}
 
 # Copy connector
 COPY $CONNECTOR_JAR connector.jar
+COPY resources/* ${CONNECTOR_RESOURCES}/
+
 
 # Use "exec" for Kubernetes graceful termination (SIGINT) to reach JVM.
 ENTRYPOINT [ "sh", "-c", \

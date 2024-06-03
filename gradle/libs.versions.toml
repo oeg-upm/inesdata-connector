@@ -16,6 +16,7 @@ jersey = "3.0.0"
 swagger-annotations-jakarta = "2.2.21"
 
 [libraries]
+edc-api-asset = { module = "org.eclipse.edc:asset-api", version.ref = "edc" }
 edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
 edc-api-management-config = { module = "org.eclipse.edc:management-api-configuration", version.ref = "edc" }
 edc-auth-spi = { module = "org.eclipse.edc:auth-spi", version.ref = "edc" }
@@ -48,7 +49,6 @@ edc-spi-core = { module = "org.eclipse.edc:core-spi", version.ref = "edc" }
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-spi-transform = { module = "org.eclipse.edc:transform-spi", version.ref = "edc" }
 edc-spi-asset = { module = "org.eclipse.edc:asset-spi", version.ref = "edc" }
-edc-api-asset = { module = "org.eclipse.edc:asset-api", version.ref = "edc" }
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-transaction-datasource-spi = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
 edc-transaction-spi = { module = "org.eclipse.edc:transaction-spi", version.ref = "edc" }
@@ -57,10 +57,6 @@ edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http
 edc-vault-filesystem = { module = "org.eclipse.edc:vault-filesystem", version.ref = "edc" }
 edc-validator-spi = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }
 edc-web-spi = { module = "org.eclipse.edc:web-spi", version.ref = "edc" }
-jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
-jakarta-eeApi = { module = "jakarta.platform:jakarta.jakartaee-api", version.ref = "rseeApi" }
-parsson = { module = "org.eclipse.parsson:jakarta.json", version.ref = "parsson" }
-jersey = { module = "org.glassfish.jersey.media:jersey-media-multipart", version.ref = "jersey" }
 edc-lib-transform = { module = "org.eclipse.edc:transform-lib", version.ref = "edc" }
 edc-lib-util = { module = "org.eclipse.edc:util-lib", version.ref = "edc" }
 edc-lib-validator = { module = "org.eclipse.edc:validator-lib", version.ref = "edc" }
@@ -95,6 +91,10 @@ edc-core-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
 # No EDC references
 aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws" }
 aws-s3-transfer = { module = "software.amazon.awssdk:s3-transfer-manager", version.ref = "aws" }
+jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
+jakarta-eeApi = { module = "jakarta.platform:jakarta.jakartaee-api", version.ref = "rseeApi" }
+jersey = { module = "org.glassfish.jersey.media:jersey-media-multipart", version.ref = "jersey" }
+parsson = { module = "org.eclipse.parsson:jakarta.json", version.ref = "parsson" }
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 swagger-annotations-jakarta = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "swagger-annotations-jakarta" }
 

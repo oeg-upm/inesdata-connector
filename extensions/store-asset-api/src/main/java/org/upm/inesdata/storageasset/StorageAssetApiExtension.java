@@ -34,7 +34,13 @@ import static org.eclipse.edc.spi.types.domain.DataAddress.EDC_DATA_ADDRESS_TYPE
 public class StorageAssetApiExtension implements ServiceExtension {
 
     public static final String NAME = "StorageAsset API Extension";
-    
+    public static final String DEFAULT_VALUE = "";
+    public static final String AWS_ACCESS_KEY = "edc.aws.access.key";
+    public static final String AWS_SECRET_ACCESS = "edc.aws.secret.access.key";
+    public static final String AWS_ENDPOINT_OVERRIDE = "edc.aws.endpoint.override";
+    public static final String AWS_REGION = "edc.aws.region";
+    public static final String AWS_BUCKET_NAME = "edc.aws.bucket.name";
+
     @Inject
     private AssetService assetService;
     
@@ -84,11 +90,11 @@ public class StorageAssetApiExtension implements ServiceExtension {
         validator.register(EDC_DATA_ADDRESS_TYPE, DataAddressValidator.instance());
 
         // Leer las variables de entorno
-        var accessKey = vault.resolveSecret(context.getSetting("edc.aws.access.key", ""));
-        var secretKey = vault.resolveSecret(context.getSetting("edc.aws.secret.access.key", ""));
-        String endpointOverride = context.getSetting("edc.aws.endpoint.override","");
-        String regionName = context.getSetting("edc.aws.region","");
-        String bucketName = context.getSetting("edc.aws.bucket.name","");
+        var accessKey = vault.resolveSecret(context.getSetting(AWS_ACCESS_KEY, DEFAULT_VALUE));
+        var secretKey = vault.resolveSecret(context.getSetting(AWS_SECRET_ACCESS, DEFAULT_VALUE));
+        var endpointOverride = context.getSetting(AWS_ENDPOINT_OVERRIDE, DEFAULT_VALUE);
+        var regionName = context.getSetting(AWS_REGION, DEFAULT_VALUE);
+        var bucketName = context.getSetting(AWS_BUCKET_NAME, DEFAULT_VALUE);
 
         Region region = Region.of(regionName);
 

@@ -10,6 +10,7 @@ import org.eclipse.edc.connector.controlplane.transform.edc.to.JsonObjectToAsset
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
@@ -57,6 +58,8 @@ public class StorageAssetApiExtension implements ServiceExtension {
     @Inject
     private JsonLd jsonLd;
 
+    @Inject
+    private Vault vault;
 
     @Override
     public String name() {
@@ -81,8 +84,8 @@ public class StorageAssetApiExtension implements ServiceExtension {
         validator.register(EDC_DATA_ADDRESS_TYPE, DataAddressValidator.instance());
 
         // Leer las variables de entorno
-        String accessKey = context.getSetting("edc.aws.access.key","");
-        String secretKey = context.getSetting("edc.aws.secret.access.key","");
+        var accessKey = vault.resolveSecret(context.getSetting("edc.aws.access.key", ""));
+        var secretKey = vault.resolveSecret(context.getSetting("edc.aws.secret.access.key", ""));
         String endpointOverride = context.getSetting("edc.aws.endpoint.override","");
         String regionName = context.getSetting("edc.aws.region","");
         String bucketName = context.getSetting("edc.aws.bucket.name","");

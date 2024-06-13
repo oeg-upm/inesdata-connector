@@ -93,7 +93,7 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     public String getInsertCatalogDataServiceTemplate() {
         return executeStatement()
             .column("catalog_id")
-            .column("dataset_id")
+            .column("data_service_id")
             .insertInto(getCatalogDataServiceTable());
     }
 

@@ -45,7 +45,7 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
 
         transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                connection.setAutoCommit(false);
+//                connection.setAutoCommit(false);
 
                 if (catalog.getDataServices() != null) {
                     for (DataService dataService : catalog.getDataServices()) {

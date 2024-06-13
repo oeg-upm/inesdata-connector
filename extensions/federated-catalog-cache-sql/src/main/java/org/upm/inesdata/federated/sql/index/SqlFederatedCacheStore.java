@@ -98,15 +98,8 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
                 }
 
 
-
-                connection.commit();
                 return StoreResult.success();
             } catch (Exception e) {
-                try (var connection = getConnection()) {
-                    connection.rollback();
-                } catch (SQLException rollbackEx) {
-                    throw new EdcPersistenceException("Failed to rollback transaction.", rollbackEx);
-                }
                 throw new EdcPersistenceException(e);
             }
         });

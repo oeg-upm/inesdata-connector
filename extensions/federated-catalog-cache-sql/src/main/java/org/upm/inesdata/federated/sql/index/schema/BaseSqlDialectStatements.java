@@ -224,6 +224,6 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
 
     @Override
     public String getSelectDataServicesForIdTemplate() {
-        return format("SELECT * FROM %s AS a WHERE id = ?v", getDataServiceTable());
+        return format("SELECT * FROM %s AS a WHERE id = ?", getDataServiceTable());
     }
 }

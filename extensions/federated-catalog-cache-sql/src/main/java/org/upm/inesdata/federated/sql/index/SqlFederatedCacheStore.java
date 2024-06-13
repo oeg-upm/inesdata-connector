@@ -43,13 +43,21 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
     @Override
     public void save(Catalog catalog) {
         Objects.requireNonNull(catalog);
-
         transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-//                connection.setAutoCommit(false);
+                //                connection.setAutoCommit(false);
 
                 // Eliminar toda la información relacionada con el catálogo
                 deleteRelatedCatalogData(connection, catalog.getId());
+
+                return StoreResult.success();
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+        transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+//                connection.setAutoCommit(false);
 
                 queryExecutor.execute(connection, databaseStatements.getInsertCatalogTemplate(),
                     catalog.getId(),

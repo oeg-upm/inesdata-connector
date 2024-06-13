@@ -31,11 +31,7 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
 
     String getInsertCatalogTemplate();
 
-    String getUpdateCatalogTemplate();
-
     String getSelectCatalogTemplate();
-
-    String getCountCatalogByIdClause();
 
     String getDeleteCatalogByParticipantIdTemplate();
 
@@ -57,14 +53,6 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
     }
 
     String getInsertDataServiceTemplate();
-
-    String getUpdateDataServiceTemplate();
-
-    String getSelectDataServiceTemplate();
-
-    String getCountDataServiceByIdClause();
-
-    String getDeleteDataServiceByIdTemplate();
 
     String getInsertCatalogDataServiceTemplate();
 
@@ -96,14 +84,6 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
 
     String getInsertDatasetTemplate();
 
-    String getUpdateDatasetTemplate();
-
-    String getSelectDatasetTemplate();
-
-    String getCountDatasetByIdClause();
-
-    String getDeleteDatasetByIdTemplate();
-
 
     // Distribution CRUD methods
     default String getDistributionTable() {
@@ -123,23 +103,12 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
         return "dataset_id";
     }
     String getInsertDistributionTemplate();
-
-    String getUpdateDistributionTemplate();
-
-    String getSelectDistributionTemplate();
-
-    String getCountDistributionByIdClause();
-
-    String getDeleteDistributionByIdTemplate();
-
     // Methods for creating SQL query using sub-select statements
     SqlQueryStatement createQuery(QuerySpec query);
 
     String getDeleteExpiredCatalogsTemplate();
 
     String getExpireAllCatalogsTemplate();
-    String getInsertDatasetDistributionTemplate();
-    String getCountVariableName();
 
     String getSelectDatasetsForCatalogTemplate();
 

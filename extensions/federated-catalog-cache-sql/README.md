@@ -1,6 +1,6 @@
-# SQL Vocabulary
+# SQL Federated Catalog
 
-Provides SQL persistence for vocabularies.
+Provides SQL persistence for federated catalog.
 
 ## Prerequisites
 
@@ -12,11 +12,8 @@ Please apply this [schema](docs/schema.sql) to your SQL database.
 <!--
 ```plantuml
 @startuml
-entity edc_vocabulary {
+entity edc_catalog {
   * id: string <<PK>>
-  * name: string
-  * jsonSchema: string
-  * createdAt: long
   --
 }
 @enduml
@@ -25,6 +22,6 @@ entity edc_vocabulary {
 
 ## Configuration
 
-| Key | Description | Mandatory | 
-|:---|:---|---|
-| edc.datasource.vocabulary.name | Datasource used to store vocabularies | X |
+| Key                                  | Description                                | Mandatory | 
+|:-------------------------------------|:-------------------------------------------|---|
+| edc.datasource.federatedCatalog.name | Datasource used to store federated catalog | X |

@@ -17,7 +17,7 @@ import org.upm.inesdata.federated.sql.index.schema.SqlFederatedCatalogStatements
 import org.upm.inesdata.federated.sql.index.schema.postgres.PostgresDialectStatements;
 
 /**
- * Extension that stores vocabylaries in SQL databases
+ * Extension that stores federatedCatalogs in SQL databases
  */
 @Provides({ FederatedCacheStore.class })
 @Extension(value = "SQL federatedCatalog index")

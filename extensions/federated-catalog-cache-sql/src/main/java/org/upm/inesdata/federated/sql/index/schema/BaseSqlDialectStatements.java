@@ -26,23 +26,6 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     }
 
     @Override
-    public String getUpdateCatalogTemplate() {
-        return executeStatement()
-            .column(getCatalogParticipantIdColumn())
-            .jsonColumn(getCatalogPropertiesColumn())
-            .column(getCatalogExpiredColumn())
-            .update(getCatalogTable(), getCatalogIdColumn());
-    }
-
-    @Override
-    public String getCountCatalogByIdClause() {
-        return format("SELECT COUNT(*) AS %s FROM %s WHERE %s = ?",
-            getCountVariableName(),
-            getCatalogTable(),
-            getCatalogIdColumn());
-    }
-
-    @Override
     public String getSelectCatalogTemplate() {
         return format("SELECT * FROM %s AS a", getCatalogTable());
     }
@@ -60,33 +43,6 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
             .column(getDataServiceTermsColumn())
             .column(getDataServiceEndpointUrlColumn())
             .insertInto(getDataServiceTable());
-    }
-
-    @Override
-    public String getUpdateDataServiceTemplate() {
-        return executeStatement()
-            .column(getDataServiceTermsColumn())
-            .column(getDataServiceEndpointUrlColumn())
-            .update(getDataServiceTable(), getDataServiceIdColumn());
-    }
-
-    @Override
-    public String getCountDataServiceByIdClause() {
-        return format("SELECT COUNT(*) AS %s FROM %s WHERE %s = ?",
-            getCountVariableName(),
-            getDataServiceTable(),
-            getDataServiceIdColumn());
-    }
-
-    @Override
-    public String getSelectDataServiceTemplate() {
-        return format("SELECT * FROM %s AS a", getDataServiceTable());
-    }
-
-    @Override
-    public String getDeleteDataServiceByIdTemplate() {
-        return executeStatement()
-            .delete(getDataServiceTable(), getDataServiceIdColumn());
     }
 
     @Override
@@ -109,79 +65,12 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     }
 
     @Override
-    public String getUpdateDatasetTemplate() {
-        return executeStatement()
-            .jsonColumn(getDatasetOffersColumn())
-            .jsonColumn(getDatasetPropertiesColumn())
-            .column(getDatasetCatalogIdColumn())
-            .update(getDatasetTable(), getDatasetIdColumn());
-    }
-
-    @Override
-    public String getCountDatasetByIdClause() {
-        return format("SELECT COUNT(*) AS %s FROM %s WHERE %s = ?",
-            getCountVariableName(),
-            getDatasetTable(),
-            getDatasetIdColumn());
-    }
-
-    @Override
-    public String getSelectDatasetTemplate() {
-        return format("SELECT * FROM %s AS a", getDatasetTable());
-    }
-
-    @Override
-    public String getDeleteDatasetByIdTemplate() {
-        return executeStatement()
-            .delete(getDatasetTable(), getDatasetIdColumn());
-    }
-
-    @Override
     public String getInsertDistributionTemplate() {
         return executeStatement()
             .column(getDistributionFormatColumn())
             .column(getDistributionDataServiceIdColumn())
             .column(getDistributionDatasetIdColumn())
             .insertInto(getDistributionTable());
-    }
-
-    @Override
-    public String getUpdateDistributionTemplate() {
-        return executeStatement()
-            .column(getDistributionFormatColumn())
-            .column(getDistributionDataServiceIdColumn())
-            .update(getDistributionTable(), getDistributionDatasetIdColumn());
-    }
-
-    @Override
-    public String getCountDistributionByIdClause() {
-        return format("SELECT COUNT(*) AS %s FROM %s WHERE %s = ?",
-            getCountVariableName(),
-            getDistributionTable(),
-            getDistributionDatasetIdColumn());
-    }
-
-    @Override
-    public String getSelectDistributionTemplate() {
-        return format("SELECT * FROM %s AS a", getDistributionTable());
-    }
-
-    @Override
-    public String getDeleteDistributionByIdTemplate() {
-        return executeStatement()
-            .delete(getDistributionTable(), getDistributionDatasetIdColumn());
-    }
-
-    @Override
-    public String getInsertDatasetDistributionTemplate() {
-        return executeStatement()
-            .column("dataset_id")
-            .column("distribution_id")
-            .insertInto("edc_dataset_distribution");
-    }
-    @Override
-    public String getCountVariableName() {
-        return "COUNT";
     }
 
     @Override

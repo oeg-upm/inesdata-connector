@@ -148,4 +148,12 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
     String getSelectDataServicesForCatalogTemplate();
 
     String getSelectDataServicesForIdTemplate();
+
+    String getDeleteDistributionsForCatalogTemplate();
+
+    String getDeleteCatalogDataServicesTemplate();
+
+    String getDeleteOrphanDataServicesTemplate();
+
+    String getDeleteDatasetsForCatalogTemplate();
 }

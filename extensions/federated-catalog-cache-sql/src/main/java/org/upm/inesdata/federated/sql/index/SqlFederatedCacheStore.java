@@ -18,6 +18,7 @@ import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.upm.inesdata.federated.sql.index.schema.SqlFederatedCatalogStatements;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -46,6 +47,9 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
         transactionContext.execute(() -> {
             try (var connection = getConnection()) {
 //                connection.setAutoCommit(false);
+
+                // Eliminar toda la información relacionada con el catálogo
+                deleteRelatedCatalogData(connection, catalog.getId());
 
                 queryExecutor.execute(connection, databaseStatements.getInsertCatalogTemplate(),
                     catalog.getId(),
@@ -144,6 +148,29 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
                 throw new EdcPersistenceException(e);
             }
         });
+    }
+
+
+    private void deleteRelatedCatalogData(Connection connection, String catalogId) throws SQLException {
+        // Eliminar las distribuciones relacionadas con los datasets del catálogo
+        String deleteDistributionsSql = databaseStatements.getDeleteDistributionsForCatalogTemplate();
+        queryExecutor.execute(connection, deleteDistributionsSql, catalogId);
+
+        // Eliminar las relaciones entre el catálogo y los servicios de datos
+        String deleteCatalogDataServicesSql = databaseStatements.getDeleteCatalogDataServicesTemplate();
+        queryExecutor.execute(connection, deleteCatalogDataServicesSql, catalogId);
+
+        // Eliminar los servicios de datos que no están relacionados con ningún catálogo o distribución
+        String deleteOrphanDataServicesSql = databaseStatements.getDeleteOrphanDataServicesTemplate();
+        queryExecutor.execute(connection, deleteOrphanDataServicesSql);
+
+        // Eliminar los datasets del catálogo
+        String deleteDatasetsSql = databaseStatements.getDeleteDatasetsForCatalogTemplate();
+        queryExecutor.execute(connection, deleteDatasetsSql, catalogId);
+
+        // Eliminar el propio catálogo
+        String deleteCatalogSql = databaseStatements.getDeleteCatalogByIdTemplate();
+        queryExecutor.execute(connection, deleteCatalogSql, catalogId);
     }
 
     private boolean dataServiceExists(String dataServiceId) throws SQLException {

@@ -226,4 +226,27 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     public String getSelectDataServicesForIdTemplate() {
         return format("SELECT * FROM %s AS a WHERE id = ?", getDataServiceTable());
     }
+
+
+    @Override
+    public String getDeleteDistributionsForCatalogTemplate() {
+        return format("DELETE FROM %s WHERE dataset_id IN (SELECT id FROM %s WHERE catalog_id = ?)", getDistributionTable(), getDatasetTable());
+    }
+
+    @Override
+    public String getDeleteCatalogDataServicesTemplate() {
+
+        return format("DELETE FROM %s WHERE catalog_id = ?",getCatalogDataServiceTable());
+    }
+
+    @Override
+    public String getDeleteOrphanDataServicesTemplate() {
+        return format("DELETE FROM %s WHERE id NOT IN (SELECT data_service_id FROM %s)" +
+            " AND id NOT IN (SELECT data_service_id FROM %s)",getDataServiceTable(), getCatalogDataServiceTable(), getDistributionTable());
+    }
+
+    @Override
+    public String getDeleteDatasetsForCatalogTemplate() {
+        return format("DELETE FROM %s WHERE catalog_id = ?",getDatasetTable());
+    }
 }

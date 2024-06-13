@@ -204,12 +204,12 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
 
     @Override
     public String getSelectDatasetsForCatalogTemplate() {
-        return format("SELECT * FROM %s AS a WHERE catalog_id = ?v", getDatasetTable());
+        return format("SELECT * FROM %s AS a WHERE catalog_id = ?", getDatasetTable());
     }
 
     @Override
     public String getSelectDistributionsForDatasetTemplate() {
-        return format("SELECT * FROM %s AS a WHERE dataset_id = ?v", getDistributionTable());
+        return format("SELECT * FROM %s AS a WHERE dataset_id = ?", getDistributionTable());
     }
     @Override
     public String getSelectDataServicesForCatalogTemplate() {
@@ -253,6 +253,6 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
 
     @Override
     public String getSelectCatalogForParticipantIdTemplate() {
-        return format("SELECT * FROM %s AS a WHERE participant_id = ?", getCatalogParticipantIdColumn());
+        return format("SELECT * FROM %s AS a WHERE participant_id = ?", getCatalogTable());
     }
 }

@@ -1,5 +1,6 @@
 package org.upm.inesdata.federated.sql.index;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.catalog.spi.FederatedCacheStore;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
@@ -218,7 +219,7 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
     private Dataset mapResultSetToDataset(ResultSet resultSet) throws SQLException {
         String id = resultSet.getString("id");
         Map<String, Object> properties = fromJson(resultSet.getString("properties"), Map.class);
-        Map<String, Policy> offers = fromJson(resultSet.getString("offers"), Map.class);
+        Map<String, Policy> offers = fromJson(resultSet.getString("offers"), new TypeReference<Map<String, Policy>>() {});
 
         List<Distribution> distributions = getDistributionsForDataset(id);
 
@@ -228,7 +229,9 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
             .distributions(distributions);
 
         if (offers != null) {
-            offers.forEach(datasetBuilder::offer);
+            offers.forEach((key, value) ->
+                datasetBuilder.offer(key, value)
+            );
         }
 
         return datasetBuilder.build();

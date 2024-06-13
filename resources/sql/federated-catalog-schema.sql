@@ -1,10 +1,10 @@
 -- Tabla para Catalog
 CREATE TABLE  IF NOT EXISTS edc_catalog (
     id              VARCHAR NOT NULL,
-    participant_id  VARCHAR(255),
+    participant_id  VARCHAR(255) NOT NULL,
     properties      JSON DEFAULT '{}',
     expired         BOOLEAN,
-    PRIMARY KEY (id)
+    PRIMARY KEY (participant_id)
 );
 
 -- Tabla para Dataset

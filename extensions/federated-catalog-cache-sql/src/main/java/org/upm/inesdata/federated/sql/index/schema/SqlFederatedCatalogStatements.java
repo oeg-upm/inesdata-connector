@@ -37,7 +37,7 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
 
     String getCountCatalogByIdClause();
 
-    String getDeleteCatalogByIdTemplate();
+    String getDeleteCatalogByParticipantIdTemplate();
 
     // DataService CRUD methods
     default String getDataServiceTable() {

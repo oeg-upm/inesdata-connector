@@ -48,9 +48,9 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     }
 
     @Override
-    public String getDeleteCatalogByIdTemplate() {
+    public String getDeleteCatalogByParticipantIdTemplate() {
         return executeStatement()
-            .delete(getCatalogTable(), getCatalogIdColumn());
+            .delete(getCatalogTable(), getCatalogParticipantIdColumn());
     }
 
     @Override

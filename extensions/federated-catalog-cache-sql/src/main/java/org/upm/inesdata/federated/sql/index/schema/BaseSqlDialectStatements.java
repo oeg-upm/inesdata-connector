@@ -249,4 +249,10 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     public String getDeleteDatasetsForCatalogTemplate() {
         return format("DELETE FROM %s WHERE catalog_id = ?",getDatasetTable());
     }
+
+
+    @Override
+    public String getSelectCatalogForParticipantIdTemplate() {
+        return format("SELECT * FROM %s AS a WHERE participant_id = ?", getCatalogParticipantIdColumn());
+    }
 }

@@ -161,24 +161,29 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
 
     private void deleteRelatedCatalogData(Connection connection, Catalog catalog){
         // Eliminar las distribuciones relacionadas con los datasets del catálogo
-        String deleteDistributionsSql = databaseStatements.getDeleteDistributionsForCatalogTemplate();
-        queryExecutor.execute(connection, deleteDistributionsSql, catalog.getId());
+        Catalog catalogByParticipantId = getCatalogByParticipantId(catalog.getParticipantId());
 
-        // Eliminar las relaciones entre el catálogo y los servicios de datos
-        String deleteCatalogDataServicesSql = databaseStatements.getDeleteCatalogDataServicesTemplate();
-        queryExecutor.execute(connection, deleteCatalogDataServicesSql, catalog.getId());
+        if(catalogByParticipantId!=null && catalogByParticipantId.getId()!=null){
+            String deleteDistributionsSql = databaseStatements.getDeleteDistributionsForCatalogTemplate();
+            queryExecutor.execute(connection, deleteDistributionsSql, catalogByParticipantId.getId());
 
-        // Eliminar los servicios de datos que no están relacionados con ningún catálogo o distribución
-        String deleteOrphanDataServicesSql = databaseStatements.getDeleteOrphanDataServicesTemplate();
-        queryExecutor.execute(connection, deleteOrphanDataServicesSql);
+            // Eliminar las relaciones entre el catálogo y los servicios de datos
+            String deleteCatalogDataServicesSql = databaseStatements.getDeleteCatalogDataServicesTemplate();
+            queryExecutor.execute(connection, deleteCatalogDataServicesSql, catalogByParticipantId.getId());
 
-        // Eliminar los datasets del catálogo
-        String deleteDatasetsSql = databaseStatements.getDeleteDatasetsForCatalogTemplate();
-        queryExecutor.execute(connection, deleteDatasetsSql, catalog.getId());
+            // Eliminar los servicios de datos que no están relacionados con ningún catálogo o distribución
+            String deleteOrphanDataServicesSql = databaseStatements.getDeleteOrphanDataServicesTemplate();
+            queryExecutor.execute(connection, deleteOrphanDataServicesSql);
 
-        // Eliminar el propio catálogo
-        String deleteCatalogSql = databaseStatements.getDeleteCatalogByParticipantIdTemplate();
-        queryExecutor.execute(connection, deleteCatalogSql, catalog.getParticipantId());
+            // Eliminar los datasets del catálogo
+            String deleteDatasetsSql = databaseStatements.getDeleteDatasetsForCatalogTemplate();
+            queryExecutor.execute(connection, deleteDatasetsSql, catalogByParticipantId.getId());
+
+            // Eliminar el propio catálogo
+            String deleteCatalogSql = databaseStatements.getDeleteCatalogByParticipantIdTemplate();
+            queryExecutor.execute(connection, deleteCatalogSql, catalog.getParticipantId());
+        }
+
     }
 
     private boolean dataServiceExists(String dataServiceId) throws SQLException {
@@ -258,6 +263,23 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
             throw new EdcPersistenceException(e);
         }
     }
+
+    private Catalog getCatalogByParticipantId(String participantId) {
+        try (var connection = getConnection()) {
+            String selectCatalog = databaseStatements.getSelectCatalogForParticipantIdTemplate();
+            return queryExecutor.query(connection, false, this::mapResultSetToCatalogSimple, selectCatalog, participantId).findFirst().orElse(null);
+        } catch (SQLException e) {
+            throw new EdcPersistenceException(e);
+        }
+    }
+
+    private Catalog mapResultSetToCatalogSimple(ResultSet resultSet) throws SQLException {
+        String id = resultSet.getString("id");
+        return Catalog.Builder.newInstance()
+            .id(id)
+            .build();
+    }
+
 
     private List<DataService> getDataServicesForCatalog(String catalogId) {
         try (var connection = getConnection()) {

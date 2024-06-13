@@ -47,6 +47,13 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
             try (var connection = getConnection()) {
 //                connection.setAutoCommit(false);
 
+                queryExecutor.execute(connection, databaseStatements.getInsertCatalogTemplate(),
+                    catalog.getId(),
+                    catalog.getParticipantId(),
+                    toJson(catalog.getProperties()),
+                    false
+                );
+
                 if (catalog.getDataServices() != null) {
                     for (DataService dataService : catalog.getDataServices()) {
                         queryExecutor.execute(connection, databaseStatements.getInsertDataServiceTemplate(),
@@ -90,12 +97,7 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
                     }
                 }
 
-                queryExecutor.execute(connection, databaseStatements.getInsertCatalogTemplate(),
-                    catalog.getId(),
-                    catalog.getParticipantId(),
-                    toJson(catalog.getProperties()),
-                    false
-                );
+
 
                 connection.commit();
                 return StoreResult.success();

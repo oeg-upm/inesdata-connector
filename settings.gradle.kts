@@ -16,6 +16,7 @@ include(":extensions:policy-time-interval")
 include(":extensions:vocabulary-api")
 include(":extensions:vocabulary-index-sql")
 include(":extensions:store-asset-api")
+include(":extensions:federated-catalog-cache-sql")
 
 // Connector
 include(":launchers:connector")

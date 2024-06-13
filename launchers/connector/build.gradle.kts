@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.edc.federated.catalog.spi)
     implementation(libs.edc.federated.catalog.core)
     implementation(libs.edc.federated.catalog.api)
+    implementation(project(":extensions:federated-catalog-cache-sql"))
 
     // Storage assets
     implementation(project(":extensions:store-asset-api"))

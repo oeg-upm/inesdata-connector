@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.edc.sql.policy.definition.store)
     implementation(libs.edc.sql.transfer.process.store)
     implementation(project(":extensions:vocabulary-index-sql"))
+    implementation(project(":extensions:count-elements-sql"))
     // Persistencia data plane
     implementation(libs.edc.sql.data.plane.store)
 
@@ -77,6 +78,9 @@ dependencies {
 
     // Storage assets
     implementation(project(":extensions:store-asset-api"))
+
+    // Count elements
+    implementation(project(":extensions:count-elements-api"))
     
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)

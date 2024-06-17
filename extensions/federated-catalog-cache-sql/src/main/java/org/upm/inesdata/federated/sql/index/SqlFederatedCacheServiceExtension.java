@@ -46,10 +46,10 @@ public class SqlFederatedCacheServiceExtension implements ServiceExtension {
     private QueryExecutor queryExecutor;
 
 
-    @Provider(isDefault = true)
+/*    @Provider(isDefault = true)
     public FederatedCacheStoreIndex defaultCacheStore() {
         return new SqlFederatedCacheStore(dataSourceRegistry, DATASOURCE_SETTING_NAME,transactionContext,getObjectMapper(),dialect,queryExecutor);
-    }
+    }*/
 
     @Override
     public void initialize(ServiceExtensionContext context) {

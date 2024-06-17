@@ -68,6 +68,7 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
     public FederatedCatalogCacheService federatedCatalogCacheService() {
         return new FederatedCatalogCacheServiceImpl(paginatedFederatedCacheStoreIndex,transactionContext);
     }
+
     /**
      * Initializes the service
      */

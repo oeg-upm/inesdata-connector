@@ -19,7 +19,7 @@ import org.upm.inesdata.spi.federated.index.PaginatedFederatedCacheStoreIndex;
 /**
  * Extension that stores federatedCatalogs in SQL databases
  */
-@Provides({ FederatedCacheStore.class })
+@Provides({ FederatedCacheStore.class, PaginatedFederatedCacheStoreIndex.class })
 @Extension(value = "SQL federatedCatalog index")
 public class SqlFederatedCacheServiceExtension implements ServiceExtension {
 

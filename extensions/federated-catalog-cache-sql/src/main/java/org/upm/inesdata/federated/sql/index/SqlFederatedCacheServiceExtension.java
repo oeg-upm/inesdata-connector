@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.catalog.spi.FederatedCacheStore;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.spi.system.ServiceExtension;
@@ -45,10 +46,10 @@ public class SqlFederatedCacheServiceExtension implements ServiceExtension {
     private QueryExecutor queryExecutor;
 
 
-/*    @Provider(isDefault = true)
-    public FederatedCacheStoreIndex defaultCacheStore() {
+    @Provider(isDefault = true)
+    public PaginatedFederatedCacheStoreIndex defaultCacheStore() {
         return new SqlFederatedCacheStore(dataSourceRegistry, DATASOURCE_SETTING_NAME,transactionContext,getObjectMapper(),dialect,queryExecutor);
-    }*/
+    }
 
     @Override
     public void initialize(ServiceExtensionContext context) {
@@ -58,6 +59,7 @@ public class SqlFederatedCacheServiceExtension implements ServiceExtension {
                 getDialect(), queryExecutor);
 
         context.registerService(PaginatedFederatedCacheStoreIndex.class, sqlFederatedCacheStore);
+        context.registerService(FederatedCacheStore.class, sqlFederatedCacheStore);
     }
 
     private SqlFederatedCatalogStatements getDialect() {

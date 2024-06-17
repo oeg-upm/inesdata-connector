@@ -15,6 +15,7 @@ import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.upm.inesdata.federated.sql.index.schema.SqlFederatedCatalogStatements;
 import org.upm.inesdata.federated.sql.index.schema.postgres.PostgresDialectStatements;
+import org.upm.inesdata.spi.federated.index.FederatedCacheStoreIndex;
 
 /**
  * Extension that stores federatedCatalogs in SQL databases
@@ -46,7 +47,7 @@ public class SqlFederatedCacheServiceExtension implements ServiceExtension {
 
 
     @Provider(isDefault = true)
-    public FederatedCacheStore defaultCacheStore() {
+    public FederatedCacheStoreIndex defaultCacheStore() {
         return new SqlFederatedCacheStore(dataSourceRegistry, DATASOURCE_SETTING_NAME,transactionContext,getObjectMapper(),dialect,queryExecutor);
     }
 

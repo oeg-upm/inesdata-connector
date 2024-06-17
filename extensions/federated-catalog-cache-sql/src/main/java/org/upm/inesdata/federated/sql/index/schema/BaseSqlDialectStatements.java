@@ -3,6 +3,7 @@ package org.upm.inesdata.federated.sql.index.schema;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.sql.translation.SqlOperatorTranslator;
 import org.eclipse.edc.sql.translation.SqlQueryStatement;
+import org.upm.inesdata.federated.sql.index.schema.postgres.SqlDatasetMapping;
 import org.upm.inesdata.federated.sql.index.schema.postgres.SqlFederatedCatalogMapping;
 
 import static java.lang.String.format;
@@ -76,8 +77,13 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     @Override
     public SqlQueryStatement createQuery(QuerySpec querySpec) {
         return new SqlQueryStatement(getSelectCatalogTemplate(), querySpec, new SqlFederatedCatalogMapping(this), operatorTranslator);
-
     }
+
+    @Override
+    public SqlQueryStatement createDatasetQuery(QuerySpec querySpec) {
+        return new SqlQueryStatement(getSelectDatasetTemplate(), querySpec, new SqlDatasetMapping(this), operatorTranslator);
+    }
+
     @Override
     public String getDeleteExpiredCatalogsTemplate() {
         return executeStatement()
@@ -143,5 +149,12 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     @Override
     public String getSelectCatalogForParticipantIdTemplate() {
         return format("SELECT * FROM %s AS a WHERE participant_id = ?", getCatalogTable());
+    }
+
+
+
+    @Override
+    public String getSelectDatasetTemplate() {
+        return format("SELECT * FROM %s AS a", getDatasetTable());
     }
 }

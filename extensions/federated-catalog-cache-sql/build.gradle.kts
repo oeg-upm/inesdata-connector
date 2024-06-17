@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    api(project(":spi:federated-catalog-cache-spi"))
     implementation(libs.edc.federated.catalog.api)
     api(libs.edc.spi.core)
     api(libs.edc.transaction.spi)

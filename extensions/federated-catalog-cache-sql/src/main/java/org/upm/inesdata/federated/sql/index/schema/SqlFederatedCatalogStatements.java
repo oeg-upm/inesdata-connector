@@ -106,6 +106,8 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
     // Methods for creating SQL query using sub-select statements
     SqlQueryStatement createQuery(QuerySpec query);
 
+    SqlQueryStatement createDatasetQuery(QuerySpec querySpec);
+
     String getDeleteExpiredCatalogsTemplate();
 
     String getExpireAllCatalogsTemplate();
@@ -127,4 +129,6 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
     String getDeleteDatasetsForCatalogTemplate();
 
     String getSelectCatalogForParticipantIdTemplate();
+
+    String getSelectDatasetTemplate();
 }

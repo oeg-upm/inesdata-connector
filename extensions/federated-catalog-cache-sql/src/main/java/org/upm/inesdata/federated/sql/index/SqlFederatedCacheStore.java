@@ -2,7 +2,6 @@ package org.upm.inesdata.federated.sql.index;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.edc.catalog.spi.FederatedCacheStore;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
 import org.eclipse.edc.connector.controlplane.catalog.spi.DataService;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
@@ -18,18 +17,24 @@ import org.eclipse.edc.sql.translation.SqlQueryStatement;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.upm.inesdata.federated.sql.index.schema.SqlFederatedCatalogStatements;
+import org.upm.inesdata.spi.federated.index.FederatedCacheStoreIndex;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class SqlFederatedCacheStore extends AbstractSqlStore implements FederatedCacheStore {
+public class SqlFederatedCacheStore extends AbstractSqlStore implements FederatedCacheStoreIndex {
 
+  public static final String INTERNAL_CATALOG_ID = "internal_catalog_id";
   private final SqlFederatedCatalogStatements databaseStatements;
 
   public SqlFederatedCacheStore(DataSourceRegistry dataSourceRegistry, String dataSourceName,
@@ -169,14 +174,14 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
   private List<Dataset> getDatasetsForCatalog(String catalogId) {
     try (var connection = getConnection()) {
       String sql = databaseStatements.getSelectDatasetsForCatalogTemplate();
-      return queryExecutor.query(connection, false, this::mapResultSetToDataset, sql, catalogId)
+      return queryExecutor.query(connection, false, rs -> mapResultSetToDataset(rs, false), sql, catalogId)
           .collect(Collectors.toList());
     } catch (SQLException e) {
       throw new EdcPersistenceException(e);
     }
   }
 
-  private Dataset mapResultSetToDataset(ResultSet resultSet) throws SQLException {
+  private Dataset mapResultSetToDataset(ResultSet resultSet, boolean withCatalogId) throws SQLException {
     String id = resultSet.getString("id");
     Map<String, Object> properties = fromJson(resultSet.getString("properties"), Map.class);
     Map<String, Policy> offers = fromJson(resultSet.getString("offers"), new TypeReference<Map<String, Policy>>() {
@@ -184,6 +189,9 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
 
     List<Distribution> distributions = getDistributionsForDataset(id);
 
+    if (withCatalogId) {
+      properties.put(INTERNAL_CATALOG_ID, resultSet.getString("catalog_id"));
+    }
     Dataset.Builder datasetBuilder = Dataset.Builder.newInstance().id(id).properties(properties)
         .distributions(distributions);
 
@@ -255,4 +263,66 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Federate
 
     return DataService.Builder.newInstance().id(id).endpointDescription(terms).endpointUrl(endpointUrl).build();
   }
+
+  @Override
+  public Collection<Catalog> queryPagination(QuerySpec querySpec) {
+    return transactionContext.execute(() -> {
+      try (Connection connection = getConnection()) {
+        SqlQueryStatement dataSetQueryStatement = databaseStatements.createQuery(querySpec);
+        try (Stream<Dataset> dataSetStream = queryExecutor.query(connection, true,
+            rs -> mapResultSetToDataset(rs, true), dataSetQueryStatement.getQueryAsString(),
+            dataSetQueryStatement.getParameters())) {
+          List<Dataset> dataSets = dataSetStream.toList();
+
+          Set<Object> catalogIds = dataSets.stream().flatMap(
+              d -> d.getProperties().entrySet().stream().filter(e -> INTERNAL_CATALOG_ID.equals(e.getKey()))
+                  .map(Map.Entry::getValue).collect(Collectors.toSet()).stream()).collect(Collectors.toSet());
+
+          if (catalogIds.isEmpty()) {
+            return Collections.emptyList();
+          }
+
+          QuerySpec catalogQuerySpec = QuerySpec.Builder.newInstance()
+              .filter(new Criterion(databaseStatements.getCatalogIdColumn(), "in", catalogIds)).build();
+
+          SqlQueryStatement catalogQueryStatement = databaseStatements.createQuery(catalogQuerySpec);
+          try (Stream<Catalog.Builder> catalogStream = queryExecutor.query(connection, true, this::mapResultSetToCatalogNoDependencies,
+              catalogQueryStatement.getQueryAsString(), catalogQueryStatement.getParameters())) {
+            List<Catalog.Builder> catalogs = catalogStream.toList();
+            List<Catalog> result = new ArrayList<>();
+
+            List<String> dataSetIds = dataSets.stream().map(Dataset::getId).toList();
+            if (dataSetIds.isEmpty()) {
+              return result;
+            }
+            catalogs.forEach(catalog -> {
+              String catalogId = catalog.build().getId();
+              List<Dataset> datasetFiltered = dataSets.stream()
+                  .filter(dataset -> catalogId.equals(dataset.getProperties().get(INTERNAL_CATALOG_ID)))
+                  .toList();
+              datasetFiltered.forEach(dataset -> dataset.getProperties().remove(INTERNAL_CATALOG_ID));
+              List<DataService> dataServicesForCatalog = getDataServicesForCatalog(catalogId);
+              catalog.datasets(datasetFiltered);
+              catalog.dataServices(dataServicesForCatalog);
+              result.add(catalog.build());
+            });
+
+            return result;
+          }
+        }
+
+      } catch (SQLException e) {
+        throw new EdcPersistenceException(e);
+      }
+    });
+  }
+
+  private Catalog.Builder mapResultSetToCatalogNoDependencies(ResultSet resultSet) throws SQLException {
+    String id = resultSet.getString("id");
+    String participantId = resultSet.getString("participant_id");
+    Map<String, Object> properties = fromJson(resultSet.getString("properties"), Map.class);
+
+    return Catalog.Builder.newInstance().id(id).participantId(participantId).properties(properties);
+  }
+
 }

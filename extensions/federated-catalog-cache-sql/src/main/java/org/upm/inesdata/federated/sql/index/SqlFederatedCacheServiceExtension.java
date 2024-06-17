@@ -58,7 +58,7 @@ public class SqlFederatedCacheServiceExtension implements ServiceExtension {
         var sqlFederatedCacheStore = new SqlFederatedCacheStore(dataSourceRegistry, dataSourceName, transactionContext, typeManager.getMapper(),
                 getDialect(), queryExecutor);
 
-        context.registerService(FederatedCacheStore.class, sqlFederatedCacheStore);
+        context.registerService(FederatedCacheStoreIndex.class, sqlFederatedCacheStore);
     }
 
     private SqlFederatedCatalogStatements getDialect() {

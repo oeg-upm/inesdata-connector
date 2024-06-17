@@ -2,6 +2,7 @@ package org.upm.inesdata.spi.federated.index;
 
 import org.eclipse.edc.catalog.spi.FederatedCacheStore;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
+import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
 import org.eclipse.edc.spi.query.QuerySpec;
 
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.Collection;
 /**
  * Datastore interface for objects.
  */
+@ExtensionPoint
 public interface FederatedCacheStoreIndex extends FederatedCacheStore {
 
   /**

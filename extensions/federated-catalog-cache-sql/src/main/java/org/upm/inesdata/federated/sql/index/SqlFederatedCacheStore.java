@@ -268,7 +268,7 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
   public Collection<Catalog> queryPagination(QuerySpec querySpec) {
     return transactionContext.execute(() -> {
       try (Connection connection = getConnection()) {
-        SqlQueryStatement dataSetQueryStatement = databaseStatements.createQuery(querySpec);
+        SqlQueryStatement dataSetQueryStatement = databaseStatements.createDatasetQuery(querySpec);
         try (Stream<Dataset> dataSetStream = queryExecutor.query(connection, true,
             rs -> mapResultSetToDataset(rs, true), dataSetQueryStatement.getQueryAsString(),
             dataSetQueryStatement.getParameters())) {

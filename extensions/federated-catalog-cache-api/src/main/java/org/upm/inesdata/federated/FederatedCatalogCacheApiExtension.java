@@ -7,6 +7,7 @@ import org.eclipse.edc.connector.controlplane.transform.edc.to.JsonObjectToAsset
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
@@ -16,7 +17,9 @@ import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.WebService;
 import org.upm.inesdata.federated.controller.FederatedCatalogCacheApiController;
+import org.upm.inesdata.federated.service.FederatedCatalogCacheServiceImpl;
 import org.upm.inesdata.spi.federated.FederatedCatalogCacheService;
+import org.upm.inesdata.spi.federated.index.FederatedCacheStoreIndex;
 
 import java.util.Map;
 
@@ -28,16 +31,6 @@ import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 public class FederatedCatalogCacheApiExtension implements ServiceExtension {
 
     public static final String NAME = "StorageAsset API Extension";
-    public static final String DEFAULT_VALUE = "";
-    public static final String AWS_ACCESS_KEY = "edc.aws.access.key";
-    public static final String AWS_SECRET_ACCESS = "edc.aws.secret.access.key";
-    public static final String AWS_ENDPOINT_OVERRIDE = "edc.aws.endpoint.override";
-    public static final String AWS_REGION = "edc.aws.region";
-    public static final String AWS_BUCKET_NAME = "edc.aws.bucket.name";
-
-    @Inject
-    private FederatedCatalogCacheService federatedCatalogCacheService;
-    
     @Inject
     private WebService webService;
 
@@ -61,11 +54,20 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
     @Inject
     private Vault vault;
 
+    @Inject
+    private FederatedCacheStoreIndex federatedCacheStoreIndex;
+
     @Override
     public String name() {
         return NAME;
     }
-
+    /**
+     * Provides a default vocabularyService implementation
+     */
+    @Provider(isDefault = true)
+    public FederatedCatalogCacheService federatedCatalogCacheService() {
+        return new FederatedCatalogCacheServiceImpl(federatedCacheStoreIndex,transactionContext);
+    }
     /**
      * Initializes the service
      */
@@ -80,7 +82,7 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
         managementApiTransformerRegistry.register(new JsonObjectFromAssetTransformer(factory, jsonLdMapper));
         managementApiTransformerRegistry.register(new JsonObjectToAssetTransformer());
 
-        var federatedCatalogCacheApiController = new FederatedCatalogCacheApiController(federatedCatalogCacheService, managementApiTransformerRegistry,
+        var federatedCatalogCacheApiController = new FederatedCatalogCacheApiController(this.federatedCatalogCacheService(), managementApiTransformerRegistry,
             validator,monitor);
         webService.registerResource(config.getContextAlias(), federatedCatalogCacheApiController);
     }

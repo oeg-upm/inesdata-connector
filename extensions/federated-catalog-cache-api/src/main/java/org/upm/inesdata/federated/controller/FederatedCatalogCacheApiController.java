@@ -49,7 +49,7 @@ public class FederatedCatalogCacheApiController
 
   @Override
   @POST
-  @Path("/requestPagination")
+  @Path("/request")
   public JsonArray getFederatedCatalog(JsonObject querySpecJson) {
     QuerySpec querySpec;
     if (querySpecJson == null) {

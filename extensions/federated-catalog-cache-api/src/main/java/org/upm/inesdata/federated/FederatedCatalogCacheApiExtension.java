@@ -19,7 +19,7 @@ import org.eclipse.edc.web.spi.WebService;
 import org.upm.inesdata.federated.controller.FederatedCatalogCacheApiController;
 import org.upm.inesdata.federated.service.FederatedCatalogCacheServiceImpl;
 import org.upm.inesdata.spi.federated.FederatedCatalogCacheService;
-import org.upm.inesdata.spi.federated.index.FederatedCacheStoreIndex;
+import org.upm.inesdata.spi.federated.index.PaginatedFederatedCacheStoreIndex;
 
 import java.util.Map;
 
@@ -55,7 +55,7 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
     private Vault vault;
 
     @Inject
-    private FederatedCacheStoreIndex federatedCacheStoreIndex;
+    private PaginatedFederatedCacheStoreIndex paginatedFederatedCacheStoreIndex;
 
     @Override
     public String name() {
@@ -66,7 +66,7 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
      */
     @Provider(isDefault = true)
     public FederatedCatalogCacheService federatedCatalogCacheService() {
-        return new FederatedCatalogCacheServiceImpl(federatedCacheStoreIndex,transactionContext);
+        return new FederatedCatalogCacheServiceImpl(paginatedFederatedCacheStoreIndex,transactionContext);
     }
     /**
      * Initializes the service

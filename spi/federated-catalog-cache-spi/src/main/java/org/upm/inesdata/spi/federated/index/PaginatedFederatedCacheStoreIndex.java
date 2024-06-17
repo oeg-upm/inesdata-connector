@@ -11,7 +11,7 @@ import java.util.Collection;
  * Datastore interface for objects.
  */
 @ExtensionPoint
-public interface FederatedCacheStoreIndex extends FederatedCacheStore {
+public interface PaginatedFederatedCacheStoreIndex extends FederatedCacheStore {
 
   /**
    * Queries the store for {@code ContractOffer}s

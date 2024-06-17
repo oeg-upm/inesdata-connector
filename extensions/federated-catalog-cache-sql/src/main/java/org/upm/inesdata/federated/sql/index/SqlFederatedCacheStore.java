@@ -17,7 +17,7 @@ import org.eclipse.edc.sql.translation.SqlQueryStatement;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.upm.inesdata.federated.sql.index.schema.SqlFederatedCatalogStatements;
-import org.upm.inesdata.spi.federated.index.FederatedCacheStoreIndex;
+import org.upm.inesdata.spi.federated.index.PaginatedFederatedCacheStoreIndex;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SqlFederatedCacheStore extends AbstractSqlStore implements FederatedCacheStoreIndex {
+public class SqlFederatedCacheStore extends AbstractSqlStore implements PaginatedFederatedCacheStoreIndex {
 
   public static final String INTERNAL_CATALOG_ID = "internal_catalog_id";
   private final SqlFederatedCatalogStatements databaseStatements;

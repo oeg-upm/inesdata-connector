@@ -7,6 +7,7 @@ rootProject.name = "inesdata-connector"
 
 // SPI 
 include(":spi:vocabulary-spi")
+include(":spi:count-elements-spi")
 
 // Extensions
 include(":extensions:auth-oauth2-jwt")
@@ -16,6 +17,8 @@ include(":extensions:policy-time-interval")
 include(":extensions:vocabulary-api")
 include(":extensions:vocabulary-index-sql")
 include(":extensions:store-asset-api")
+include(":extensions:count-elements-api")
+include(":extensions:count-elements-sql")
 
 // Connector
 include(":launchers:connector")

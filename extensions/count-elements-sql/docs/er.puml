@@ -1,9 +1,0 @@
-@startuml
-entity edc_vocabulary {
-  * id: string <<PK>>
-  * name: string
-  * jsonSchema: string
-  * createdAt: long
-  --
-}
-@enduml

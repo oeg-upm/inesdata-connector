@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":spi:vocabulary-spi"))
+    api(project(":spi:count-elements-spi"))
     api(libs.edc.spi.core)
     implementation(libs.edc.spi.transform)
     implementation(libs.edc.web.spi)

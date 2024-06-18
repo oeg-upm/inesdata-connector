@@ -8,6 +8,7 @@ rootProject.name = "inesdata-connector"
 // SPI 
 include(":spi:vocabulary-spi")
 include(":spi:federated-catalog-cache-spi")
+include(":spi:count-elements-spi")
 
 // Extensions
 include(":extensions:auth-oauth2-jwt")
@@ -19,6 +20,8 @@ include(":extensions:vocabulary-index-sql")
 include(":extensions:store-asset-api")
 include(":extensions:federated-catalog-cache-sql")
 include(":extensions:federated-catalog-cache-api")
+include(":extensions:count-elements-api")
+include(":extensions:count-elements-sql")
 
 // Connector
 include(":launchers:connector")

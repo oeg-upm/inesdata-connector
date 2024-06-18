@@ -38,10 +38,17 @@ public interface CountElementsStatements extends SqlStatements {
     }
 
     /**
-     * The vocabulary table name.
+     * The transfer process table name.
      */
     default String getTransferProcessTable() {
         return "edc_transfer_process";
+    }
+
+    /**
+     * The dataset table name.
+     */
+    default String getDatasetTable() {
+        return "edc_dataset";
     }
 
     /**

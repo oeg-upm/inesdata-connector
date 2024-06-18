@@ -35,7 +35,7 @@ public class Slf4jMonitor implements Monitor {
     @Override
     public void info(String message, Throwable... errors) {
         if (errors.length == 0) {
-            logger.info("Yepah! " + message);
+            logger.info(message);
         }
         else {
             for (Throwable error : errors) {

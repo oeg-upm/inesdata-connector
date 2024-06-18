@@ -1,4 +1,3 @@
-
 plugins {
     `java-library`
     id("com.gmv.inesdata.edc-application")
@@ -6,35 +5,38 @@ plugins {
 }
 
 dependencies {
-    // Librerias base
-    implementation(libs.edc.boot)
-    implementation(libs.edc.connector.core) 
 
     // Common libs
-    implementation(libs.edc.web.spi)
     implementation(libs.edc.dsp)
     implementation(libs.edc.management.api)
-    
+
     // Temporary libs
-    implementation(libs.edc.vault.filesystem)
     implementation(libs.edc.configuration.filesystem)
-    
+
     // Control Plane
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.validator.data.address.http.data)
 
     // Data Plane
     implementation(libs.edc.data.plane.control.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
+    implementation(libs.edc.data.plane.self.registration)
+
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.data.plane.selector.core)
 
     // Transferencia
+    implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.transfer.pull.http.receiver)
-    implementation(libs.edc.transfer.data.plane)
+
+    // EDR
+    implementation(libs.edc.edr.cache.api)
+    implementation(libs.edc.edr.store.core)
+    implementation(libs.edc.edr.store.receiver)
 
     // Vocabularios
     implementation(project(":extensions:vocabulary-api"))
@@ -77,17 +79,20 @@ dependencies {
 
     // Storage assets
     implementation(project(":extensions:store-asset-api"))
-    
+
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)
-
 }
 
 application {
     mainClass.set("org.eclipse.edc.boot.system.runtime.BaseRuntime")
 }
 
+var distTar = tasks.getByName("distTar")
+var distZip = tasks.getByName("distZip")
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("connector-app.jar")
+    dependsOn(distTar, distZip)
 }

@@ -13,6 +13,12 @@ import java.util.List;
  */
 public interface FederatedCatalogCacheService {
 
+  /**
+   * Searches for catalogs based on the given query specification and returns a paginated result.
+   *
+   * @param querySpec the specification of the query which includes filters, sorting, and pagination details.
+   * @return a ServiceResult containing a collection of catalogs that match the query criteria.
+   */
   ServiceResult<Collection<Catalog>> searchPagination(QuerySpec querySpec);
 }
  

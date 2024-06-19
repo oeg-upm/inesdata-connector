@@ -62,7 +62,7 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
         return NAME;
     }
     /**
-     * Provides a default vocabularyService implementation
+     * Provides a default federatedCatalogCacheService implementation
      */
     @Provider(isDefault = true)
     public FederatedCatalogCacheService federatedCatalogCacheService() {

@@ -28,25 +28,40 @@ import static jakarta.json.stream.JsonCollectors.toJsonArray;
 import static org.eclipse.edc.spi.query.QuerySpec.EDC_QUERY_SPEC_TYPE;
 import static org.eclipse.edc.web.spi.exception.ServiceResultHandler.exceptionMapper;
 
-@Consumes({MediaType.APPLICATION_JSON})
-@Produces({MediaType.APPLICATION_JSON})
+/**
+ * Controller class for the Federated Catalog Cache API. This class implements the {@link FederatedCatalogCacheApi}
+ * interface and provides the API endpoints to interact with the federated catalog cache.
+ */
+@Consumes({ MediaType.APPLICATION_JSON })
+@Produces({ MediaType.APPLICATION_JSON })
 @Path("/federatedcatalog")
-public class FederatedCatalogCacheApiController
-    implements FederatedCatalogCacheApi {
+public class FederatedCatalogCacheApiController implements FederatedCatalogCacheApi {
   private final TypeTransformerRegistry transformerRegistry;
   private final FederatedCatalogCacheService service;
   private final JsonObjectValidatorRegistry validator;
   private final Monitor monitor;
 
-
-  public FederatedCatalogCacheApiController(FederatedCatalogCacheService service, TypeTransformerRegistry transformerRegistry,
-      JsonObjectValidatorRegistry validator, Monitor monitor) {
+  /**
+   * Constructs a FederatedCatalogCacheApiController with the specified dependencies.
+   *
+   * @param service             the service used to access the federated catalog cache.
+   * @param transformerRegistry the registry for type transformers.
+   * @param validator           the registry for JSON object validators.
+   * @param monitor             the monitor used for logging and monitoring.
+   */
+  public FederatedCatalogCacheApiController(FederatedCatalogCacheService service,
+      TypeTransformerRegistry transformerRegistry, JsonObjectValidatorRegistry validator, Monitor monitor) {
     this.transformerRegistry = transformerRegistry;
     this.service = service;
     this.validator = validator;
     this.monitor = monitor;
   }
 
+  /**
+   * (non-javadoc)
+   *
+   * @see FederatedCatalogCacheApi#getFederatedCatalog(JsonObject)
+   */
   @Override
   @POST
   @Path("/request")
@@ -62,9 +77,7 @@ public class FederatedCatalogCacheApiController
     }
     return service.searchPagination(querySpec).orElseThrow(exceptionMapper(QuerySpec.class, null)).stream()
         .map(it -> transformerRegistry.transform(it, JsonObject.class))
-        .peek(r -> r.onFailure(f -> monitor.warning(f.getFailureDetail())))
-        .filter(Result::succeeded)
-        .map(Result::getContent)
-        .collect(toJsonArray());
+        .peek(r -> r.onFailure(f -> monitor.warning(f.getFailureDetail()))).filter(Result::succeeded)
+        .map(Result::getContent).collect(toJsonArray());
   }
 }

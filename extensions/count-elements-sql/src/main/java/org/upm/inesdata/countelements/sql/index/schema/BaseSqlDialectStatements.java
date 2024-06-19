@@ -34,6 +34,9 @@ public class BaseSqlDialectStatements implements CountElementsStatements {
             case "transferProcess":
                 tableName = getTransferProcessTable();
                 break;
+            case "federatedCatalog":
+                tableName = getDatasetTable();
+                break;
         }
         return format("SELECT COUNT(*) FROM %s",
                 tableName);

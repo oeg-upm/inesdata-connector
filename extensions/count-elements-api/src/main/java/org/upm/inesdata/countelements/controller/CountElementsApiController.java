@@ -30,7 +30,8 @@ public class CountElementsApiController implements CountElementsApi {
         if (!Objects.equals(entityType, "asset") && !Objects.equals(entityType, "policyDefinition")
                 && !Objects.equals(entityType, "contractDefinition")
                 && !Objects.equals(entityType, "contractAgreement")
-                && !Objects.equals(entityType, "transferProcess")) {
+                && !Objects.equals(entityType, "transferProcess")
+                && !Objects.equals(entityType, "federatedCatalog")) {
             throw new BadRequestException("Entity type provided is not valid");
         }
 

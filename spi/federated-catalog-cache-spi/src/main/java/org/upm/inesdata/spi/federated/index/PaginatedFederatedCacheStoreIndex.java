@@ -14,7 +14,7 @@ import java.util.Collection;
 public interface PaginatedFederatedCacheStoreIndex extends FederatedCacheStore {
 
   /**
-   * Queries the store for {@code ContractOffer}s
+   * Queries the store for {@code Catalog}s
    *
    * @param querySpec A list of criteria and pagination the dataset must fulfill
    * @return A collection of catalog that are already in the store and that satisfy a given list of criteria and pagination.

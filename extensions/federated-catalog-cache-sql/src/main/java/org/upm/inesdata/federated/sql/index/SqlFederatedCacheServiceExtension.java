@@ -45,12 +45,17 @@ public class SqlFederatedCacheServiceExtension implements ServiceExtension {
     @Inject
     private QueryExecutor queryExecutor;
 
-
+    /**
+     * Provides a defaultCacheStore implementation
+     */
     @Provider(isDefault = true)
     public PaginatedFederatedCacheStoreIndex defaultCacheStore() {
         return new SqlFederatedCacheStore(dataSourceRegistry, DATASOURCE_SETTING_NAME,transactionContext,getObjectMapper(),dialect,queryExecutor);
     }
 
+    /**
+     * Initializes the service
+     */
     @Override
     public void initialize(ServiceExtensionContext context) {
         var dataSourceName = context.getConfig().getString(DATASOURCE_SETTING_NAME, DataSourceRegistry.DEFAULT_DATASOURCE);

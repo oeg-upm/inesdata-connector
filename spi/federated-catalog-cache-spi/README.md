@@ -1,1 +1,1 @@
-This module contains extension points and interfaces specifically for the Inesdata Vocabulary feature.
+This module contains extension points and interfaces specifically for the Inesdata federated catalog feature.

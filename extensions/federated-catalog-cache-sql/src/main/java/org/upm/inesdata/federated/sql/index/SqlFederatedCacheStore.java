@@ -2,6 +2,7 @@ package org.upm.inesdata.federated.sql.index;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.json.JsonObject;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
 import org.eclipse.edc.connector.controlplane.catalog.spi.DataService;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
@@ -33,11 +34,26 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Implementation of the {@link PaginatedFederatedCacheStoreIndex} that uses SQL for storing and retrieving federated
+ * catalog data. This class extends {@link AbstractSqlStore} and provides methods for saving, querying, and managing
+ * catalogs in a federated cache.
+ */
 public class SqlFederatedCacheStore extends AbstractSqlStore implements PaginatedFederatedCacheStoreIndex {
 
   public static final String INTERNAL_CATALOG_ID = "internal_catalog_id";
   private final SqlFederatedCatalogStatements databaseStatements;
 
+  /**
+   * Constructs a SqlFederatedCacheStore with the specified dependencies.
+   *
+   * @param dataSourceRegistry the registry for data sources.
+   * @param dataSourceName     the name of the data source.
+   * @param transactionContext the context for handling transactions.
+   * @param objectMapper       the object mapper for JSON processing.
+   * @param databaseStatements the SQL statements specific to the federated catalog.
+   * @param queryExecutor      the executor for running SQL queries.
+   */
   public SqlFederatedCacheStore(DataSourceRegistry dataSourceRegistry, String dataSourceName,
       TransactionContext transactionContext, ObjectMapper objectMapper,
       SqlFederatedCatalogStatements databaseStatements, QueryExecutor queryExecutor) {
@@ -45,6 +61,12 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
     this.databaseStatements = Objects.requireNonNull(databaseStatements);
   }
 
+  /**
+   * Saves the provided catalog into the federated cache database.
+   *
+   * @param catalog the catalog to be saved.
+   * @throws NullPointerException if the catalog is null.
+   */
   @Override
   public void save(Catalog catalog) {
     Objects.requireNonNull(catalog);
@@ -68,6 +90,13 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
     });
   }
 
+  /**
+   * Queries the federated cache based on the provided criteria.
+   *
+   * @param query the list of criteria to filter the query.
+   * @return a collection of catalogs that match the query criteria.
+   * @throws EdcPersistenceException if a SQL error occurs during the query.
+   */
   @Override
   public Collection<Catalog> query(List<Criterion> query) {
     return transactionContext.execute(() -> {
@@ -82,6 +111,11 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
     });
   }
 
+  /**
+   * Deletes expired catalogs from the federated cache database.
+   *
+   * @throws EdcPersistenceException if a SQL error occurs during the deletion.
+   */
   @Override
   public void deleteExpired() {
     transactionContext.execute(() -> {
@@ -94,6 +128,11 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
     });
   }
 
+  /**
+   * Expires all catalogs in the federated cache database.
+   *
+   * @throws EdcPersistenceException if a SQL error occurs during the operation.
+   */
   @Override
   public void expireAll() {
     transactionContext.execute(() -> {
@@ -106,6 +145,11 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
     });
   }
 
+  /**
+   * (non-javadoc)
+   *
+   * @see PaginatedFederatedCacheStoreIndex#queryPagination(QuerySpec)
+   */
   @Override
   public Collection<Catalog> queryPagination(QuerySpec querySpec) {
     return transactionContext.execute(() -> {

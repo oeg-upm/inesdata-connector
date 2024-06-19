@@ -1,3 +1,3 @@
-# S3 Asset API
+Federated Catalog API
 
-Provides a management API for uploading files to S3 and creating assets.
+Provides a management API for getting the federated catalog paginated.

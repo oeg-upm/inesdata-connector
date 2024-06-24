@@ -23,4 +23,11 @@
       <cpe>cpe:/a:jetty:jetty</cpe>
       <cpe>cpe:/a:eclipse:jetty</cpe>
    </suppress>
+   <suppress>
+      <notes><![CDATA[
+      file name: vault-hashicorp-0.7.0.jar
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/vault\-hashicorp@.*$</packageUrl>
+      <cpe>cpe:/a:hashicorp:vault</cpe>
+   </suppress>
 </suppressions>

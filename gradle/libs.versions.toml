@@ -2,17 +2,18 @@
 format.version = "1.1"
 
 [versions]
-assertj = "3.25.3"
-aws = "2.23.12"
-edc = "0.6.3"
+assertj = "3.26.0"
+aws = "2.25.66"
+edc = "0.7.0"
+jakarta-json = "2.0.1"
+jersey = "3.0.0"
 junit-pioneer = "2.2.0"
 jupiter = "5.10.2"
 mockito = "5.2.0"
+parsson = "1.1.4"
 postgres = "42.7.3"
 rsApi = "4.0.0"
 rseeApi = "10.0.0"
-parsson = "1.1.4"
-jersey = "3.0.0"
 swagger-annotations-jakarta = "2.2.21"
 
 [libraries]
@@ -20,7 +21,6 @@ edc-api-asset = { module = "org.eclipse.edc:asset-api", version.ref = "edc" }
 edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
 edc-api-management-config = { module = "org.eclipse.edc:management-api-configuration", version.ref = "edc" }
 edc-auth-spi = { module = "org.eclipse.edc:auth-spi", version.ref = "edc" }
-edc-boot = { module = "org.eclipse.edc:boot", version.ref = "edc" }
 edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin", version.ref = "edc" }
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
 edc-connector-core = { module = "org.eclipse.edc:connector-core", version.ref = "edc" }
@@ -29,37 +29,39 @@ edc-control-plane-api-client = { module = "org.eclipse.edc:control-plane-api-cli
 edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
 edc-control-plane-spi = { module = "org.eclipse.edc:control-plane-spi", version.ref = "edc" }
 edc-control-plane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
-edc-data-plane-api = { module = "org.eclipse.edc:data-plane-api", version.ref = "edc" }
 edc-data-plane-control-api = { module = "org.eclipse.edc:data-plane-control-api", version.ref = "edc" }
+edc-data-plane-public-api = { module = "org.eclipse.edc:data-plane-public-api-v2", version.ref = "edc" }
 edc-data-plane-core = { module = "org.eclipse.edc:data-plane-core", version.ref = "edc" }
 edc-data-plane-http = { module = "org.eclipse.edc:data-plane-http", version.ref = "edc" }
-edc-data-plane-public-api = { module = "org.eclipse.edc:data-plane-public-api", version.ref = "edc" }
 edc-data-plane-selector-api = { module = "org.eclipse.edc:data-plane-selector-api", version.ref = "edc" }
 edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-core", version.ref = "edc" }
+edc-data-plane-self-registration = { module = "org.eclipse.edc:data-plane-self-registration", version.ref = "edc" }
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
 edc-dsp-api-configuration = { module = "org.eclipse.edc:dsp-http-api-configuration", version.ref = "edc" }
-edc-http = { module = "org.eclipse.edc:http", version.ref = "edc" }
+edc-edr-cache-api = { module = "org.eclipse.edc:edr-cache-api", version.ref = "edc" }
+edc-edr-store-core = { module = "org.eclipse.edc:edr-store-core", version.ref = "edc" }
+edc-edr-store-receiver = { module = "org.eclipse.edc:edr-store-receiver", version.ref = "edc" }
 edc-iam-oauth2-core = { module = "org.eclipse.edc:oauth2-core", version.ref = "edc" }
 edc-iam-oauth2-service = { module = "org.eclipse.edc:oauth2-service", version.ref = "edc" }
 edc-json-ld-lib = { module = "org.eclipse.edc:json-ld-lib", version.ref = "edc" }
-edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
-edc-micrometer-core = { module = "org.eclipse.edc:micrometer-core", version.ref = "edc" }
-edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.ref = "edc" }
-edc-spi-core = { module = "org.eclipse.edc:core-spi", version.ref = "edc" }
-edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
-edc-spi-transform = { module = "org.eclipse.edc:transform-spi", version.ref = "edc" }
-edc-spi-asset = { module = "org.eclipse.edc:asset-spi", version.ref = "edc" }
-edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
-edc-transaction-datasource-spi = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
-edc-transaction-spi = { module = "org.eclipse.edc:transaction-spi", version.ref = "edc" }
-edc-transfer-data-plane = { module = "org.eclipse.edc:transfer-data-plane", version.ref = "edc" }
-edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-receiver", version.ref = "edc" }
-edc-vault-filesystem = { module = "org.eclipse.edc:vault-filesystem", version.ref = "edc" }
-edc-validator-spi = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }
-edc-web-spi = { module = "org.eclipse.edc:web-spi", version.ref = "edc" }
 edc-lib-transform = { module = "org.eclipse.edc:transform-lib", version.ref = "edc" }
 edc-lib-util = { module = "org.eclipse.edc:util-lib", version.ref = "edc" }
 edc-lib-validator = { module = "org.eclipse.edc:validator-lib", version.ref = "edc" }
+edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
+edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.ref = "edc" }
+edc-spi-asset = { module = "org.eclipse.edc:asset-spi", version.ref = "edc" }
+edc-spi-core = { module = "org.eclipse.edc:core-spi", version.ref = "edc" }
+edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
+edc-spi-transform = { module = "org.eclipse.edc:transform-spi", version.ref = "edc" }
+edc-transaction-datasource-spi = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
+edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
+edc-transaction-spi = { module = "org.eclipse.edc:transaction-spi", version.ref = "edc" }
+edc-transfer-data-plane-signaling = { module = "org.eclipse.edc:transfer-data-plane-signaling", version.ref = "edc" }
+edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
+edc-validator-data-address-http-data = { module = "org.eclipse.edc:validator-data-address-http-data", version.ref = "edc" }
+edc-validator-spi = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }
+edc-vault-hashicorp = { module = "org.eclipse.edc:vault-hashicorp", version.ref = "edc" }
+edc-web-spi = { module = "org.eclipse.edc:web-spi", version.ref = "edc" }
 
 # SQL Extensions
 edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
@@ -91,8 +93,8 @@ edc-core-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
 # No EDC references
 aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws" }
 aws-s3-transfer = { module = "software.amazon.awssdk:s3-transfer-manager", version.ref = "aws" }
-jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
 jakarta-eeApi = { module = "jakarta.platform:jakarta.jakartaee-api", version.ref = "rseeApi" }
+jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
 jersey = { module = "org.glassfish.jersey.media:jersey-media-multipart", version.ref = "jersey" }
 parsson = { module = "org.eclipse.parsson:jakarta.json", version.ref = "parsson" }
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }

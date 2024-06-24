@@ -1,7 +1,10 @@
+/*
+ * INESData - UPM
+ */
 package org.upm.inesdata.spi.vocabulary;
 
-import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 import org.eclipse.edc.spi.result.ServiceResult;
+import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
  
 import java.util.List;
 

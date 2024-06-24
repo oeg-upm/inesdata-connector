@@ -10,3 +10,6 @@ bin/
 .vscode
 
 .env
+
+# Ignore dev resources
+resources-dev/

@@ -5,6 +5,7 @@ format.version = "1.1"
 assertj = "3.26.0"
 aws = "2.26.7"
 edc = "0.7.1"
+edc-aws = "0.7.1-SNAPSHOT"
 jakarta-json = "2.0.1"
 jersey = "3.1.7"
 junit-pioneer = "2.2.0"
@@ -76,8 +77,8 @@ edc-sql-transfer-process-store = { module = "org.eclipse.edc:transfer-process-st
 edc-sql-data-plane-store = { module = "org.eclipse.edc:data-plane-store-sql", version.ref = "edc" }
 
 # EDC aws s3 stuff
-edc-aws-s3-core = { module = "org.eclipse.edc:aws-s3-core", version.ref = "edc" }
-edc-data-plane-aws-s3 = { module = "org.eclipse.edc:data-plane-aws-s3", version.ref = "edc" }
+edc-aws-s3-core = { module = "org.eclipse.edc:aws-s3-core", version.ref = "edc-aws" }
+edc-data-plane-aws-s3 = { module = "org.eclipse.edc:data-plane-aws-s3", version.ref = "edc-aws" }
 
 # EDC Observability
 edc-observability-api = { module = "org.eclipse.edc:api-observability", version.ref = "edc" }

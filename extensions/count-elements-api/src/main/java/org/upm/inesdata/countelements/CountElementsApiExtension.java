@@ -1,7 +1,6 @@
 package org.upm.inesdata.countelements;
 
 import jakarta.json.Json;
-import org.eclipse.edc.connector.api.management.configuration.ManagementApiConfiguration;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
@@ -12,6 +11,8 @@ import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.web.spi.WebService;
+import org.eclipse.edc.web.spi.configuration.ApiContext;
+import org.eclipse.edc.web.spi.configuration.context.ManagementApiUrl;
 import org.upm.inesdata.countelements.controller.CountElementsApiController;
 import org.upm.inesdata.countelements.service.CountElementsServiceImpl;
 import org.upm.inesdata.countelements.transformer.JsonObjectFromCountElementTransformer;
@@ -38,9 +39,6 @@ public class CountElementsApiExtension implements ServiceExtension {
 
     @Inject(required = false)
     private HealthCheckService healthCheckService;
-
-    @Inject
-    private ManagementApiConfiguration config;
 
     @Inject
     private TypeManager typeManager;
@@ -75,6 +73,6 @@ public class CountElementsApiExtension implements ServiceExtension {
         managementApiTransformerRegistry.register(new JsonObjectFromCountElementTransformer(factory, jsonLdMapper));
 
         var countElementsApiController = new CountElementsApiController(countElementsService(), managementApiTransformerRegistry);
-        webService.registerResource(config.getContextAlias(), countElementsApiController);
+        webService.registerResource(ApiContext.MANAGEMENT, countElementsApiController);
     }
 }

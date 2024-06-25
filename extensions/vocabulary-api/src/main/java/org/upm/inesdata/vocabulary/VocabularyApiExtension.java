@@ -1,7 +1,6 @@
 package org.upm.inesdata.vocabulary;
 
 import jakarta.json.Json;
-import org.eclipse.edc.connector.api.management.configuration.ManagementApiConfiguration;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
@@ -14,6 +13,7 @@ import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.WebService;
+import org.eclipse.edc.web.spi.configuration.ApiContext;
 import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
 import org.upm.inesdata.spi.vocabulary.VocabularyService;
 import org.upm.inesdata.vocabulary.controller.VocabularyApiController;
@@ -45,9 +45,6 @@ public class VocabularyApiExtension implements ServiceExtension {
 
     @Inject(required = false)
     private HealthCheckService healthCheckService;
-
-    @Inject
-    private ManagementApiConfiguration config;
 
     @Inject
     private TypeManager typeManager;
@@ -90,7 +87,7 @@ public class VocabularyApiExtension implements ServiceExtension {
 
         validator.register(EDC_VOCABULARY_TYPE, VocabularyValidator.instance());
         var vocabularyApiController = new VocabularyApiController(this.vocabularyService(), managementApiTransformerRegistry, monitor, validator);
-        webService.registerResource(config.getContextAlias(), vocabularyApiController);
+        webService.registerResource(ApiContext.MANAGEMENT, vocabularyApiController);
 
         // contribute to the liveness probe
         if (healthCheckService != null) {

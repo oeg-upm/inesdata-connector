@@ -2,7 +2,6 @@ package org.upm.inesdata.storageasset;
 
 import jakarta.json.Json;
 import org.eclipse.edc.api.validation.DataAddressValidator;
-import org.eclipse.edc.connector.api.management.configuration.ManagementApiConfiguration;
 import org.eclipse.edc.connector.controlplane.api.management.asset.validation.AssetValidator;
 import org.eclipse.edc.connector.controlplane.services.spi.asset.AssetService;
 import org.eclipse.edc.connector.controlplane.transform.edc.from.JsonObjectFromAssetTransformer;
@@ -18,6 +17,7 @@ import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.WebService;
+import org.eclipse.edc.web.spi.configuration.ApiContext;
 import org.upm.inesdata.storageasset.controller.StorageAssetApiController;
 import org.upm.inesdata.storageasset.service.S3Service;
 import software.amazon.awssdk.regions.Region;
@@ -46,9 +46,6 @@ public class StorageAssetApiExtension implements ServiceExtension {
     
     @Inject
     private WebService webService;
-
-    @Inject
-    private ManagementApiConfiguration config;
 
     @Inject
     private TypeManager typeManager;
@@ -104,6 +101,6 @@ public class StorageAssetApiExtension implements ServiceExtension {
         var storageAssetApiController = new StorageAssetApiController(assetService, managementApiTransformerRegistry,
             validator,s3Service,
             jsonLd, bucketName, regionName);
-        webService.registerResource(config.getContextAlias(), storageAssetApiController);
+        webService.registerResource(ApiContext.MANAGEMENT, storageAssetApiController);
     }
 }

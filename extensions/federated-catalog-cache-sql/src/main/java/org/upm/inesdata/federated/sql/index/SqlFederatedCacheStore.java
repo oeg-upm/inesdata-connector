@@ -8,6 +8,7 @@ import org.eclipse.edc.connector.controlplane.catalog.spi.DataService;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Distribution;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.constants.CoreConstants;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
@@ -318,6 +319,7 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
   private void insertDatasets(Catalog catalog, Connection connection) throws SQLException {
     if (catalog.getDatasets() != null) {
       for (Dataset dataset : catalog.getDatasets()) {
+        dataset.getProperties().put(CoreConstants.EDC_NAMESPACE + "participantId", catalog.getParticipantId());
         queryExecutor.execute(connection, databaseStatements.getInsertDatasetTemplate(), dataset.getId(),
             toJson(dataset.getOffers()), toJson(dataset.getProperties()), catalog.getId());
 

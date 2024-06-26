@@ -9,6 +9,7 @@ dependencies {
     // Common libs
     implementation(libs.edc.dsp)
     implementation(libs.edc.management.api)
+    implementation(libs.edc.api.control.config)
 
     // Temporary libs
     implementation(libs.edc.configuration.filesystem)

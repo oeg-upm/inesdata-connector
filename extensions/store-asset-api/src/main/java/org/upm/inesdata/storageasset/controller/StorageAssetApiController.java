@@ -118,7 +118,7 @@ public class StorageAssetApiController implements StorageAssetApi {
   private void setStorageProperties(Asset asset, String fileName) {
     asset.getPrivateProperties().put("storageAssetFile", fileName);
     asset.getDataAddress().setKeyName(fileName);
-    asset.getDataAddress().setType("InesDataStore");
+    asset.getDataAddress().setType("AmazonS3");
     asset.getDataAddress().getProperties().put(CoreConstants.EDC_NAMESPACE+ "bucketName", bucketName);
     asset.getDataAddress().getProperties().put(CoreConstants.EDC_NAMESPACE+"region", region);
   }

@@ -90,6 +90,9 @@ dependencies {
     // Count elements
     implementation(project(":extensions:count-elements-api"))
 
+    //Data plane public api
+    implementation(project(":extensions:extended-data-plane-public-api"))
+
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)
 }

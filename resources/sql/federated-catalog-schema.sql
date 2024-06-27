@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS edc_dataset (
     properties      JSON DEFAULT '{}',
     catalog_id VARCHAR,
     FOREIGN KEY (catalog_id) REFERENCES edc_catalog(id),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id, catalog_id)
 );
 
 -- Tabla para DataService
@@ -31,8 +31,9 @@ CREATE TABLE IF NOT EXISTS edc_distribution (
     format VARCHAR(255),
     data_service_id VARCHAR,
     dataset_id VARCHAR,
+    catalog_id VARCHAR,
     FOREIGN KEY (data_service_id) REFERENCES edc_data_service(id),
-    FOREIGN KEY (dataset_id) REFERENCES edc_dataset(id)
+    FOREIGN KEY (dataset_id, catalog_id) REFERENCES edc_dataset(id, catalog_id)
 );
 
 -- Tabla de relación entre Catalog y DataService (para la lista de dataServices en Catalog)

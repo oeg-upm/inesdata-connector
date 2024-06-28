@@ -33,29 +33,11 @@
    <suppress>
       <notes><![CDATA[
       file name: control-plane-spi-0.7.1.jar
-      ]]></notes>
-      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/control\-plane\-spi@.*$</packageUrl>
-      <cpe>cpe:2.3:a:plane:plane</cpe>
-   </suppress>
-   <suppress>
-      <notes><![CDATA[
       file name: control-plane-transform-0.7.1.jar
-      ]]></notes>
-      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/control\-plane\-transform@.*$</packageUrl>
-      <cpe>cpe:2.3:a:plane:plane</cpe>
-   </suppress>
-   <suppress>
-      <notes><![CDATA[
       file name: data-plane-selector-spi-0.7.1.jar
-      ]]></notes>
-      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/data\-plane\-selector\-spi@.*$</packageUrl>
-      <cpe>cpe:2.3:a:plane:plane</cpe>
-   </suppress>
-   <suppress>
-      <notes><![CDATA[
       file name: data-plane-spi-0.7.1.jar
       ]]></notes>
-      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/data\-plane\-spi@.*$</packageUrl>
-      <cpe>cpe:2.3:a:plane:plane</cpe>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/.*@.*$</packageUrl>
+      <cpe>cpe:/a:plane:plane</cpe>
    </suppress>
 </suppressions>

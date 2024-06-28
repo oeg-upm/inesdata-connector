@@ -22,6 +22,7 @@ include(":extensions:federated-catalog-cache-sql")
 include(":extensions:federated-catalog-cache-api")
 include(":extensions:count-elements-api")
 include(":extensions:count-elements-sql")
+include(":extensions:extended-data-plane-public-api")
 
 // Connector
 include(":launchers:connector")

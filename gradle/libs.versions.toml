@@ -3,14 +3,15 @@ format.version = "1.1"
 
 [versions]
 assertj = "3.26.0"
-aws = "2.25.66"
-edc = "0.7.0"
+aws = "2.26.7"
+edc = "0.7.1"
+edc-aws = "0.7.1-SNAPSHOT"
 jakarta-json = "2.0.1"
-jersey = "3.0.0"
+jersey = "3.1.7"
 junit-pioneer = "2.2.0"
 jupiter = "5.10.2"
 mockito = "5.2.0"
-parsson = "1.1.4"
+parsson = "1.1.6"
 postgres = "42.7.3"
 rsApi = "4.0.0"
 rseeApi = "10.0.0"
@@ -20,6 +21,7 @@ swagger-annotations-jakarta = "2.2.21"
 edc-api-asset = { module = "org.eclipse.edc:asset-api", version.ref = "edc" }
 edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
 edc-api-management-config = { module = "org.eclipse.edc:management-api-configuration", version.ref = "edc" }
+edc-api-control-config = { module = "org.eclipse.edc:control-api-configuration", version.ref = "edc" }
 edc-auth-spi = { module = "org.eclipse.edc:auth-spi", version.ref = "edc" }
 edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin", version.ref = "edc" }
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
@@ -35,6 +37,8 @@ edc-data-plane-core = { module = "org.eclipse.edc:data-plane-core", version.ref 
 edc-data-plane-http = { module = "org.eclipse.edc:data-plane-http", version.ref = "edc" }
 edc-data-plane-selector-api = { module = "org.eclipse.edc:data-plane-selector-api", version.ref = "edc" }
 edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-core", version.ref = "edc" }
+edc-data-plane-selector-control-api = { module = "org.eclipse.edc:data-plane-selector-control-api", version.ref = "edc" }
+edc-data-plane-selector-client = { module = "org.eclipse.edc:data-plane-selector-client", version.ref = "edc" }
 edc-data-plane-self-registration = { module = "org.eclipse.edc:data-plane-self-registration", version.ref = "edc" }
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
 edc-dsp-api-configuration = { module = "org.eclipse.edc:dsp-http-api-configuration", version.ref = "edc" }
@@ -76,8 +80,8 @@ edc-sql-transfer-process-store = { module = "org.eclipse.edc:transfer-process-st
 edc-sql-data-plane-store = { module = "org.eclipse.edc:data-plane-store-sql", version.ref = "edc" }
 
 # EDC aws s3 stuff
-edc-aws-s3-core = { module = "org.eclipse.edc:aws-s3-core", version.ref = "edc" }
-edc-data-plane-aws-s3 = { module = "org.eclipse.edc:data-plane-aws-s3", version.ref = "edc" }
+edc-aws-s3-core = { module = "org.eclipse.edc:aws-s3-core", version.ref = "edc-aws" }
+edc-data-plane-aws-s3 = { module = "org.eclipse.edc:data-plane-aws-s3", version.ref = "edc-aws" }
 
 # EDC Observability
 edc-observability-api = { module = "org.eclipse.edc:api-observability", version.ref = "edc" }

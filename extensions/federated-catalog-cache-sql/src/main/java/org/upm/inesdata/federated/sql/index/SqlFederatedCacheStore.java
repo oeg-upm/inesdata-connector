@@ -99,11 +99,10 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
    * @throws EdcPersistenceException if a SQL error occurs during the query.
    */
   @Override
-  public Collection<Catalog> query(List<Criterion> query) {
+  public Collection<Catalog> query(QuerySpec query) {
     return transactionContext.execute(() -> {
       try (var connection = getConnection()) {
-        QuerySpec querySpec = QuerySpec.Builder.newInstance().filter(query).build();
-        SqlQueryStatement queryStatement = databaseStatements.createQuery(querySpec);
+        SqlQueryStatement queryStatement = databaseStatements.createQuery(query);
         return queryExecutor.query(connection, true, this::mapResultSetToCatalog, queryStatement.getQueryAsString(),
             queryStatement.getParameters()).collect(Collectors.toList());
       } catch (SQLException e) {

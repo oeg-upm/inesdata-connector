@@ -1,7 +1,7 @@
 package org.upm.inesdata.federated.sql.index;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.edc.catalog.spi.FederatedCacheStore;
+import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
@@ -20,7 +20,7 @@ import org.upm.inesdata.spi.federated.index.PaginatedFederatedCacheStoreIndex;
 /**
  * Extension that stores federatedCatalogs in SQL databases
  */
-@Provides({ FederatedCacheStore.class, PaginatedFederatedCacheStoreIndex.class })
+@Provides({ FederatedCatalogCache.class, PaginatedFederatedCacheStoreIndex.class })
 @Extension(value = "SQL federatedCatalog index")
 public class SqlFederatedCacheServiceExtension implements ServiceExtension {
 
@@ -64,7 +64,7 @@ public class SqlFederatedCacheServiceExtension implements ServiceExtension {
                 getDialect(), queryExecutor);
 
         context.registerService(PaginatedFederatedCacheStoreIndex.class, sqlFederatedCacheStore);
-        context.registerService(FederatedCacheStore.class, sqlFederatedCacheStore);
+        context.registerService(FederatedCatalogCache.class, sqlFederatedCacheStore);
     }
 
     private SqlFederatedCatalogStatements getDialect() {

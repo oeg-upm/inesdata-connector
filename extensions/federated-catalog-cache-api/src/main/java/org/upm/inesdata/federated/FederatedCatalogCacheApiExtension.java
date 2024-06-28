@@ -1,7 +1,7 @@
 package org.upm.inesdata.federated;
 
 import jakarta.json.Json;
-import org.eclipse.edc.connector.api.management.configuration.ManagementApiConfiguration;
+import org.eclipse.edc.connector.api.management.configuration.ManagementApiConfigurationExtension;
 import org.eclipse.edc.connector.controlplane.transform.edc.from.JsonObjectFromAssetTransformer;
 import org.eclipse.edc.connector.controlplane.transform.edc.to.JsonObjectToAssetTransformer;
 import org.eclipse.edc.jsonld.spi.JsonLd;
@@ -16,6 +16,7 @@ import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.WebService;
+import org.eclipse.edc.web.spi.configuration.ApiContext;
 import org.upm.inesdata.federated.controller.FederatedCatalogCacheApiController;
 import org.upm.inesdata.federated.service.FederatedCatalogCacheServiceImpl;
 import org.upm.inesdata.spi.federated.FederatedCatalogCacheService;
@@ -33,9 +34,6 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
     public static final String NAME = "StorageAsset API Extension";
     @Inject
     private WebService webService;
-
-    @Inject
-    private ManagementApiConfiguration config;
 
     @Inject
     private TypeManager typeManager;
@@ -85,6 +83,6 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
 
         var federatedCatalogCacheApiController = new FederatedCatalogCacheApiController(this.federatedCatalogCacheService(), managementApiTransformerRegistry,
             validator,monitor);
-        webService.registerResource(config.getContextAlias(), federatedCatalogCacheApiController);
+        webService.registerResource(ApiContext.MANAGEMENT, federatedCatalogCacheApiController);
     }
 }

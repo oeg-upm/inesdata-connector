@@ -30,4 +30,14 @@
       <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/vault\-hashicorp@.*$</packageUrl>
       <cpe>cpe:/a:hashicorp:vault</cpe>
    </suppress>
+   <suppress>
+      <notes><![CDATA[
+      file name: control-plane-spi-0.7.1.jar
+      file name: control-plane-transform-0.7.1.jar
+      file name: data-plane-selector-spi-0.7.1.jar
+      file name: data-plane-spi-0.7.1.jar
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/.*@.*$</packageUrl>
+      <cpe>cpe:/a:plane:plane</cpe>
+   </suppress>
 </suppressions>

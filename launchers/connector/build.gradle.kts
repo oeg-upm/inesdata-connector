@@ -9,6 +9,7 @@ dependencies {
     // Common libs
     implementation(libs.edc.dsp)
     implementation(libs.edc.management.api)
+    implementation(libs.edc.api.control.config)
 
     // Temporary libs
     implementation(libs.edc.configuration.filesystem)
@@ -88,6 +89,9 @@ dependencies {
 
     // Count elements
     implementation(project(":extensions:count-elements-api"))
+
+    //Data plane public api
+    implementation(project(":extensions:extended-data-plane-public-api"))
 
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)

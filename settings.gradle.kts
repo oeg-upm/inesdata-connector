@@ -23,6 +23,8 @@ include(":extensions:federated-catalog-cache-api")
 include(":extensions:count-elements-api")
 include(":extensions:count-elements-sql")
 include(":extensions:extended-data-plane-public-api")
+include(":extensions:audit-configuration")
+include(":extensions:audit-event-configuration")
 
 // Connector
 include(":launchers:connector")

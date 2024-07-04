@@ -8,6 +8,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
+import org.eclipse.edc.web.spi.configuration.ApiContext;
 
 @Provides(HttpRequestInterceptor.class)
 @Extension(value = AuditExtension.NAME)
@@ -28,7 +29,7 @@ public class AuditExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         // Registrar el interceptor HTTP
         context.registerService(Filter.class, new HttpRequestInterceptor(context.getMonitor()));
-        webService.registerResource(new HttpRequestInterceptor(context.getMonitor()));
+        webService.registerResource(ApiContext.CONTROL,new HttpRequestInterceptor(context.getMonitor()));
         context.getMonitor().info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA - Registered Filter");
     }
 }

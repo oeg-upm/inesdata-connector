@@ -1,12 +1,11 @@
 package org.upm.inesdata.audit;
 
-import org.eclipse.edc.spi.monitor.Monitor;
-
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.ext.Provider;
-import java.io.IOException;
-import java.util.Enumeration;
+import org.eclipse.edc.spi.monitor.Monitor;
+
+import java.text.MessageFormat;
 
 @Provider
 public class HttpRequestInterceptor implements ContainerRequestFilter {
@@ -18,15 +17,11 @@ public class HttpRequestInterceptor implements ContainerRequestFilter {
     }
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        // Auditar la petición
-        monitor.info("Intercepted Request: ");
-        monitor.info("Method: " + requestContext.getMethod());
-        monitor.info("URL: " + requestContext.getUriInfo().getRequestUri().toString());
-
-        // Imprimir cabeceras
-        for (String headerName : requestContext.getHeaders().keySet()) {
-            monitor.info(headerName + ": " + String.join(", ", requestContext.getHeaders().get(headerName)));
-        }
+    public void filter(ContainerRequestContext requestContext){
+        // Formatear y registrar el mensaje de auditoría
+        String auditLog = MessageFormat.format("[AUDIT][MANAGEMENT] User ''{0}'' calls ''{1}''",
+            "USER",
+            requestContext.getUriInfo().getRequestUri().toString());
+        monitor.info(auditLog);
     }
 }

@@ -8,6 +8,8 @@ dependencies {
     
     implementation(libs.edc.iam.oauth2.core)     
     implementation(libs.jakarta.rsApi)
+    implementation(libs.edc.contract.spi)
+    implementation(libs.edc.transfer.spi)
 
     testImplementation(libs.edc.core.junit)
     testImplementation(libs.assertj)

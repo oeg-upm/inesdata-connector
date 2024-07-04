@@ -28,8 +28,7 @@ public class AuditExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         // Registrar el interceptor HTTP
-        context.registerService(Filter.class, new HttpRequestInterceptor(context.getMonitor()));
-        webService.registerResource(ApiContext.CONTROL,new HttpRequestInterceptor(context.getMonitor()));
+        webService.registerResource(ApiContext.MANAGEMENT,new HttpRequestInterceptor(context.getMonitor()));
         context.getMonitor().info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA - Registered Filter");
     }
 }

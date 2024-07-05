@@ -56,8 +56,6 @@ public class HttpRequestInterceptor implements ContainerRequestFilter {
     private String decodeJWT(String token) {
         var tokenRepresentation = TokenRepresentation.Builder.newInstance().token(token).build();
         var tokenValidation = identityService.verifyJwtToken(tokenRepresentation, null);
-        var claimToken = tokenValidation.getContent();
-        var realmAccess = (Map<String, Object>) claimToken.getClaim(REALM_ACCESS_CLAIM_NAME);
-        return (String) realmAccess.get(TOKEN_PROPERTY_PREFERRED_USERNAME);
+        return (String) tokenValidation.getContent().getClaims().get(TOKEN_PROPERTY_PREFERRED_USERNAME);
     }
 }

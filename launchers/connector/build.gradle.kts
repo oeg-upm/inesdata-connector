@@ -93,6 +93,10 @@ dependencies {
     //Data plane public api
     implementation(project(":extensions:extended-data-plane-public-api"))
 
+    // Audit
+    implementation(project(":extensions:audit-configuration"))
+    implementation(project(":extensions:audit-event-configuration"))
+
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)
 }

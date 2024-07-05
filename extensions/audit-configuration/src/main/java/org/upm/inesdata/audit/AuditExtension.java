@@ -1,10 +1,9 @@
 package org.upm.inesdata.audit;
 
-import jakarta.servlet.Filter;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
-import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
@@ -20,6 +19,9 @@ public class AuditExtension implements ServiceExtension {
     @Inject
     private WebService webService;
 
+    @Inject
+    private IdentityService identityService;
+
     @Override
     public String name() {
         return NAME;
@@ -27,8 +29,6 @@ public class AuditExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        // Registrar el interceptor HTTP
-        webService.registerResource(ApiContext.MANAGEMENT,new HttpRequestInterceptor(context.getMonitor()));
-        context.getMonitor().info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA - Registered Filter");
+        webService.registerResource(ApiContext.MANAGEMENT,new HttpRequestInterceptor(context.getMonitor(), identityService, context.getParticipantId()));
     }
 }

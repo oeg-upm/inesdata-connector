@@ -15,7 +15,7 @@ public class AuditEventSubscriptionExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        eventRouter.register(Event.class, new AuditEventSubscriber(monitor));
-        eventRouter.registerSync(Event.class, new AuditEventSubscriber(monitor));
+        eventRouter.register(Event.class, new AuditEventSubscriber(monitor,context.getParticipantId()));
+        eventRouter.registerSync(Event.class, new AuditEventSubscriber(monitor, context.getParticipantId()));
     }
 }

@@ -1,18 +1,13 @@
-# Oauth2 JWT Token Authentication Service
+# Audit Extension
 
-This extension provides the capability to authorizate the request to the connector management API. The extension will access the Bearer token provided in the Authorization header and validate that it is a valid JWT-encoded bearer token. It is necessary to have the `org.eclipse.edc:oauth2-core` extension correctly configured.
+This extension provides the capability to log audit events for HTTP requests made to the connector management API. The `AuditExtension` registers an `HttpRequestInterceptor` that logs details about the user making the request and the request URI.
 
-To authorize a user, the roles of the provided JWT token must contain:
-- a valid role from those configured in `allowedRoles`
-- a role with the `connector name`
+## Features
+
+- Logs audit details for incoming HTTP requests.
+- Extracts and verifies JWT tokens to log the username.
+- Configurable participant ID for audit logging.
 
 ## Configuration
 
-Example configuration:
-
-```properties
-edc.api.auth.oauth2.allowedRoles.1.role=connector-admin
-edc.api.auth.oauth2.allowedRoles.2.role=connector-management
-```
-
-The `edc.api.auth.oauth2.allowedRoles` will be used by the federated catalog to retrieve the list of allowed roles that can perform requests on the managemente API connector.
+To configure the audit logging, you need to ensure that the `HttpRequestInterceptor` is registered with the web service. This is done within the `AuditExtension` class.

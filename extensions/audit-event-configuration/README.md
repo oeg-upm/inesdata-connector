@@ -1,18 +1,14 @@
-# Oauth2 JWT Token Authentication Service
+# AuditEventSubscriptionExtension
 
-This extension provides the capability to authorizate the request to the connector management API. The extension will access the Bearer token provided in the Authorization header and validate that it is a valid JWT-encoded bearer token. It is necessary to have the `org.eclipse.edc:oauth2-core` extension correctly configured.
+This extension provides the capability to subscribe to audit events related to contract negotiations and transfer processes. The `AuditEventSubscriber` logs details about these events using the provided monitoring interface.
 
-To authorize a user, the roles of the provided JWT token must contain:
-- a valid role from those configured in `allowedRoles`
-- a role with the `connector name`
+## Features
+
+- Logs audit details for contract negotiation and transfer process events.
+- Registers the `AuditEventSubscriber` with the event router for both asynchronous and synchronous event handling.
 
 ## Configuration
 
-Example configuration:
+To configure the `AuditEventSubscriptionExtension`, ensure that the `AuditEventSubscriber` is registered with the event router. This is done within the `AuditEventSubscriptionExtension` class.
 
-```properties
-edc.api.auth.oauth2.allowedRoles.1.role=connector-admin
-edc.api.auth.oauth2.allowedRoles.2.role=connector-management
-```
 
-The `edc.api.auth.oauth2.allowedRoles` will be used by the federated catalog to retrieve the list of allowed roles that can perform requests on the managemente API connector.

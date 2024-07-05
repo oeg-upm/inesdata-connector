@@ -9,38 +9,55 @@ import org.eclipse.edc.spi.monitor.Monitor;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Intercepts HTTP requests to audit user actions.
+ * Logs details about the user and the request URI.
+ */
 @Provider
 public class HttpRequestInterceptor implements ContainerRequestFilter {
 
-    private static final String TEMPLATE_AUDIT_LOG = "[AUDIT][''{0}''][MANAGEMENT] User ''{1}'' calls ''{2}''";
-
+    private static final String TEMPLATE_AUDIT_LOG = "[AUDIT][{0}][MANAGEMENT] User ''{1}'' calls ''{2}''";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final String REALM_ACCESS_CLAIM_NAME = "realm_access";
-    private static final String ROLES_NAME = "roles";
-    public static final String TOKEN_PROPERTY_PREFERRED_USERNAME = "preferred_username";
+    private static final String TOKEN_PROPERTY_PREFERRED_USERNAME = "preferred_username";
+    private static final String TOKEN_USER_NOT_VALID_USER = "NotValidUser";
+    private static final String TOKEN_USER_NOT_AUTHENTICATED_USER = "NotAuthenticatedUser";
 
     private final Monitor monitor;
     private final IdentityService identityService;
-
     private final String participantId;
 
+    /**
+     * Constructor for HttpRequestInterceptor.
+     *
+     * @param monitor        the monitor interface used for logging
+     * @param identityService the identity service for token verification
+     * @param participantId  the participant ID for audit log entries
+     */
     public HttpRequestInterceptor(Monitor monitor, IdentityService identityService, String participantId) {
         this.monitor = monitor;
         this.identityService = identityService;
         this.participantId = participantId;
     }
 
+    /**
+     * Filters the HTTP request context to log audit details.
+     *
+     * @param requestContext the container request context
+     */
     @Override
-    public void filter(ContainerRequestContext requestContext){
+    public void filter(ContainerRequestContext requestContext) {
         String user = getUserFromRequest(requestContext);
-        String auditLog = MessageFormat.format(TEMPLATE_AUDIT_LOG, participantId,
-            user,
-            requestContext.getUriInfo().getRequestUri().toString());
+        String auditLog = MessageFormat.format(TEMPLATE_AUDIT_LOG, participantId, user, requestContext.getUriInfo().getRequestUri().toString());
         monitor.info(auditLog);
     }
 
+    /**
+     * Extracts the user from the HTTP request context by decoding the JWT token.
+     *
+     * @param requestContext the container request context
+     * @return the username extracted from the token, or a default value if not authenticated or token is invalid
+     */
     private String getUserFromRequest(ContainerRequestContext requestContext) {
         List<String> authorizationHeaders = requestContext.getHeaders().get("Authorization");
         if (authorizationHeaders != null && !authorizationHeaders.isEmpty()) {
@@ -50,12 +67,21 @@ public class HttpRequestInterceptor implements ContainerRequestFilter {
                 return decodeJWT(token);
             }
         }
-        return "NotAuthenticatedUser";
+        return TOKEN_USER_NOT_AUTHENTICATED_USER;
     }
 
+    /**
+     * Decodes the JWT token to extract the username.
+     *
+     * @param token the JWT token
+     * @return the username if token is valid, otherwise a default value indicating the token is not valid
+     */
     private String decodeJWT(String token) {
         var tokenRepresentation = TokenRepresentation.Builder.newInstance().token(token).build();
         var tokenValidation = identityService.verifyJwtToken(tokenRepresentation, null);
+        if (tokenValidation.failed()) {
+            return TOKEN_USER_NOT_VALID_USER;
+        }
         return (String) tokenValidation.getContent().getClaims().get(TOKEN_PROPERTY_PREFERRED_USERNAME);
     }
 }

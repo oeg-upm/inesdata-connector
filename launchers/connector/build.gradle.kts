@@ -93,7 +93,7 @@ dependencies {
     //Data plane public api
     implementation(project(":extensions:extended-data-plane-public-api"))
 
-    // Storage assets
+    // Audit
     implementation(project(":extensions:audit-configuration"))
     implementation(project(":extensions:audit-event-configuration"))
 

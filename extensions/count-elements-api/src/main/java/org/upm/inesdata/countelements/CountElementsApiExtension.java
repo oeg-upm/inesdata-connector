@@ -10,6 +10,7 @@ import org.eclipse.edc.spi.system.health.HealthCheckService;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
+import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.ApiContext;
 import org.eclipse.edc.web.spi.configuration.context.ManagementApiUrl;
@@ -49,6 +50,9 @@ public class CountElementsApiExtension implements ServiceExtension {
     @Inject
     private TransactionContext transactionContext;
 
+    @Inject
+    private JsonObjectValidatorRegistry validator;
+
     @Override
     public String name() {
         return NAME;
@@ -72,7 +76,7 @@ public class CountElementsApiExtension implements ServiceExtension {
         var managementApiTransformerRegistry = transformerRegistry.forContext("management-api");
         managementApiTransformerRegistry.register(new JsonObjectFromCountElementTransformer(factory, jsonLdMapper));
 
-        var countElementsApiController = new CountElementsApiController(countElementsService(), managementApiTransformerRegistry);
+        var countElementsApiController = new CountElementsApiController(countElementsService(), managementApiTransformerRegistry, validator);
         webService.registerResource(ApiContext.MANAGEMENT, countElementsApiController);
     }
 }

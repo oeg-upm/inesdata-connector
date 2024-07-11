@@ -6,6 +6,7 @@ plugins {
 dependencies {
     api(project(":spi:count-elements-spi"))
     implementation(project(":extensions:count-elements-api"))
+    api(project(":extensions:inesdata-search-extension"))
     api(libs.edc.spi.core)
     api(libs.edc.transaction.spi)
     implementation(libs.edc.transaction.spi)

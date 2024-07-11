@@ -5,6 +5,7 @@ import org.eclipse.edc.sql.translation.SqlOperatorTranslator;
 import org.eclipse.edc.sql.translation.SqlQueryStatement;
 import org.upm.inesdata.federated.sql.index.schema.postgres.SqlDatasetMapping;
 import org.upm.inesdata.federated.sql.index.schema.postgres.SqlFederatedCatalogMapping;
+import org.upm.inesdata.search.extension.InesdataSqlQueryStatement;
 
 import static java.lang.String.format;
 
@@ -133,8 +134,8 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
      * @see SqlFederatedCatalogStatements#createDatasetQuery(QuerySpec)
      */
     @Override
-    public SqlQueryStatement createDatasetQuery(QuerySpec querySpec) {
-        return new SqlQueryStatement(getSelectDatasetTemplate(), querySpec, new SqlDatasetMapping(this), operatorTranslator);
+    public InesdataSqlQueryStatement createDatasetQuery(QuerySpec querySpec) {
+        return new InesdataSqlQueryStatement(getSelectDatasetTemplate(), querySpec, new SqlDatasetMapping(this), operatorTranslator);
     }
 
     /**

@@ -3,7 +3,6 @@ package org.upm.inesdata.countelements.controller;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -44,7 +43,7 @@ public class CountElementsApiController implements CountElementsApi {
                 && !Objects.equals(entityType, "contractAgreement")
                 && !Objects.equals(entityType, "transferProcess")
                 && !Objects.equals(entityType, "federatedCatalog")) {
-            throw new BadRequestException("Entity type provided is not valid");
+            throw new InvalidRequestException("Entity type provided is not valid: %s".formatted(entityType));
         }
 
         QuerySpec querySpec;

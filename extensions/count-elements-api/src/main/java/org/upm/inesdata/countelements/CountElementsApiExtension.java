@@ -13,7 +13,6 @@ import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.ApiContext;
-import org.eclipse.edc.web.spi.configuration.context.ManagementApiUrl;
 import org.upm.inesdata.countelements.controller.CountElementsApiController;
 import org.upm.inesdata.countelements.service.CountElementsServiceImpl;
 import org.upm.inesdata.countelements.transformer.JsonObjectFromCountElementTransformer;

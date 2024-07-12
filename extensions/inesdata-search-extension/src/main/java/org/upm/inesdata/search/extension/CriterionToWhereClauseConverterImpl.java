@@ -14,12 +14,12 @@
 
 package org.upm.inesdata.search.extension;
 
-import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.sql.translation.CriterionToWhereClauseConverter;
 import org.eclipse.edc.sql.translation.SqlOperatorTranslator;
 import org.eclipse.edc.sql.translation.TranslationMapping;
 import org.eclipse.edc.sql.translation.WhereClause;
+import org.eclipse.edc.web.spi.exception.InvalidRequestException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -110,7 +110,7 @@ public class CriterionToWhereClauseConverterImpl implements CriterionToWhereClau
                     generateNonObjectPropertySQL(sqlWhereBuilder, propertiesList, criterion.getOperandRight().toString());
             case 4 ->
                     generateObjectPropertySQL(sqlWhereBuilder, propertiesList, criterion.getOperandRight().toString());
-            default -> throw new IllegalArgumentException("Invalid vocabulary argument in the operandLeft: %s"
+            default -> throw new InvalidRequestException("Invalid vocabulary argument in the operandLeft: %s"
                     .formatted(criterion.getOperandLeft().toString()));
         }
 

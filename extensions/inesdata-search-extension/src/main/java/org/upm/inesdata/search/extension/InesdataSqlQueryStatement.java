@@ -15,19 +15,9 @@
 package org.upm.inesdata.search.extension;
 
 import org.eclipse.edc.spi.query.QuerySpec;
-import org.eclipse.edc.spi.query.SortOrder;
-import org.eclipse.edc.sql.translation.CriterionToWhereClauseConverter;
-import org.eclipse.edc.sql.translation.SortFieldConverterImpl;
 import org.eclipse.edc.sql.translation.SqlOperatorTranslator;
 import org.eclipse.edc.sql.translation.SqlQueryStatement;
 import org.eclipse.edc.sql.translation.TranslationMapping;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static java.lang.String.format;
-import static java.util.stream.Collectors.joining;
 
 /**
  * Maps a {@link QuerySpec} to a single SQL {@code SELECT ... FROM ... WHERE ...} statement. The {@code SELECT ...} part

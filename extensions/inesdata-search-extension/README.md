@@ -1,18 +1,37 @@
-# Oauth2 JWT Token Authentication Service
+# INESData search extension
 
-This extension provides the capability to authorizate the request to the connector management API. The extension will access the Bearer token provided in the Authorization header and validate that it is a valid JWT-encoded bearer token. It is necessary to have the `org.eclipse.edc:oauth2-core` extension correctly configured.
+This extension provides the capability to search inside the properties of an asset.
+The functionality of this new search works as follows:
+- To perform a search among the generic properties of the asset it is necessary to indicate 'genericSearch' as the value of the operandLeft
+- To perform a search among the properties of a vocabulary, it is necessary to indicate 'https://w3id.org/edc/v0.0.1/ns/assetData' followed by the name of the vocabulary and the property to search for. An example is given in the following section.
 
-To authorize a user, the roles of the provided JWT token must contain:
-- a valid role from those configured in `allowedRoles`
-- a role with the `connector name`
+## Example
 
-## Configuration
-
-Example configuration:
-
-```properties
-edc.api.auth.oauth2.allowedRoles.1.role=connector-admin
-edc.api.auth.oauth2.allowedRoles.2.role=connector-management
+```json
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "offset": 0,
+  "limit": 5,
+  "sortOrder":  "ASC",
+  "sortField": "id",
+  "filterExpression": [
+    {
+      "operandLeft": "genericSearch",
+      "operator": "LIKE",
+      "operandRight": "%test%"
+    },
+    {
+      "operandLeft": "'https://w3id.org/edc/v0.0.1/ns/assetData'.'https://w3id.org/edc/v0.0.1/ns/dcat-vocabulary'.'http://purl.org/dc/terms/language'",
+      "operator": "=",
+      "operandRight": "spanish"
+    },
+    {
+      "operandLeft": "'https://w3id.org/edc/v0.0.1/ns/assetData'.'https://w3id.org/edc/v0.0.1/ns/dcat-vocabulary'.'http://purl.org/dc/terms/publisher'.'http://www.w3.org/2004/02/skos/core#notation'",
+      "operator": "=",
+      "operandRight": "notation-publisher"
+    }
+  ]
+}
 ```
-
-The `edc.api.auth.oauth2.allowedRoles` will be used by the federated catalog to retrieve the list of allowed roles that can perform requests on the managemente API connector.

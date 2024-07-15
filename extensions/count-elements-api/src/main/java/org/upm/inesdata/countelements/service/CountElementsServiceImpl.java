@@ -1,5 +1,6 @@
 package org.upm.inesdata.countelements.service;
 
+import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.upm.inesdata.spi.countelements.domain.CountElement;
 import org.upm.inesdata.spi.countelements.index.CountElementsIndex;
@@ -15,7 +16,7 @@ public class CountElementsServiceImpl implements CountElementsService {
     }
 
     @Override
-    public CountElement countElements(String entityType) {
-        return transactionContext.execute(() -> countElementsIndex.countElements(entityType));
+    public CountElement countElements(String entityType, QuerySpec querySpec) {
+        return transactionContext.execute(() -> countElementsIndex.countElements(entityType, querySpec));
     }
 }

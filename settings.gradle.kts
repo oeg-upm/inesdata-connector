@@ -26,6 +26,7 @@ include(":extensions:count-elements-sql")
 include(":extensions:extended-data-plane-public-api")
 include(":extensions:audit-configuration")
 include(":extensions:audit-event-configuration")
+include(":extensions:inesdata-search-extension")
 
 // Connector
 include(":launchers:connector")

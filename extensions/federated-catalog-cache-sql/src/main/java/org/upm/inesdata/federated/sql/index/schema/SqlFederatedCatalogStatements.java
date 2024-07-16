@@ -4,6 +4,7 @@ import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.sql.statement.SqlStatements;
 import org.eclipse.edc.sql.translation.SqlQueryStatement;
+import org.upm.inesdata.search.extension.InesdataSqlQueryStatement;
 
 /**
  * SQL statements interface for managing federated catalog data. Extends {@link SqlStatements} and provides methods for
@@ -250,7 +251,7 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
    * @param querySpec the query specification defining filters, sorting, and pagination for datasets.
    * @return an SQL query statement for datasets.
    */
-  SqlQueryStatement createDatasetQuery(QuerySpec querySpec);
+  InesdataSqlQueryStatement createDatasetQuery(QuerySpec querySpec);
 
   /**
    * Retrieves the SQL template for deleting expired catalogs.

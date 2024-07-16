@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.json.JsonObject;
 import org.eclipse.edc.api.model.ApiCoreSchema;
 
 @OpenAPIDefinition(
@@ -32,5 +33,5 @@ public interface CountElementsApi {
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = ApiCoreSchema.ApiErrorDetailSchema.class))))
             }
     )
-    long countElements(String entityType);
+    long countElements(String entityType, JsonObject querySpecJson);
 }

@@ -1,18 +1,29 @@
-# InesData Connector
+### Catalog Service Participants Extension
 
-This extension provides the capability to obtain the list of participants of a data space in order to allow the federated catalog to obtain their data offerings.
+This extension has the functionality for getting participant data within a service catalog.
 
-## Configuration
+#### Overview
 
-Example configuration:
+The `FromRegistrationServiceParticipantsExtension` class implements `ServiceExtension` to facilitate periodic updates of participant data from a registration service. It utilizes the Eclipse EDC framework for managing and processing metadata.
 
-```properties
-edc.catalog.configuration.participant.1.name = connector-c1
-edc.catalog.configuration.participant.1.id = connector-c1
-edc.catalog.configuration.participant.1.targetUrl = http://localhost:19194/protocol
-edc.catalog.configuration.participant.2.name = connector-c2
-edc.catalog.configuration.participant.2.id = connector-c2
-edc.catalog.configuration.participant.2.targetUrl = http://localhost:29194/protocol
-```
+#### Features
 
-The `edc.catalog.configuration.participant` will be used by the federated catalog to retrieve the list of participants whose catalog will be obtained for federating it.
+- **Periodic Updates**: Periodically retrieves participant data from a configurable registration service.
+- **Integration**: Integrates with Eclipse EDC for metadata management and service integration.
+- **Concurrency**: Uses scheduled tasks for efficient and timely data updates.
+
+#### Setup
+
+1. **Dependencies**: Ensure dependencies like Eclipse EDC are included in the project.
+
+2. **Configuration**: Adjust settings such as `edc.participants.cache.execution.period.seconds` based on operational requirements.
+
+#### Usage
+
+The extension initializes by retrieving participant configurations and scheduling periodic updates using an in-memory directory (`InMemoryNodeDirectory`). Participant data is obtained via HTTP GET requests and transformed into `TargetNode` objects for ingestion into the directory.
+
+#### Components
+
+- **ParticipantConfiguration**: Manages HTTP requests to the registration service and transforms responses into `TargetNode` objects.
+
+- **SharedNodeDirectory**: Implements `TargetNodeDirectory` to maintain and update participant nodes across the application.

@@ -29,7 +29,7 @@ public class FromRegistrationServiceParticipantsExtension implements ServiceExte
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    private InMemoryNodeDirectory nodeDirectory;
+    private SharedNodeDirectory sharedNodeDirectory = new SharedNodeDirectory();
 
     @Override
     public void initialize(ServiceExtensionContext context) {
@@ -37,15 +37,17 @@ public class FromRegistrationServiceParticipantsExtension implements ServiceExte
         var monitor = context.getMonitor();
         var participantConfig = new ParticipantConfiguration(monitor, new ObjectMapper());
 
-        nodeDirectory = new InMemoryNodeDirectory(); // Initialize the directory
+        // Initial update
+        updateTargetNodeDirectory(context, participantConfig);
 
+        // Schedule periodic updates
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 updateTargetNodeDirectory(context, participantConfig);
             } catch (Exception e) {
                 monitor.severe("Error updating TargetNodeDirectory", e);
             }
-        }, 0, periodSeconds, TimeUnit.SECONDS);
+        }, periodSeconds, periodSeconds, TimeUnit.SECONDS);
     }
 
     private void updateTargetNodeDirectory(ServiceExtensionContext context, ParticipantConfiguration participantConfig) {
@@ -64,14 +66,13 @@ public class FromRegistrationServiceParticipantsExtension implements ServiceExte
         updateDirectoryInContext(newDir);
     }
 
-    private synchronized void updateDirectoryInContext(InMemoryNodeDirectory newDir) {
-        this.nodeDirectory = newDir;
+    private void updateDirectoryInContext(InMemoryNodeDirectory newDir) {
+        sharedNodeDirectory.update(newDir);
     }
 
     @Provider
-    public synchronized TargetNodeDirectory federatedCacheNodeDirectory(ServiceExtensionContext context) {
-        // Return the updated directory
-        return nodeDirectory;
+    public TargetNodeDirectory federatedCacheNodeDirectory(ServiceExtensionContext context) {
+        return sharedNodeDirectory;
     }
 
     @Override

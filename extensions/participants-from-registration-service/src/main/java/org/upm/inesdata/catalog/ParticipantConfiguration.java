@@ -40,7 +40,7 @@ public class ParticipantConfiguration  {
      * Constructor
      *
      * @param monitor      monitor
-     * @param objectMapper
+     * @param objectMapper mapper
      */
     public ParticipantConfiguration(Monitor monitor, ObjectMapper objectMapper) {
         this.monitor = monitor;
@@ -54,7 +54,7 @@ public class ParticipantConfiguration  {
      * Makes an HTTP GET request to the specified URL and returns the response as a string.
      *
      * @param url                       the URL to make the GET request to
-     * @param tokenRepresentationResult
+     * @param tokenRepresentationResult token
      * @return the response from the GET request
      */
     public String makeHttpGetRequest(String url, Result<TokenRepresentation> tokenRepresentationResult) {
@@ -68,7 +68,7 @@ public class ParticipantConfiguration  {
      * Retrieve TargetNodes from configuration
      *
      * @param baseConfig                EDC Configuration
-     * @param tokenRepresentationResult
+     * @param tokenRepresentationResult token
      * @return list of TargetNodes from configuration
      */
     public List<TargetNode> getTargetNodes(Config baseConfig, Result<TokenRepresentation> tokenRepresentationResult) {

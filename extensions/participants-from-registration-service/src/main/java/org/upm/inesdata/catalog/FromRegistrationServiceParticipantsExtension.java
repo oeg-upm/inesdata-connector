@@ -35,28 +35,28 @@ public class FromRegistrationServiceParticipantsExtension implements ServiceExte
     public void initialize(ServiceExtensionContext context) {
         var periodSeconds = context.getSetting(EXECUTION_PLAN_PERIOD_SECONDS, DEFAULT_EXECUTION_PERIOD_SECONDS);
         var monitor = context.getMonitor();
-        var participantConfig = new ParticipantConfiguration(monitor, new ObjectMapper());
+        var participantRegistrationService = new ParticipantRegistrationService(monitor, new ObjectMapper());
 
         // Initial update
-        updateTargetNodeDirectory(context, participantConfig);
+        updateTargetNodeDirectory(context, participantRegistrationService);
 
         // Schedule periodic updates
         scheduler.scheduleAtFixedRate(() -> {
             try {
-                updateTargetNodeDirectory(context, participantConfig);
+                updateTargetNodeDirectory(context, participantRegistrationService);
             } catch (Exception e) {
                 monitor.severe("Error updating TargetNodeDirectory", e);
             }
         }, periodSeconds, periodSeconds, TimeUnit.SECONDS);
     }
 
-    private void updateTargetNodeDirectory(ServiceExtensionContext context, ParticipantConfiguration participantConfig) {
+    private void updateTargetNodeDirectory(ServiceExtensionContext context, ParticipantRegistrationService participantRegistrationService) {
         var newDir = new InMemoryNodeDirectory();
 
         Result<TokenRepresentation> tokenRepresentationResult = identityService.obtainClientCredentials(
             TokenParameters.Builder.newInstance().build());
 
-        for (var target : participantConfig.getTargetNodes(context.getConfig(), tokenRepresentationResult)) {
+        for (var target : participantRegistrationService.getTargetNodes(context.getConfig(), tokenRepresentationResult)) {
             // skipping null target nodes
             if (target != null){
                 newDir.insert(target);

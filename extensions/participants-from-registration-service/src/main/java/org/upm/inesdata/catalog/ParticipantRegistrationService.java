@@ -23,7 +23,7 @@ import static java.lang.String.format;
 /**
  * Handles participants in configuration and transforms them into TargetNodes
  */
-public class ParticipantConfiguration  {
+public class ParticipantRegistrationService {
 
     public static final List<String> SUPPORTED_PROTOCOLS = List.of("dataspace-protocol-http");
 
@@ -42,7 +42,7 @@ public class ParticipantConfiguration  {
      * @param monitor      monitor
      * @param objectMapper mapper
      */
-    public ParticipantConfiguration(Monitor monitor, ObjectMapper objectMapper) {
+    public ParticipantRegistrationService(Monitor monitor, ObjectMapper objectMapper) {
         this.monitor = monitor;
         this.objectMapper = objectMapper;
     }

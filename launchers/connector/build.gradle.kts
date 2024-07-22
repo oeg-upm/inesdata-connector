@@ -78,7 +78,7 @@ dependencies {
     implementation(libs.edc.observability.api)
 
     // Federated Catalog
-    implementation(project(":extensions:participants-from-configuration"))
+    implementation(project(":extensions:participants-from-registration-service"))
     implementation(libs.edc.federated.catalog.spi)
     implementation(libs.edc.federated.catalog.core)
     implementation(libs.edc.federated.catalog.api)

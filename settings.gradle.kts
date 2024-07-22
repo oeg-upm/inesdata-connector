@@ -13,7 +13,7 @@ include(":spi:control-plane-vocabulary-spi")
 
 // Extensions
 include(":extensions:auth-oauth2-jwt")
-include(":extensions:participants-from-configuration")
+include(":extensions:participants-from-registration-service")
 include(":extensions:policy-always-true")
 include(":extensions:policy-time-interval")
 include(":extensions:vocabulary-api")

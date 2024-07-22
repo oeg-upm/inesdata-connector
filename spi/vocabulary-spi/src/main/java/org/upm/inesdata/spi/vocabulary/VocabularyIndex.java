@@ -58,4 +58,12 @@ public interface VocabularyIndex {
      */
     StoreResult<Vocabulary> updateVocabulary(Vocabulary vocabulary);
 
+    /**
+     * Finds all stored vocabularies from a connector
+     *
+     * @param connectorId the connector ID
+     * @return A potentially empty collection of {@link Vocabulary}, never null.
+     */
+    Stream<Vocabulary> searchVocabulariesByConnector(String connectorId);
+
 }

@@ -81,6 +81,7 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                         vocabularyId,
                         vocabulary.getCreatedAt(),
                         vocabulary.getName(),
+                        vocabulary.getConnectorId(),
                         vocabulary.getCategory(),
                         toJson(vocabulary.getJsonSchema())
                 );
@@ -135,6 +136,19 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
         });
     }
 
+    @Override
+    public Stream<Vocabulary> searchVocabulariesByConnector(String connectorId) {
+        return transactionContext.execute(() -> {
+            try {
+                var querySpec = QuerySpec.Builder.newInstance().filter(criterion("connectorId", "=", connectorId)).build();
+                var statement = vocabularyStatements.createQuery(querySpec);
+                return queryExecutor.query(getConnection(), true, this::mapVocabulary, statement.getQueryAsString(), statement.getParameters());
+            } catch (SQLException e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
     private int mapRowCount(ResultSet resultSet) throws SQLException {
         return resultSet.getInt(vocabularyStatements.getCountVariableName());
     }
@@ -151,6 +165,7 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                 .id(resultSet.getString(vocabularyStatements.getVocabularyIdColumn()))
                 .createdAt(resultSet.getLong(vocabularyStatements.getCreatedAtColumn()))
                 .name(resultSet.getString(vocabularyStatements.getNameColumn()))
+                .connectorId(resultSet.getString(vocabularyStatements.getConnectorIdColumn()))
                 .category(resultSet.getString(vocabularyStatements.getCategoryColumn()))
                 .jsonSchema(resultSet.getString(vocabularyStatements.getJsonSchemaColumn()))
                 .build();

@@ -13,6 +13,7 @@ import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.EDC_VOCABULARY_TYPE;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_CATEGORY;
+import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_CONNECTOR_ID;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_JSON_SCHEMA;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.PROPERTY_NAME;
 
@@ -39,6 +40,7 @@ public class JsonObjectFromVocabularyTransformer extends AbstractJsonLdTransform
                 .add(ID, vocabulary.getId())
                 .add(TYPE, EDC_VOCABULARY_TYPE)
                 .add(PROPERTY_NAME, vocabulary.getName())
+                .add(PROPERTY_CONNECTOR_ID, vocabulary.getConnectorId())
                 .add(PROPERTY_JSON_SCHEMA, vocabulary.getJsonSchema())
                 .add(PROPERTY_CATEGORY, vocabulary.getCategory());
 

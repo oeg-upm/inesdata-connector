@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class VocabularyServiceImpl implements VocabularyService {
 
-    private final VocabularyIndex index;
-    private final TransactionContext transactionContext;
+    protected final VocabularyIndex index;
+    protected final TransactionContext transactionContext;
 
     /**
      * Constructor

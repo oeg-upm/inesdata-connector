@@ -29,6 +29,10 @@ public interface VocabularyStatements extends SqlStatements {
         return "name";
     }
 
+    default String getConnectorIdColumn() {
+        return "connector_id";
+    }
+
     default String getJsonSchemaColumn() {
         return "json_schema";
     }

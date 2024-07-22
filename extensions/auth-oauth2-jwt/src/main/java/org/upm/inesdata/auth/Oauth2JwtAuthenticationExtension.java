@@ -1,6 +1,7 @@
 package org.upm.inesdata.auth;
 
 import org.eclipse.edc.api.auth.spi.AuthenticationService;
+import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
@@ -29,6 +30,8 @@ public class Oauth2JwtAuthenticationExtension implements ServiceExtension {
     @Inject
     private IdentityService identityService;
     @Inject
+    private ApiAuthenticationRegistry authenticationRegistry;
+    @Inject
     private Vault vault;
 
     @Override
@@ -45,6 +48,6 @@ public class Oauth2JwtAuthenticationExtension implements ServiceExtension {
         var rolesConfig = context.getConfig(AUTH_SETTING_ALLOWEDROLES);
         List<String> allowedRoles = rolesConfig.partition().map(conf -> conf.getString(ROLE_PROPERTY_NAME)).collect(Collectors.toList());
 
-        context.registerService(AuthenticationService.class, new Oauth2JwtAuthenticationService(identityService, participantId, allowedRoles));
+        authenticationRegistry.register("management-api", new Oauth2JwtAuthenticationService(identityService, participantId, allowedRoles));
     }
 }

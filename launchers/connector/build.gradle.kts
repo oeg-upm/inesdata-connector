@@ -44,6 +44,7 @@ dependencies {
 
     // Vocabularios
     implementation(project(":extensions:vocabulary-api"))
+    implementation(project(":extensions:vocabulary-shared-api"))
 
     // Policies
     implementation(project(":extensions:policy-always-true"))
@@ -96,6 +97,9 @@ dependencies {
     // Audit
     implementation(project(":extensions:audit-configuration"))
     implementation(project(":extensions:audit-event-configuration"))
+
+    // Shared API
+    implementation(project(":extensions:shared-api-configuration"))
 
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)

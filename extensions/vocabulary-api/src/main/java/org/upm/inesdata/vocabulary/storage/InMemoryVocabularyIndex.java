@@ -97,6 +97,11 @@ public class InMemoryVocabularyIndex implements VocabularyIndex {
         }
     }
 
+    @Override
+    public Stream<Vocabulary> searchVocabulariesByConnector(String connectorId) {
+       return null;
+    }
+
     /**
      * Remove a vocabulary from cache based on its id
      */

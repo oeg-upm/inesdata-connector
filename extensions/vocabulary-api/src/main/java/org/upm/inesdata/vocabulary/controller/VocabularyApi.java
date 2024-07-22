@@ -126,6 +126,7 @@ public interface VocabularyApi {
                 {
                     "@id": "vocabularyId",
                     "name": "vocabulary name",
+                    "connectorId": "connector-c1",
                     "jsonSchema":  "{ \\"title\\": \\"vocabulary\\", \\"type\\": \\"object\\", \\"properties\\": { \\"name\\": { \\"type\\": \\"string\\", \\"title\\": \\"Name\\" }, \\"dct:keyword\\": { \\"type\\": \\"array\\", \\"title\\": \\"Keywords\\", \\"items\\": { \\"type\\": \\"string\\" } } }, \\"required\\": [ \\"name\\" ], \\"@context\\": { \\"dct\\": \\"http:\\/\\/purl.org\\/dc\\/terms\\/\" } }",
                     "category": "dataset"
                 }

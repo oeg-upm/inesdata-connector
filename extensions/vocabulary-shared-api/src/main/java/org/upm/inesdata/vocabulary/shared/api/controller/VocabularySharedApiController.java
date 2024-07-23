@@ -39,7 +39,7 @@ public class VocabularySharedApiController implements VocabularySharedApi {
     }
 
     @POST
-    @Path("/requestByConnector")
+    @Path("/request-by-connector")
     @Override
     public JsonArray getVocabulariesFromConnector(JsonObject connectorVocabularyJson) {
         var connectorVocabulary = transformerRegistry.transform(connectorVocabularyJson, ConnectorVocabulary.class)

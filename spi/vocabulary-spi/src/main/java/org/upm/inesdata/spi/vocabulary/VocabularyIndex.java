@@ -66,4 +66,13 @@ public interface VocabularyIndex {
      */
     Stream<Vocabulary> searchVocabulariesByConnector(String connectorId);
 
+    /**
+     * Deletes vocabularies by connectorId.
+     *
+     * @param connectorId Id of the connector
+     * @return {@link StoreResult#success(Object)} if the object was deleted, {@link StoreResult#notFound(String)} when an object with that ID was not found.
+     * @throws EdcPersistenceException if something goes wrong.
+     */
+    StoreResult<Void> deleteByConnectorId(String connectorId);
+
 }

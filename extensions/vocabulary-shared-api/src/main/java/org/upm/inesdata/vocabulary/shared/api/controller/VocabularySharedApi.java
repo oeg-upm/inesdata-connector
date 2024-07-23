@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+import org.eclipse.edc.connector.controlplane.contract.spi.types.offer.ContractOffer;
 import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 import org.upm.inesdata.vocabulary.controller.VocabularyApi;
 
@@ -19,7 +20,7 @@ import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.EDC_VOCABULARY_TYPE;
 
 /**
- * Controller for getting {@link Vocabulary} objects from connectors.
+ * Controller for getting {@link Vocabulary}.
  */
 @OpenAPIDefinition(
         info = @Info(description = "Gets the connectors vocabularies.",
@@ -41,6 +42,20 @@ public interface VocabularySharedApi {
             }
       )
     JsonArray getVocabulariesFromConnector(JsonObject connectorVocabularyJson);
+
+    /**
+     * Get all the vocabularies stored in the vocabularies index. No filters are required due
+     * to the limited number of vocabularies that each data space will manage.
+     *
+     * @return list of vocabularies
+     */
+    @Operation(description = "Obtains all vocabularies",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "A list of vocabularies",
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ContractOffer.class))))
+            }
+    )
+    JsonArray getVocabularies();
 
     /**
      * Vocabulary output

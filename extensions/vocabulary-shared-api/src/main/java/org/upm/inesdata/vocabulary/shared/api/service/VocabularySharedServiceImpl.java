@@ -30,4 +30,12 @@ public class VocabularySharedServiceImpl extends VocabularyServiceImpl implement
             }
         });
     }
+
+    @Override
+    public ServiceResult<Void> deleteVocabulariesByConnectorId(String connectorId) {
+        return transactionContext.execute(() -> {
+            index.deleteByConnectorId(connectorId);
+            return ServiceResult.success();
+        });
+    }
 }

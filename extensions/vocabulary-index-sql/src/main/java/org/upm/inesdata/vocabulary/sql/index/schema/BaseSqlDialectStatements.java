@@ -59,6 +59,12 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
     }
 
     @Override
+    public String getDeleteVocabulariesByConnectorIdTemplate() {
+        return executeStatement()
+                .delete(getVocabularyTable(), getConnectorIdColumn());
+    }
+
+    @Override
     public String getCountVariableName() {
         return "COUNT";
     }

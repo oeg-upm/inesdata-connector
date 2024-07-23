@@ -18,7 +18,7 @@ import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
 import static jakarta.json.stream.JsonCollectors.toJsonArray;
 
 /**
- * Implementation of the controller for getting {@link Vocabulary} list of a connector.
+ * Implementation of the controller for getting {@link Vocabulary}.
  */
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
@@ -39,13 +39,25 @@ public class VocabularySharedApiController implements VocabularySharedApi {
     }
 
     @POST
-    @Path("/request")
+    @Path("/requestByConnector")
     @Override
     public JsonArray getVocabulariesFromConnector(JsonObject connectorVocabularyJson) {
         var connectorVocabulary = transformerRegistry.transform(connectorVocabularyJson, ConnectorVocabulary.class)
                 .orElseThrow(InvalidRequestException::new);
 
         return vocabularySharedService.searchVocabulariesByConnector(connectorVocabulary).getContent().stream()
+                .map(it -> transformerRegistry.transform(it, JsonObject.class))
+                .peek(r -> r.onFailure(f -> monitor.warning(f.getFailureDetail())))
+                .filter(Result::succeeded)
+                .map(Result::getContent)
+                .collect(toJsonArray());
+    }
+
+    @POST
+    @Path("/request")
+    @Override
+    public JsonArray getVocabularies() {
+        return vocabularySharedService.search().getContent().stream()
                 .map(it -> transformerRegistry.transform(it, JsonObject.class))
                 .peek(r -> r.onFailure(f -> monitor.warning(f.getFailureDetail())))
                 .filter(Result::succeeded)

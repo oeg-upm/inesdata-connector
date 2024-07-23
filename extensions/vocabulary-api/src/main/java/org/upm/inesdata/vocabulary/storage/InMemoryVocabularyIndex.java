@@ -99,13 +99,31 @@ public class InMemoryVocabularyIndex implements VocabularyIndex {
 
     @Override
     public Stream<Vocabulary> searchVocabulariesByConnector(String connectorId) {
-       return null;
+        lock.readLock().lock();
+        try {
+            return  cache.values().stream()
+                    .filter(vocabulary -> vocabulary.getConnectorId().equals(connectorId));
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public StoreResult<Void> deleteByConnectorId(String connectorId) {
+        lock.writeLock().lock();
+        try {
+            delete(connectorId);
+        } finally {
+            lock.writeLock().unlock();
+        }
+
+        return StoreResult.success();
     }
 
     /**
-     * Remove a vocabulary from cache based on its id
+     * Remove a vocabulary from cache based on a key
      */
-    private Vocabulary delete(String vocabularyId) {
-        return cache.remove(vocabularyId);
+    private Vocabulary delete(String key) {
+        return cache.remove(key);
     }
 }

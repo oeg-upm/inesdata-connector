@@ -72,6 +72,11 @@ public interface VocabularyStatements extends SqlStatements {
     String getDeleteVocabularyByIdTemplate();
 
     /**
+     * DELETE clause for vocabularies by connectorId.
+     */
+    String getDeleteVocabulariesByConnectorIdTemplate();
+
+    /**
      * The COUNT variable used in SELECT COUNT queries.
      */
     String getCountVariableName();

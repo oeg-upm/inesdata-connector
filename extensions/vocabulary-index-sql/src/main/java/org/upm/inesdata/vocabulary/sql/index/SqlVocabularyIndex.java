@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static org.eclipse.edc.spi.query.Criterion.criterion;
 
 /**
- * Implementation of the VocabularyIndes with SQL databases
+ * Implementation of the VocabularyIndex with SQL databases
  */
 public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIndex {
 
@@ -145,6 +145,20 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                 return queryExecutor.query(getConnection(), true, this::mapVocabulary, statement.getQueryAsString(), statement.getParameters());
             } catch (SQLException e) {
                 throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    @Override
+    public StoreResult<Void> deleteByConnectorId(String connectorId) {
+        Objects.requireNonNull(connectorId);
+
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                queryExecutor.execute(connection, vocabularyStatements.getDeleteVocabulariesByConnectorIdTemplate(), connectorId);
+                return StoreResult.success();
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e.getMessage(), e);
             }
         });
     }

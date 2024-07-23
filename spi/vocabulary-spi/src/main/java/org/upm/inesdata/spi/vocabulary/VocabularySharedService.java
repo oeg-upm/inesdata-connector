@@ -15,4 +15,11 @@ public interface VocabularySharedService extends VocabularyService {
      * @return the collection of vocabularies stored from a connector
      */
     ServiceResult<List<Vocabulary>> searchVocabulariesByConnector(ConnectorVocabulary connectorVocabulary);
+
+    /**
+     * Delete vocabularies by connector Id
+     *
+     * @param connectorId connector id
+     */
+    ServiceResult<Void> deleteVocabulariesByConnectorId(String connectorId);
 }

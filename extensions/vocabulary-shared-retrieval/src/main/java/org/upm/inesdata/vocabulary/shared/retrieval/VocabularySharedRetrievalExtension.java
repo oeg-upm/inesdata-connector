@@ -1,5 +1,6 @@
 package org.upm.inesdata.vocabulary.shared.retrieval;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
@@ -34,8 +35,6 @@ public class VocabularySharedRetrievalExtension implements ServiceExtension {
     @Inject
     private VocabularySharedService vocabularySharedService;
 
-    @Inject
-    private ParticipantRegistrationService participantRegistrationService;
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -43,6 +42,7 @@ public class VocabularySharedRetrievalExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
+        ParticipantRegistrationService participantRegistrationService = new ParticipantRegistrationService(context.getMonitor(), new ObjectMapper());
         var periodSeconds = context.getSetting(EXECUTION_PLAN_PERIOD_SECONDS, DEFAULT_EXECUTION_PERIOD_SECONDS);
         var monitor = context.getMonitor();
         var vocabularySharedRetrievalService = new VocabularySharedRetrievalService(vocabularySharedService, monitor, participantRegistrationService);

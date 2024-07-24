@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.client.Client;
@@ -116,7 +117,7 @@ public class ParticipantRegistrationService {
         List<SharedUrlParticipant> sharedUrlParticipants = new ArrayList<>();
 
         try {
-            List<SharedUrlParticipant> nodes = objectMapper.readValue(response, new TypeReference<List<SharedUrlParticipant>>() {});
+            sharedUrlParticipants = objectMapper.readValue(response, new TypeReference<>() {});
         } catch (Exception e) {
             monitor.severe("Failed to deserialize the registration service response");
         }

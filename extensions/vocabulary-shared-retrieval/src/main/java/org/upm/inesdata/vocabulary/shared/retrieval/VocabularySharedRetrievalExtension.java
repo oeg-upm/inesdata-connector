@@ -1,5 +1,6 @@
 package org.upm.inesdata.vocabulary.shared.retrieval;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
@@ -42,7 +43,10 @@ public class VocabularySharedRetrievalExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        ParticipantRegistrationService participantRegistrationService = new ParticipantRegistrationService(context.getMonitor(), new ObjectMapper());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        ParticipantRegistrationService participantRegistrationService = new ParticipantRegistrationService(context.getMonitor(), objectMapper);
         var periodSeconds = context.getSetting(EXECUTION_PLAN_PERIOD_SECONDS, DEFAULT_EXECUTION_PERIOD_SECONDS);
         var monitor = context.getMonitor();
         var vocabularySharedRetrievalService = new VocabularySharedRetrievalService(vocabularySharedService, monitor, participantRegistrationService);

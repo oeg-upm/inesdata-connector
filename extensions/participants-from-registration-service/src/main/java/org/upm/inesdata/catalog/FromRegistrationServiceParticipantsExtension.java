@@ -1,5 +1,6 @@
 package org.upm.inesdata.catalog;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.catalog.directory.InMemoryNodeDirectory;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
@@ -35,7 +36,9 @@ public class FromRegistrationServiceParticipantsExtension implements ServiceExte
     public void initialize(ServiceExtensionContext context) {
         var periodSeconds = context.getSetting(EXECUTION_PLAN_PERIOD_SECONDS, DEFAULT_EXECUTION_PERIOD_SECONDS);
         var monitor = context.getMonitor();
-        var participantRegistrationService = new ParticipantRegistrationService(monitor, new ObjectMapper());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        var participantRegistrationService = new ParticipantRegistrationService(monitor, objectMapper);
 
         // Initial update
         updateTargetNodeDirectory(context, participantRegistrationService);

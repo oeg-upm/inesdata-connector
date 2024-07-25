@@ -46,6 +46,7 @@ public class VocabularySharedRetrievalExtension implements ServiceExtension {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ParticipantRegistrationService participantRegistrationService = new ParticipantRegistrationService(context.getMonitor(), objectMapper);
         var periodSeconds = context.getSetting(EXECUTION_PLAN_PERIOD_SECONDS, DEFAULT_EXECUTION_PERIOD_SECONDS);
         var monitor = context.getMonitor();

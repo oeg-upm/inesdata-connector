@@ -67,7 +67,8 @@ public class VocabularySharedRetrievalService {
 
     private String makeHttpPostRequest(String participantId, String url, Result<TokenRepresentation> tokenRepresentationResult) {
         String token = tokenRepresentationResult.getContent().getToken();
-        WebTarget target = client.target(url);
+        String fullUrl = url+"/request-by-connector";
+        WebTarget target = client.target(fullUrl);
 
         JsonObject jsonBody = Json.createObjectBuilder()
                 .add("@context", Json.createObjectBuilder()

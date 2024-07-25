@@ -1,6 +1,7 @@
 package org.upm.inesdata.vocabulary.shared.retrieval;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -50,13 +51,17 @@ public class VocabularySharedRetrievalService {
      *
      * @param config                    the context config
      * @param tokenRepresentationResult the token
+     * @param participantId
      */
-    public void retrieveVocabularies(Config config, Result<TokenRepresentation> tokenRepresentationResult) {
-        participantRegistrationService.getSharedUrlParticipantNodes(config, tokenRepresentationResult).forEach(sharedUrlParticipant -> {
+    public void retrieveVocabularies(Config config, Result<TokenRepresentation> tokenRepresentationResult,
+        String participantId) {
+        participantRegistrationService.getSharedUrlParticipantNodes(config, tokenRepresentationResult).stream().filter(s-> !participantId.equals(s.getParticipantId())).forEach(sharedUrlParticipant -> {
             try {
                 String response = makeHttpPostRequest(sharedUrlParticipant.getParticipantId(), sharedUrlParticipant.getSharedUrl(), tokenRepresentationResult);
                 vocabularySharedService.deleteVocabulariesByConnectorId(sharedUrlParticipant.getParticipantId());
-                List<Vocabulary> vocabularies = new ObjectMapper().readValue(response, new TypeReference<>() {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                List<Vocabulary> vocabularies = objectMapper.readValue(response, new TypeReference<>() {
                 });
                 vocabularies.forEach(vocabularySharedService::create);
             } catch (Exception e) {

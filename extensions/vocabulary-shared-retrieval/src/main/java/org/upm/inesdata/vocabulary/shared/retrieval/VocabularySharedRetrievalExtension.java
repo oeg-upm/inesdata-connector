@@ -57,7 +57,7 @@ public class VocabularySharedRetrievalExtension implements ServiceExtension {
             try {
                 Result<TokenRepresentation> tokenRepresentationResult = identityService.obtainClientCredentials(
                         TokenParameters.Builder.newInstance().build());
-                vocabularySharedRetrievalService.retrieveVocabularies(context.getConfig(), tokenRepresentationResult);
+                vocabularySharedRetrievalService.retrieveVocabularies(context.getConfig(), tokenRepresentationResult, context.getParticipantId());
             } catch (Exception e) {
                 monitor.severe("Error getting vocabularies from connectors", e);
             }

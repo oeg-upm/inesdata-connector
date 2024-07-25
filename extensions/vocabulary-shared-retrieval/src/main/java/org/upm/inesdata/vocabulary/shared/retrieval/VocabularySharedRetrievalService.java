@@ -67,7 +67,7 @@ public class VocabularySharedRetrievalService {
 
     private String makeHttpPostRequest(String participantId, String url, Result<TokenRepresentation> tokenRepresentationResult) {
         String token = tokenRepresentationResult.getContent().getToken();
-        String fullUrl = url+"/request-by-connector";
+        String fullUrl = url+"/connector-vocabularies/request-by-connector";
         WebTarget target = client.target(fullUrl);
 
         JsonObject jsonBody = Json.createObjectBuilder()

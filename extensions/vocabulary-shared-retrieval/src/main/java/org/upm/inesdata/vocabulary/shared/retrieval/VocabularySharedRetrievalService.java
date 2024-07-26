@@ -2,6 +2,7 @@ package org.upm.inesdata.vocabulary.shared.retrieval;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -63,7 +64,12 @@ public class VocabularySharedRetrievalService {
                 objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 List<Vocabulary> vocabularies = objectMapper.readValue(response, new TypeReference<>() {
                 });
-                vocabularies.forEach(vocabularySharedService::create);
+                List<JsonNode> nodes = objectMapper.readValue(response, new TypeReference<>() {
+                });
+                for(int i=0; i< vocabularies.size(); i++){
+                    Vocabulary vocabulary = vocabularies.get(i).toBuilder().id(nodes.get(i).get("@id").asText()).build();
+                    vocabularySharedService.create(vocabulary);
+                }
             } catch (Exception e) {
                 monitor.severe("Exception occurred while making HTTP POST request: " + e.getMessage());
             }

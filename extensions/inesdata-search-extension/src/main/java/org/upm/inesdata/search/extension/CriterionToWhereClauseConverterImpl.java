@@ -107,26 +107,21 @@ public class CriterionToWhereClauseConverterImpl implements CriterionToWhereClau
 
         switch (propertiesList.length) {
             case 3 ->
-                    generateNonObjectPropertySQL(sqlWhereBuilder, propertiesList, criterion.getOperandRight().toString());
-            case 4 ->
+                    generateNonObjectPropertySQL(sqlWhereBuilder, propertiesList, criterion.getOperandRight().toString(), false);
+            case 4 -> {
+                if  (propertiesList[3].equals("'@id'")) {
+                    generateNonObjectPropertySQL(sqlWhereBuilder, propertiesList, criterion.getOperandRight().toString(), true);
+                } else {
                     generateObjectPropertySQL(sqlWhereBuilder, propertiesList, criterion.getOperandRight().toString());
+                }
+
+            }
+
             default -> throw new InvalidRequestException("Invalid vocabulary argument in the operandLeft: %s"
                     .formatted(criterion.getOperandLeft().toString()));
         }
 
         return new WhereClause(sqlWhereBuilder.toString(), unmodifiableCollection(new ArrayList<>()));
-    }
-
-    private void generateNonObjectPropertySQL(StringBuilder sqlWhereBuilder, String[] propertiesList, String operandRight) {
-        sqlWhereBuilder.append("(properties::jsonb -> ")
-                .append(propertiesList[0])
-                .append(" -> ")
-                .append(propertiesList[1])
-                .append(")::jsonb @> '[{")
-                .append(propertiesList[2].replaceAll("'", "\""))
-                .append(": [{\"@value\": \"")
-                .append(operandRight)
-                .append("\"}]}]'::jsonb");
     }
 
     private void generateObjectPropertySQL(StringBuilder sqlWhereBuilder, String[] propertiesList, String operandRight) {
@@ -141,6 +136,18 @@ public class CriterionToWhereClauseConverterImpl implements CriterionToWhereClau
                 .append(": [{\"@value\": \"")
                 .append(operandRight)
                 .append("\"}]}]')");
+    }
+
+    private void generateNonObjectPropertySQL(StringBuilder sqlWhereBuilder, String[] propertiesList, String operandRight, boolean isIdProperty) {
+        sqlWhereBuilder.append("(properties::jsonb -> ")
+                .append(propertiesList[0])
+                .append(" -> ")
+                .append(propertiesList[1])
+                .append(")::jsonb @> '[{")
+                .append(propertiesList[2].replaceAll("'", "\""))
+                .append(isIdProperty ? ": [{\"@id\": \"" : ": [{\"@value\": \"")
+                .append(operandRight)
+                .append("\"}]}]'::jsonb");
     }
 
     private String[] splitByDotOutsideQuotes(String input) {

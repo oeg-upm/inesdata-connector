@@ -40,7 +40,6 @@ public class VocabularySharedRetrievalExtension implements ServiceExtension {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 
-
     @Override
     public void initialize(ServiceExtensionContext context) {
 
@@ -49,18 +48,23 @@ public class VocabularySharedRetrievalExtension implements ServiceExtension {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ParticipantRegistrationService participantRegistrationService = new ParticipantRegistrationService(context.getMonitor(), objectMapper);
         var periodSeconds = context.getSetting(EXECUTION_PLAN_PERIOD_SECONDS, DEFAULT_EXECUTION_PERIOD_SECONDS);
-        var monitor = context.getMonitor();
-        var vocabularySharedRetrievalService = new VocabularySharedRetrievalService(vocabularySharedService, monitor, participantRegistrationService);
+        VocabularySharedRetrievalService vocabularySharedRetrievalService = new VocabularySharedRetrievalService(vocabularySharedService, context.getMonitor(), participantRegistrationService);
 
+        retrieveVocabularies(vocabularySharedRetrievalService, context);
         // Schedule periodic updates
         scheduler.scheduleAtFixedRate(() -> {
-            try {
-                Result<TokenRepresentation> tokenRepresentationResult = identityService.obtainClientCredentials(
-                        TokenParameters.Builder.newInstance().build());
-                vocabularySharedRetrievalService.retrieveVocabularies(context.getConfig(), tokenRepresentationResult, context.getParticipantId());
-            } catch (Exception e) {
-                monitor.severe("Error getting vocabularies from connectors", e);
-            }
+            retrieveVocabularies(vocabularySharedRetrievalService, context);
         }, periodSeconds, periodSeconds, TimeUnit.SECONDS);
+    }
+
+    private void retrieveVocabularies(VocabularySharedRetrievalService vocabularySharedRetrievalService, ServiceExtensionContext context) {
+        try {
+            Result<TokenRepresentation> tokenRepresentationResult = identityService.obtainClientCredentials(
+                    TokenParameters.Builder.newInstance().build());
+            vocabularySharedRetrievalService.retrieveVocabularies(context.getConfig(), tokenRepresentationResult, context.getParticipantId());
+        } catch (Exception e) {
+            context.getMonitor().severe("Error getting vocabularies from connectors", e);
+        }
+
     }
 }

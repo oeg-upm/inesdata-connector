@@ -42,8 +42,13 @@ dependencies {
     implementation(libs.edc.edr.store.core)
     implementation(libs.edc.edr.store.receiver)
 
+    //participants
+    implementation(project(":extensions:participants-from-registration-service"))
+
     // Vocabularios
     implementation(project(":extensions:vocabulary-api"))
+    implementation(project(":extensions:vocabulary-shared-api"))
+    implementation(project(":extensions:vocabulary-shared-retrieval"))
 
     // Policies
     implementation(project(":extensions:policy-always-true"))
@@ -77,7 +82,6 @@ dependencies {
     implementation(libs.edc.observability.api)
 
     // Federated Catalog
-    implementation(project(":extensions:participants-from-registration-service"))
     implementation(libs.edc.federated.catalog.spi)
     implementation(libs.edc.federated.catalog.core)
     implementation(libs.edc.federated.catalog.api)
@@ -96,6 +100,9 @@ dependencies {
     // Audit
     implementation(project(":extensions:audit-configuration"))
     implementation(project(":extensions:audit-event-configuration"))
+
+    // Shared API
+    implementation(project(":extensions:shared-api-configuration"))
 
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)

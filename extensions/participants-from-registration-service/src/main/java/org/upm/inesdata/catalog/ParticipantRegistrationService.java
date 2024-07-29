@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.client.Client;
@@ -47,9 +48,6 @@ public class ParticipantRegistrationService {
         this.objectMapper = objectMapper;
     }
 
-
-
-
     /**
      * Makes an HTTP GET request to the specified URL and returns the response as a string.
      *
@@ -72,27 +70,59 @@ public class ParticipantRegistrationService {
      * @return list of TargetNodes from configuration
      */
     public List<TargetNode> getTargetNodes(Config baseConfig, Result<TokenRepresentation> tokenRepresentationResult) {
+        var response = getNodes(baseConfig, tokenRepresentationResult);
+        if(response != null){
+            return processResponseToTargetNodes(response);
+        }else{
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Retrieve SharedUrlParticipant from configuration
+     *
+     * @param baseConfig                EDC Configuration
+     * @param tokenRepresentationResult token
+     * @return list of SharedUrlParticipant from configuration
+     */
+    public List<SharedUrlParticipant> getSharedUrlParticipantNodes(Config baseConfig, Result<TokenRepresentation> tokenRepresentationResult) {
+        var response = getNodes(baseConfig, tokenRepresentationResult);
+        if(response != null){
+            return processResponseToSharedUrlParticipant(response);
+        }else{
+            return new ArrayList<>();
+        }
+    }
+
+    private String getNodes(Config baseConfig, Result<TokenRepresentation> tokenRepresentationResult) {
         var participantsConfig = baseConfig.getConfig(EDC_CATALOG_REGISTRATION_SERVICE_HOST);
 
         if (participantsConfig.getEntries().isEmpty()) {
             monitor.severe("Error processing url registration service.");
-            return new ArrayList<>();
+            return null;
         } else {
             var url = participantsConfig.getEntries().get(EDC_CATALOG_REGISTRATION_SERVICE_HOST) + RESOURCE_URL;
 
             try {
-                String response = makeHttpGetRequest(url, tokenRepresentationResult);
-                if(response==null){
-                    return new ArrayList<>();
-                }
-                // Process the response and convert it to TargetNodes
-                // Assuming a method processResponseToTargetNodes(response)
-                return processResponseToTargetNodes(response);
+                return makeHttpGetRequest(url, tokenRepresentationResult);
             } catch (Exception e) {
                 monitor.severe("Exception occurred while making HTTP GET request: " + e.getMessage());
-                return new ArrayList<>();
+                return null;
             }
         }
+    }
+
+
+    private List<SharedUrlParticipant> processResponseToSharedUrlParticipant(String response) {
+        List<SharedUrlParticipant> sharedUrlParticipants = new ArrayList<>();
+
+        try {
+            sharedUrlParticipants = objectMapper.readValue(response, new TypeReference<>() {});
+        } catch (Exception e) {
+            monitor.severe("Failed to deserialize the registration service response");
+        }
+
+        return sharedUrlParticipants;
     }
 
     private List<TargetNode> processResponseToTargetNodes(String response) {

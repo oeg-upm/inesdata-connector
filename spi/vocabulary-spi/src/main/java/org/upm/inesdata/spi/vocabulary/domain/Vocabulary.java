@@ -21,12 +21,14 @@ public class Vocabulary extends Entity {
     public static final String PROPERTY_NAME = EDC_NAMESPACE + "name";
     public static final String PROPERTY_JSON_SCHEMA = EDC_NAMESPACE + "jsonSchema";
     public static final String PROPERTY_CATEGORY = EDC_NAMESPACE + "category";
+    public static final String PROPERTY_CONNECTOR_ID = EDC_NAMESPACE + "connectorId";
     public static final String EDC_VOCABULARY_TYPE = EDC_NAMESPACE + "Vocabulary";
     
 
     private String name;
     private String jsonSchema;
     private String category;
+    private String connectorId;
 
     private Vocabulary() {
     }
@@ -42,12 +44,16 @@ public class Vocabulary extends Entity {
     public String getCategory() {
         return category;
     }
+    public String getConnectorId() {
+        return connectorId;
+    }
 
 
     public Builder toBuilder() {
         return Vocabulary.Builder.newInstance()
                 .id(id)
                 .name(name)
+                .connectorId(connectorId)
                 .jsonSchema(jsonSchema)
                 .category(category)
                 .createdAt(createdAt);
@@ -73,6 +79,11 @@ public class Vocabulary extends Entity {
 
         public Builder name(String name) {
             entity.name = name;
+            return self();
+        }
+
+        public Builder connectorId(String connectorId) {
+            entity.connectorId = connectorId;
             return self();
         }
 

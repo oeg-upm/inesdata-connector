@@ -9,6 +9,7 @@ rootProject.name = "inesdata-connector"
 include(":spi:vocabulary-spi")
 include(":spi:federated-catalog-cache-spi")
 include(":spi:count-elements-spi")
+include(":spi:control-plane-vocabulary-spi")
 
 // Extensions
 include(":extensions:auth-oauth2-jwt")
@@ -26,6 +27,14 @@ include(":extensions:extended-data-plane-public-api")
 include(":extensions:audit-configuration")
 include(":extensions:audit-event-configuration")
 include(":extensions:inesdata-search-extension")
+include(":extensions:vocabulary-retrieval-schedule")
+include(":extensions:dsp-vocabulary-http-dispatcher")
+include(":extensions:dsp-vocabulary-http-api")
+include(":extensions:control-plane-agreggate-vocabulary-services")
+include(":extensions:dsp-vocabulary-http")
+include(":extensions:shared-api-configuration")
+include(":extensions:vocabulary-shared-api")
+include(":extensions:vocabulary-shared-retrieval")
 
 // Connector
 include(":launchers:connector")

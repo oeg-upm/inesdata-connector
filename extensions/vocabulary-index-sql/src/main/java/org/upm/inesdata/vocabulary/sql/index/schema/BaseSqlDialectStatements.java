@@ -24,6 +24,7 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
                 .column(getVocabularyIdColumn())
                 .column(getCreatedAtColumn())
                 .column(getNameColumn())
+                .column(getConnectorIdColumn())
                 .column(getCategoryColumn())
                 .jsonColumn(getJsonSchemaColumn())
                 .insertInto(getVocabularyTable());
@@ -55,6 +56,12 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
     public String getDeleteVocabularyByIdTemplate() {
         return executeStatement()
                 .delete(getVocabularyTable(), getVocabularyIdColumn());
+    }
+
+    @Override
+    public String getDeleteVocabulariesByConnectorIdTemplate() {
+        return executeStatement()
+                .delete(getVocabularyTable(), getConnectorIdColumn());
     }
 
     @Override

@@ -1,7 +1,9 @@
 @startuml
 entity edc_vocabulary {
   * id: string <<PK>>
+  * connectorId: string <<PK>>
   * name: string
+  * category: string
   * jsonSchema: string
   * createdAt: long
   --

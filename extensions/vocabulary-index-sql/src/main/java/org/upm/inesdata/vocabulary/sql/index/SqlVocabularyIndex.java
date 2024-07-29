@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static org.eclipse.edc.spi.query.Criterion.criterion;
 
 /**
- * Implementation of the VocabularyIndes with SQL databases
+ * Implementation of the VocabularyIndex with SQL databases
  */
 public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIndex {
 
@@ -81,6 +81,7 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                         vocabularyId,
                         vocabulary.getCreatedAt(),
                         vocabulary.getName(),
+                        vocabulary.getConnectorId(),
                         vocabulary.getCategory(),
                         toJson(vocabulary.getJsonSchema())
                 );
@@ -135,6 +136,33 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
         });
     }
 
+    @Override
+    public Stream<Vocabulary> searchVocabulariesByConnector(String connectorId) {
+        return transactionContext.execute(() -> {
+            try {
+                var querySpec = QuerySpec.Builder.newInstance().filter(criterion("connectorId", "=", connectorId)).build();
+                var statement = vocabularyStatements.createQuery(querySpec);
+                return queryExecutor.query(getConnection(), true, this::mapVocabulary, statement.getQueryAsString(), statement.getParameters());
+            } catch (SQLException e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    @Override
+    public StoreResult<Void> deleteByConnectorId(String connectorId) {
+        Objects.requireNonNull(connectorId);
+
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                queryExecutor.execute(connection, vocabularyStatements.getDeleteVocabulariesByConnectorIdTemplate(), connectorId);
+                return StoreResult.success();
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e.getMessage(), e);
+            }
+        });
+    }
+
     private int mapRowCount(ResultSet resultSet) throws SQLException {
         return resultSet.getInt(vocabularyStatements.getCountVariableName());
     }
@@ -151,6 +179,7 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                 .id(resultSet.getString(vocabularyStatements.getVocabularyIdColumn()))
                 .createdAt(resultSet.getLong(vocabularyStatements.getCreatedAtColumn()))
                 .name(resultSet.getString(vocabularyStatements.getNameColumn()))
+                .connectorId(resultSet.getString(vocabularyStatements.getConnectorIdColumn()))
                 .category(resultSet.getString(vocabularyStatements.getCategoryColumn()))
                 .jsonSchema(resultSet.getString(vocabularyStatements.getJsonSchemaColumn()))
                 .build();

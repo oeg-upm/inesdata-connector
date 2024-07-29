@@ -29,6 +29,10 @@ public interface VocabularyStatements extends SqlStatements {
         return "name";
     }
 
+    default String getConnectorIdColumn() {
+        return "connector_id";
+    }
+
     default String getJsonSchemaColumn() {
         return "json_schema";
     }
@@ -66,6 +70,11 @@ public interface VocabularyStatements extends SqlStatements {
      * DELETE clause for vocabularys.
      */
     String getDeleteVocabularyByIdTemplate();
+
+    /**
+     * DELETE clause for vocabularies by connectorId.
+     */
+    String getDeleteVocabulariesByConnectorIdTemplate();
 
     /**
      * The COUNT variable used in SELECT COUNT queries.

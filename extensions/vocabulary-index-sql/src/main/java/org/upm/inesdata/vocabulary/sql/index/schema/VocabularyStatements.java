@@ -59,7 +59,7 @@ public interface VocabularyStatements extends SqlStatements {
     /**
      * SELECT COUNT clause for vocabularys.
      */
-    String getCountVocabularyByIdClause();
+    String getCountVocabularyByIdAndConnectorIdClause();
 
     /**
      * SELECT clause for all vocabularys.

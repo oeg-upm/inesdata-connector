@@ -40,11 +40,12 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
     }
 
     @Override
-    public String getCountVocabularyByIdClause() {
-        return format("SELECT COUNT(*) AS %s FROM %s WHERE %s = ?",
+    public String getCountVocabularyByIdAndConnectorIdClause() {
+        return format("SELECT COUNT(*) AS %s FROM %s WHERE %s = ? AND %s = ?",
                 getCountVariableName(),
                 getVocabularyTable(),
-                getVocabularyIdColumn());
+                getVocabularyIdColumn(),
+                getConnectorIdColumn());
     }
 
     @Override

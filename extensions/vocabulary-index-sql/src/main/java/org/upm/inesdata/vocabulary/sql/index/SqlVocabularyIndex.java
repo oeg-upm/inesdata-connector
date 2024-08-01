@@ -70,9 +70,10 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
         Objects.requireNonNull(vocabulary);
 
         var vocabularyId = vocabulary.getId();
+        var connectorId = vocabulary.getConnectorId();
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                if (existsById(vocabularyId, connection)) {
+                if (existsByIdAndConnectorId(vocabularyId, connectorId, connection)) {
                     var msg = format(VocabularyIndex.VOCABULARY_EXISTS_TEMPLATE, vocabularyId);
                     return StoreResult.alreadyExists(msg);
                 }
@@ -118,7 +119,8 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
                 var vocabularyId = vocabulary.getId();
-                if (existsById(vocabularyId, connection)) {
+                var connectorId = vocabulary.getConnectorId();
+                if (existsByIdAndConnectorId(vocabularyId, connectorId, connection)) {
                     queryExecutor.execute(connection, vocabularyStatements.getUpdateVocabularyTemplate(),
                             vocabulary.getName(),
                             toJson(vocabulary.getJsonSchema()),
@@ -167,9 +169,9 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
         return resultSet.getInt(vocabularyStatements.getCountVariableName());
     }
 
-    private boolean existsById(String vocabularyId, Connection connection) {
-        var sql = vocabularyStatements.getCountVocabularyByIdClause();
-        try (var stream = queryExecutor.query(connection, false, this::mapRowCount, sql, vocabularyId)) {
+    private boolean existsByIdAndConnectorId(String vocabularyId, String connectorId, Connection connection) {
+        var sql = vocabularyStatements.getCountVocabularyByIdAndConnectorIdClause();
+        try (var stream = queryExecutor.query(connection, false, this::mapRowCount, sql, vocabularyId, connectorId)) {
             return stream.findFirst().orElse(0) > 0;
         }
     }

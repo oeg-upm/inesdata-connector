@@ -12,7 +12,7 @@
  *
  */
 
-package de.sovity.edc.extension.policy;
+package org.upm.inesdata.edc.extension.policy;
 
 public class AlwaysTruePolicyConstants {
     public static final String EXTENSION_NAME = "Policy Function: ALWAYS_TRUE";

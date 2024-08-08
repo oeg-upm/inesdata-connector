@@ -12,10 +12,10 @@
  *
  */
 
-package de.sovity.edc.extension.policy;
+package org.upm.inesdata.edc.extension.policy;
 
-import de.sovity.edc.extension.policy.services.AlwaysTruePolicyDefinitionService;
-import de.sovity.edc.extension.policy.services.AlwaysTruePolicyService;
+import org.upm.inesdata.edc.extension.policy.services.AlwaysTruePolicyDefinitionService;
+import org.upm.inesdata.edc.extension.policy.services.AlwaysTruePolicyService;
 import org.eclipse.edc.connector.controlplane.services.spi.policydefinition.PolicyDefinitionService;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
@@ -24,7 +24,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
-import static de.sovity.edc.extension.policy.AlwaysTruePolicyConstants.EXTENSION_NAME;
+import static org.upm.inesdata.edc.extension.policy.AlwaysTruePolicyConstants.EXTENSION_NAME;
 
 /**
  * Extension: Policy Definition "Always True".

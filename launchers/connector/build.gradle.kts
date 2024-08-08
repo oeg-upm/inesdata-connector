@@ -53,6 +53,7 @@ dependencies {
     // Policies
     implementation(project(":extensions:policy-always-true"))
     implementation(project(":extensions:policy-time-interval"))
+    implementation(project(":extensions:policy-referring-connector"))
 
     // Persistencia comun
     implementation(libs.edc.sql.core)

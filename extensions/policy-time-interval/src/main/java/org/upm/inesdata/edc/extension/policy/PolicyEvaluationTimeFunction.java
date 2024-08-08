@@ -12,7 +12,7 @@
  *
  */
 
-package de.sovity.edc.extension.policy;
+package org.upm.inesdata.edc.extension.policy;
 
 import org.eclipse.edc.policy.engine.spi.AtomicConstraintFunction;
 import org.eclipse.edc.policy.engine.spi.PolicyContext;

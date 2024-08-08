@@ -12,7 +12,7 @@
  *
  */
 
-package de.sovity.edc.extension.policy.services;
+package org.upm.inesdata.edc.extension.policy.services;
 
 import org.eclipse.edc.connector.controlplane.policy.spi.PolicyDefinition;
 import org.eclipse.edc.connector.controlplane.services.spi.policydefinition.PolicyDefinitionService;
@@ -22,10 +22,7 @@ import org.eclipse.edc.policy.model.LiteralExpression;
 import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
-
-import static de.sovity.edc.extension.policy.AlwaysTruePolicyConstants.EXPRESSION_LEFT_VALUE;
-import static de.sovity.edc.extension.policy.AlwaysTruePolicyConstants.EXPRESSION_RIGHT_VALUE;
-import static de.sovity.edc.extension.policy.AlwaysTruePolicyConstants.POLICY_DEFINITION_ID;
+import org.upm.inesdata.edc.extension.policy.AlwaysTruePolicyConstants;
 
 /**
  * Creates policy definition &quot;always-true&quot;.
@@ -43,7 +40,7 @@ public class AlwaysTruePolicyDefinitionService {
      * @return if exists
      */
     public boolean exists() {
-        return policyDefinitionService.findById(POLICY_DEFINITION_ID) != null;
+        return policyDefinitionService.findById(AlwaysTruePolicyConstants.POLICY_DEFINITION_ID) != null;
     }
 
     /**
@@ -51,9 +48,9 @@ public class AlwaysTruePolicyDefinitionService {
      */
     public void create() {
         var alwaysTrueConstraint = AtomicConstraint.Builder.newInstance()
-                .leftExpression(new LiteralExpression(EXPRESSION_LEFT_VALUE))
+                .leftExpression(new LiteralExpression(AlwaysTruePolicyConstants.EXPRESSION_LEFT_VALUE))
                 .operator(Operator.EQ)
-                .rightExpression(new LiteralExpression(EXPRESSION_RIGHT_VALUE))
+                .rightExpression(new LiteralExpression(AlwaysTruePolicyConstants.EXPRESSION_RIGHT_VALUE))
                 .build();
         var alwaysTruePermission = Permission.Builder.newInstance()
                 .action(Action.Builder.newInstance().type("USE").build())
@@ -63,7 +60,7 @@ public class AlwaysTruePolicyDefinitionService {
                 .permission(alwaysTruePermission)
                 .build();
         var policyDefinition = PolicyDefinition.Builder.newInstance()
-                .id(POLICY_DEFINITION_ID)
+                .id(AlwaysTruePolicyConstants.POLICY_DEFINITION_ID)
                 .policy(policy)
                 .build();
         policyDefinitionService.create(policyDefinition);

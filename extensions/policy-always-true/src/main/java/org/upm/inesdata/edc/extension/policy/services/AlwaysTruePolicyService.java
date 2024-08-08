@@ -12,9 +12,9 @@
  *
  */
 
-package de.sovity.edc.extension.policy.services;
+package org.upm.inesdata.edc.extension.policy.services;
 
-import de.sovity.edc.extension.policy.AlwaysTruePolicyConstants;
+import org.upm.inesdata.edc.extension.policy.AlwaysTruePolicyConstants;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
 import org.eclipse.edc.policy.model.Operator;

@@ -6,6 +6,9 @@ plugins {
 
 dependencies {
 
+    //external
+    annotationProcessor(libs.lombok)
+    compileOnly(libs.lombok)
     // Common libs
     implementation(libs.edc.dsp)
     implementation(libs.edc.management.api)
@@ -54,6 +57,7 @@ dependencies {
     implementation(project(":extensions:policy-always-true"))
     implementation(project(":extensions:policy-time-interval"))
     implementation(project(":extensions:policy-referring-connector"))
+    implementation(project(":extensions:complex-policy-api"))
 
     // Persistencia comun
     implementation(libs.edc.sql.core)
@@ -107,6 +111,8 @@ dependencies {
 
     runtimeOnly(libs.edc.transaction.local)
     runtimeOnly(libs.postgres)
+    testAnnotationProcessor(libs.lombok)
+    testCompileOnly(libs.lombok)
 }
 
 application {

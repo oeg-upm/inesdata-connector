@@ -25,7 +25,7 @@ public abstract class AbstractReferringConnectorValidation {
         this.monitor = Objects.requireNonNull(monitor);
     }
 
-    private static final String REFERRING_CONNECTOR_CLAIM = "referringConnector";
+    private static final String REFERRING_CONNECTOR_CLAIM = "client_id";
 
     /**
      * Evaluation function.

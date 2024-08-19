@@ -52,6 +52,7 @@ dependencies {
     implementation(project(":extensions:vocabulary-api"))
     implementation(project(":extensions:vocabulary-shared-api"))
     implementation(project(":extensions:vocabulary-shared-retrieval"))
+    implementation(project(":extensions:inesdata-transfer-process-api"))
 
     // Policies
     implementation(project(":extensions:policy-always-true"))

@@ -37,6 +37,7 @@ include(":extensions:dsp-vocabulary-http")
 include(":extensions:shared-api-configuration")
 include(":extensions:vocabulary-shared-api")
 include(":extensions:vocabulary-shared-retrieval")
+include(":extensions:inesdata-transfer-process-api")
 
 // Connector
 include(":launchers:connector")

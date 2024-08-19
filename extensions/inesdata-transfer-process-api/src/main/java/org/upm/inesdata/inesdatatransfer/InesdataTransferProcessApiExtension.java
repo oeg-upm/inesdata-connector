@@ -1,4 +1,4 @@
-package org.upm.inesdata.vocabulary;
+package org.upm.inesdata.inesdatatransfer;
 
 import jakarta.json.Json;
 import jakarta.json.JsonBuilderFactory;

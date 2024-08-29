@@ -3,12 +3,14 @@ package org.upm.inesdata.complexpolicy.mapper;
 
 import jakarta.json.JsonObject;
 import lombok.RequiredArgsConstructor;
+import org.eclipse.edc.connector.controlplane.policy.spi.PolicyDefinition;
 import org.eclipse.edc.policy.model.Action;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.upm.inesdata.complexpolicy.exception.FailedMappingException;
+import org.upm.inesdata.complexpolicy.model.PolicyDefinitionDto;
 import org.upm.inesdata.complexpolicy.model.UiPolicy;
 import org.upm.inesdata.complexpolicy.model.UiPolicyExpression;
 import org.upm.inesdata.complexpolicy.utils.JsonUtils;
@@ -100,5 +102,21 @@ public class PolicyMapper {
     public JsonObject buildPolicyJsonLd(Policy policy) {
         return typeTransformerRegistry.transform(policy, JsonObject.class)
             .orElseThrow(FailedMappingException::ofFailure);
+    }
+
+    /**
+     * Builds a simplified policy definition DTO from a policy definition
+     * <p>
+     * This operation is lossy.
+     *
+     * @param policyDefinition policy definition
+     * @return ui policy
+     */
+    public PolicyDefinitionDto buildPolicyDefinitionDto(PolicyDefinition policyDefinition) {
+        var policy = buildUiPolicy(policyDefinition.getPolicy());
+        return PolicyDefinitionDto.builder()
+                .policyDefinitionId(policyDefinition.getId())
+                .policy(policy)
+                .build();
     }
 }

@@ -35,4 +35,4 @@ COPY resources/* ${CONNECTOR_RESOURCES}/
 
 # Use "exec" for Kubernetes graceful termination (SIGINT) to reach JVM.
 ENTRYPOINT [ "sh", "-c", \
-    "exec java $JVM_ARGS -jar connector.jar"]
+    "exec java $JVM_ARGS -agentlib:jdwp=transport=dt_socket,address=0.0.0.0:18787,server=y,suspend=y -jar connector.jar"]

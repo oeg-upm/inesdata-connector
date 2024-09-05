@@ -16,6 +16,7 @@ import org.upm.inesdata.complexpolicy.model.UiPolicyConstraint;
 import org.upm.inesdata.complexpolicy.model.UiPolicyExpression;
 import org.upm.inesdata.complexpolicy.model.UiPolicyLiteral;
 import org.upm.inesdata.federated.model.UiContractOffer;
+import org.upm.inesdata.federated.utils.Prop;
 
 import java.io.StringReader;
 
@@ -43,15 +44,15 @@ public class JsonObjectFromUiContractOfferTransformer extends AbstractJsonLdTran
     @Override
     public @Nullable JsonObject transform(@NotNull UiContractOffer input, @NotNull TransformerContext context) {
         JsonObjectBuilder jsonObjectBuilder = jsonFactory.createObjectBuilder();
-        jsonObjectBuilder.add("contractOfferId", input.getContractOfferId());
+        jsonObjectBuilder.add(Prop.Edc.CTX + "contractOfferId", input.getContractOfferId());
 
         UiPolicy policy = input.getPolicy();
         if (policy != null) {
             JsonObjectBuilder policyBuilder = jsonFactory.createObjectBuilder();
-            policyBuilder.add("policyJsonLd", policy.getPolicyJsonLd());
+            policyBuilder.add(Prop.Edc.CTX + "policyJsonLd", policy.getPolicyJsonLd());
 
             if (policy.getExpression() != null) {
-                policyBuilder.add("expression", transformPolicyExpression(policy.getExpression()));
+                policyBuilder.add(Prop.Edc.CTX + "expression", transformPolicyExpression(policy.getExpression()));
             }
 
             JsonArrayBuilder errorsBuilder = jsonFactory.createArrayBuilder();
@@ -60,9 +61,9 @@ public class JsonObjectFromUiContractOfferTransformer extends AbstractJsonLdTran
                     errorsBuilder.add(error);
                 }
             }
-            policyBuilder.add("errors", errorsBuilder);
+            policyBuilder.add(Prop.Edc.CTX + "errors", errorsBuilder);
 
-            jsonObjectBuilder.add("policy", policyBuilder);
+            jsonObjectBuilder.add(Prop.Edc.CTX + "policy", policyBuilder);
         }
 
         return jsonObjectBuilder.build();
@@ -74,18 +75,18 @@ public class JsonObjectFromUiContractOfferTransformer extends AbstractJsonLdTran
         }
 
         JsonObjectBuilder expressionBuilder = jsonFactory.createObjectBuilder();
-        expressionBuilder.add("type", expression.getType().name());
+        expressionBuilder.add(Prop.Edc.CTX + "type", expression.getType().name());
 
         if (expression.getExpressions() != null) {
             JsonArrayBuilder expressionsArrayBuilder = jsonFactory.createArrayBuilder();
             for (UiPolicyExpression subExpression : expression.getExpressions()) {
                 expressionsArrayBuilder.add(transformPolicyExpression(subExpression));
             }
-            expressionBuilder.add("expressions", expressionsArrayBuilder);
+            expressionBuilder.add(Prop.Edc.CTX + "expressions", expressionsArrayBuilder);
         }
 
         if (expression.getConstraint() != null) {
-            expressionBuilder.add("constraint", transformPolicyConstraint(expression.getConstraint()));
+            expressionBuilder.add(Prop.Edc.CTX + "constraint", transformPolicyConstraint(expression.getConstraint()));
         }
 
         return expressionBuilder.build();
@@ -97,9 +98,9 @@ public class JsonObjectFromUiContractOfferTransformer extends AbstractJsonLdTran
         }
 
         JsonObjectBuilder constraintBuilder = jsonFactory.createObjectBuilder();
-        constraintBuilder.add("left", constraint.getLeft());
-        constraintBuilder.add("operator", constraint.getOperator().name());
-        constraintBuilder.add("right", transformPolicyLiteral(constraint.getRight()));
+        constraintBuilder.add(Prop.Edc.CTX + "left", constraint.getLeft());
+        constraintBuilder.add(Prop.Edc.CTX + "operator", constraint.getOperator().name());
+        constraintBuilder.add(Prop.Edc.CTX + "right", transformPolicyLiteral(constraint.getRight()));
 
         return constraintBuilder.build();
     }
@@ -110,21 +111,21 @@ public class JsonObjectFromUiContractOfferTransformer extends AbstractJsonLdTran
         }
 
         JsonObjectBuilder literalBuilder = jsonFactory.createObjectBuilder();
-        literalBuilder.add("type", literal.getType().name());
+        literalBuilder.add(Prop.Edc.CTX + "type", literal.getType().name());
 
         switch (literal.getType()) {
-            case STRING -> literalBuilder.add("value", literal.getValue());
+            case STRING -> literalBuilder.add(Prop.Edc.CTX + "value", literal.getValue());
             case STRING_LIST -> {
                 JsonArrayBuilder listBuilder = jsonFactory.createArrayBuilder();
                 for (String value : literal.getValueList()) {
                     listBuilder.add(value);
                 }
-                literalBuilder.add("valueList", listBuilder);
+                literalBuilder.add(Prop.Edc.CTX + "valueList", listBuilder);
             }
             case JSON -> {
                 try {
                     JsonValue jsonValue = Json.createReader(new StringReader(literal.getValue())).readValue();
-                    literalBuilder.add("value", jsonValue);
+                    literalBuilder.add(Prop.Edc.CTX + "value", jsonValue);
                 } catch (Exception e) {
                     throw new RuntimeException("Error parsing JSON value", e);
                 }

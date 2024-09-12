@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api(project(":spi:federated-catalog-cache-spi"))
+    api(project(":extensions:complex-policy-api"))
     api(libs.edc.spi.core)
     implementation(libs.edc.spi.transform)
     implementation(libs.edc.web.spi)
@@ -26,5 +27,10 @@ dependencies {
     implementation(libs.edc.federated.catalog.api)
     implementation(libs.edc.federated.catalog.core)
     implementation(libs.edc.federated.catalog.spi)
+    annotationProcessor(libs.lombok)
+    compileOnly(libs.lombok)
+    testAnnotationProcessor(libs.lombok)
+    testCompileOnly(libs.lombok)
+    api(libs.edc.policy.definition.api)
 
 }

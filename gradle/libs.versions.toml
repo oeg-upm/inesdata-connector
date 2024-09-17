@@ -2,20 +2,21 @@
 format.version = "1.1"
 
 [versions]
-assertj = "3.26.0"
+assertj = "3.26.3"
 aws = "2.26.7"
-edc = "0.7.1"
+edc = "0.8.1"
 edc-aws = "0.7.1-SNAPSHOT"
+dataplane = "0.8.1"
 jakarta-json = "2.0.1"
-jersey = "3.1.7"
+jersey = "3.1.8"
 junit-pioneer = "2.2.0"
-jupiter = "5.10.2"
+jupiter = "5.11.0"
 mockito = "5.2.0"
-parsson = "1.1.6"
-postgres = "42.7.3"
+parsson = "1.1.7"
+postgres = "42.7.4"
 rsApi = "4.0.0"
 rseeApi = "10.0.0"
-swagger-annotations-jakarta = "2.2.21"
+swagger-annotations-jakarta = "2.2.23"
 lombok = "1.18.30"
 
 [libraries]
@@ -35,7 +36,7 @@ edc-control-plane-api-client = { module = "org.eclipse.edc:control-plane-api-cli
 edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
 edc-control-plane-spi = { module = "org.eclipse.edc:control-plane-spi", version.ref = "edc" }
 edc-control-plane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
-edc-data-plane-control-api = { module = "org.eclipse.edc:data-plane-control-api", version.ref = "edc" }
+edc-data-plane-control-api = { module = "org.eclipse.edc:data-plane-control-api", version.ref = "dataplane" }
 edc-data-plane-public-api = { module = "org.eclipse.edc:data-plane-public-api-v2", version.ref = "edc" }
 edc-data-plane-core = { module = "org.eclipse.edc:data-plane-core", version.ref = "edc" }
 edc-data-plane-http = { module = "org.eclipse.edc:data-plane-http", version.ref = "edc" }

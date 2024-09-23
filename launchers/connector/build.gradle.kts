@@ -5,90 +5,40 @@ plugins {
 }
 
 dependencies {
-
-    //external
-    annotationProcessor(libs.lombok)
-    compileOnly(libs.lombok)
-    // Common libs
-    implementation(libs.edc.dsp)
-    implementation(libs.edc.management.api)
-    implementation(libs.edc.api.control.config)
-
-    // Temporary libs
-    implementation(libs.edc.configuration.filesystem)
-
-    // Control Plane
+    implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.validator.data.address.http.data)
-
-    // Data Plane
-
-    implementation(libs.edc.data.plane.signaling.api)
-    implementation(libs.edc.data.plane.public.api)
-    implementation(libs.edc.data.plane.core)
-    implementation(libs.edc.data.plane.http)
-    implementation(libs.edc.data.plane.self.registration)
-    implementation(libs.edc.data.plane.iam)
-
-    implementation(libs.edc.data.plane.selector.api)
-    implementation(libs.edc.data.plane.selector.core)
-
-    // Secretos
-    implementation(libs.edc.vault.hashicorp)
-
-    // Transferencia
+    implementation(libs.edc.dsp)
+    implementation(libs.edc.http)
+    implementation(libs.edc.configuration.filesystem)
+    implementation(libs.edc.iam.mock)
+    implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.transfer.pull.http.receiver)
+    implementation(libs.edc.validator.data.address.http.data)
 
-    // EDR
     implementation(libs.edc.edr.cache.api)
     implementation(libs.edc.edr.store.core)
     implementation(libs.edc.edr.store.receiver)
 
-    //participants
-    implementation(project(":extensions:participants-from-registration-service"))
+    implementation(libs.edc.data.plane.selector.api)
+    implementation(libs.edc.data.plane.selector.core)
 
-    // Vocabularios
-    implementation(project(":extensions:vocabulary-api"))
-    implementation(project(":extensions:vocabulary-shared-api"))
-    implementation(project(":extensions:vocabulary-shared-retrieval"))
-    implementation(project(":extensions:inesdata-transfer-process-api"))
-
-    // Policies
-    implementation(project(":extensions:policy-always-true"))
-    implementation(project(":extensions:policy-time-interval"))
-    implementation(project(":extensions:policy-referring-connector"))
-    implementation(project(":extensions:complex-policy-api"))
-
-    // Persistencia comun
-    implementation(libs.edc.sql.core)
-    implementation(libs.edc.sql.edr)
-    implementation(libs.edc.sql.lease)
-    implementation(libs.edc.sql.pool)
-    // Persistencia control plane
-    implementation(libs.edc.sql.asset.index)
-    implementation(libs.edc.sql.contract.definition.store)
-    implementation(libs.edc.sql.contract.negotiation.store)
-    implementation(libs.edc.sql.policy.definition.store)
-    implementation(libs.edc.sql.transfer.process.store)
-    implementation(project(":extensions:vocabulary-index-sql"))
-    implementation(project(":extensions:count-elements-sql"))
-    // Persistencia data plane
-    implementation(libs.edc.sql.data.plane.store)
-
-    // Persistencia de objetos
-    implementation(libs.edc.aws.s3.core)
-    implementation(libs.edc.data.plane.aws.s3)
-
+    implementation(libs.edc.data.plane.self.registration)
+    implementation(libs.edc.data.plane.signaling.api)
+    implementation(libs.edc.data.plane.public.api)
+    implementation(libs.edc.data.plane.core)
+    implementation(libs.edc.data.plane.http)
+    implementation(libs.edc.data.plane.iam)
+    //NUESTRO
+    // Audit
+    implementation(project(":extensions:audit-configuration"))
     // IAM Identity and authorization
     implementation(libs.edc.iam.oauth2.service)
     implementation(project(":extensions:auth-oauth2-jwt"))
-
-    // Observability
-    implementation(libs.edc.observability.api)
-
+    // Secretos
+    implementation(libs.edc.vault.hashicorp)
     // Federated Catalog
     implementation(libs.edc.federated.catalog.spi)
     implementation(libs.edc.federated.catalog.core)
@@ -96,26 +46,71 @@ dependencies {
     implementation(project(":extensions:federated-catalog-cache-sql"))
     implementation(project(":extensions:federated-catalog-cache-api"))
 
-    // Storage assets
-    implementation(project(":extensions:store-asset-api"))
-
     // Count elements
+    implementation(project(":extensions:count-elements-sql"))
     implementation(project(":extensions:count-elements-api"))
 
-    //Data plane public api
-    implementation(project(":extensions:extended-data-plane-public-api"))
+    //participants
+    implementation(project(":extensions:participants-from-registration-service"))
 
-    // Audit
-    implementation(project(":extensions:audit-configuration"))
-    implementation(project(":extensions:audit-event-configuration"))
+
+    //Vocabulary
+    implementation(project(":extensions:vocabulary-index-sql"))
+    implementation(project(":extensions:vocabulary-api"))
+    implementation(project(":extensions:vocabulary-shared-api"))
+    implementation(project(":extensions:vocabulary-shared-retrieval"))
+
+    // Policies
+    implementation(project(":extensions:policy-always-true"))
+    implementation(project(":extensions:policy-time-interval"))
+    implementation(project(":extensions:policy-referring-connector"))
+    implementation(project(":extensions:complex-policy-api"))
+    // Storage assets
+    implementation(project(":extensions:store-asset-api"))
 
     // Shared API
     implementation(project(":extensions:shared-api-configuration"))
 
-    runtimeOnly(libs.edc.transaction.local)
-    runtimeOnly(libs.postgres)
-    testAnnotationProcessor(libs.lombok)
-    testCompileOnly(libs.lombok)
+    //Transfer
+    implementation(project(":extensions:inesdata-transfer-process-api"))
+
+    //Data plane public api
+    implementation(project(":extensions:extended-data-plane-public-api"))
+
+    //COUNT EDC LIBR
+    implementation(libs.edc.spi.core)
+    implementation(libs.edc.spi.transform)
+    implementation(libs.edc.web.spi)
+    implementation(libs.edc.api.core)
+    implementation(libs.edc.lib.util)
+    implementation(libs.edc.lib.transform)
+    implementation(libs.edc.dsp.api.configuration)
+    implementation(libs.edc.api.management.config)
+    implementation(libs.swagger.annotations.jakarta)
+    implementation(libs.edc.transaction.spi)
+    implementation(libs.edc.lib.validator)
+    implementation(libs.edc.validator.spi)
+    implementation(libs.edc.spi.jsonld)
+    implementation(libs.edc.transaction.datasource.spi)
+    implementation(libs.edc.sql.core)
+
+    //COUNT AÑADIENDO TRACTUS
+    implementation(libs.edc.sql.contract.definition)
+    implementation(libs.edc.sql.assetindex)
+    implementation(libs.edc.sql.contract.negotiation)
+    implementation(libs.edc.sql.transferprocess)
+    implementation(libs.edc.sql.policydef)
+    implementation(libs.edc.sql.pool)
+    implementation(libs.edc.sql.policy.monitor)
+    implementation(libs.edc.sql.edrindex)
+    implementation(libs.edc.sql.accesstokendata)
+    implementation(libs.edc.sql.dataplane)
+    implementation(libs.postgres)
+    implementation(libs.edc.transaction.local)
+    implementation(libs.edc.spi.transaction.datasource)
+    implementation(libs.edc.spi.transactionspi)
+
+
 }
 
 application {

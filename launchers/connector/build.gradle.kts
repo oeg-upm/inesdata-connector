@@ -111,6 +111,8 @@ dependencies {
     implementation(libs.edc.spi.transactionspi)
 
 
+    implementation(libs.edc.data.plane.aws.s3)
+
 }
 
 application {

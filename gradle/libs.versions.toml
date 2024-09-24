@@ -9,9 +9,7 @@ okhttp-mockwebserver = "5.0.0-alpha.14"
 restAssured = "5.5.0"
 rsApi = "4.0.0"
 testcontainers = "1.20.1"
-kafkaClients = "3.8.0"
 
-#NUESTRO
 assertj = "3.26.3"
 mockito = "5.2.0"
 swagger-annotations-jakarta = "2.2.23"
@@ -78,7 +76,6 @@ opentelemetry-javaagent = { module = "io.opentelemetry.javaagent:opentelemetry-j
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 restAssured = { module = "io.rest-assured:rest-assured", version.ref = "restAssured" }
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
-kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafkaClients" }
 testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "testcontainers" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 testcontainers-minio = { module = "org.testcontainers:minio", version.ref = "testcontainers" }
@@ -86,7 +83,6 @@ testcontainers-hashicorp-vault = { module = "org.testcontainers:vault", version.
 azure-storage-blob = { module = "com.azure:azure-storage-blob", version = "12.27.1" }
 minio-io = { module = "io.minio:minio", version = "8.5.12" }
 
-#Añadido para nuestras extensiones
 edc-auth-spi = { module = "org.eclipse.edc:auth-spi", version.ref = "edc" }
 edc-iam-oauth2-core = { module = "org.eclipse.edc:oauth2-core", version.ref = "edc" }
 edc-iam-oauth2-service = { module = "org.eclipse.edc:oauth2-service", version.ref = "edc"}
@@ -119,7 +115,7 @@ edc-validator-spi = { module = "org.eclipse.edc:validator-spi", version.ref = "e
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-transaction-datasource-spi = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
 edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
-#COUNTS AÑADIDOS DE TRACTUS
+#BASE y SQL
 edc-sql-assetindex = { module = "org.eclipse.edc:asset-index-sql", version.ref = "edc" }
 edc-sql-contract-definition = { module = "org.eclipse.edc:contract-definition-store-sql", version.ref = "edc" }
 edc-sql-contract-negotiation = { module = "org.eclipse.edc:contract-negotiation-store-sql", version.ref = "edc" }
@@ -161,14 +157,6 @@ edc-jersey-providers-lib = { module = "org.eclipse.edc:jersey-providers-lib", ve
 #TRANSFER API
 edc-transfer-process-api = { module = "org.eclipse.edc:transfer-process-api", version.ref = "edc" }
 edc-api-management-lib = { module = "org.eclipse.edc:management-api-lib", version.ref = "edc" }
-
-#PRUEBA SIN API
-#edc-spi-core = { module = "org.eclipse.edc:core-spi", version.ref = "edc" }
-#edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
-#edc-transaction-spi = { module = "org.eclipse.edc:transaction-spi", version.ref = "edc" }
-#edc-transaction-datasource-spi = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
-#edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
-#edc-lib-util = { module = "org.eclipse.edc:util-lib", version.ref = "edc" }
 
 
 [plugins]

@@ -29,7 +29,9 @@ dependencies {
     implementation(libs.edc.data.plane.signaling.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
-    implementation(libs.edc.data.plane.http)
+    implementation(libs.edc.data.plane.http){
+        exclude("com.google.protobuf", "protobuf-java")
+    }
     implementation(libs.edc.data.plane.iam)
     //NUESTRO
     // Audit
@@ -113,11 +115,17 @@ dependencies {
 
     implementation(libs.edc.data.plane.aws.s3)
 
-
     //Vulnerabilities
+    implementation(libs.google.protobuf)
     constraints {
         implementation(libs.google.protobuf) {
             because("Detected vulnerability on 3.25.3 -- transitive dependency")
+        }
+    }
+    // Forzar la versión globalmente
+    configurations.all {
+        resolutionStrategy {
+            force(libs.google.protobuf)
         }
     }
 

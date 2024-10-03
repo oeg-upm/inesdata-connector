@@ -150,6 +150,9 @@ edc-jersey-providers-lib = { module = "org.eclipse.edc:jersey-providers-lib", ve
 edc-transfer-process-api = { module = "org.eclipse.edc:transfer-process-api", version.ref = "edc" }
 edc-api-management-lib = { module = "org.eclipse.edc:management-api-lib", version.ref = "edc" }
 
+#VULNERABILITY
+google-protobuf = { module = "com.google.protobuf:protobuf-java", version = "3.25.5" }
+
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

@@ -113,6 +113,14 @@ dependencies {
 
     implementation(libs.edc.data.plane.aws.s3)
 
+
+    //Vulnerabilities
+    constraints {
+        implementation(libs.google.protobuf) {
+            because("Detected vulnerability on 3.25.3 -- transitive dependency")
+        }
+    }
+
 }
 
 application {

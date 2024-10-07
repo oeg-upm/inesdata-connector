@@ -107,7 +107,6 @@ public class ExtendedDataPlanePublicApiExtension implements ServiceExtension {
         }
         var endpoint = Endpoint.url(publicEndpoint);
         generatorService.addGeneratorFunction("HttpData", dataAddress -> endpoint);
-        generatorService.addGeneratorFunction("AmazonS3", dataAddress -> endpoint);
 
         var publicApiController = new DataPlanePublicApiV2Controller(pipelineService, executorService, authorizationService);
         webService.registerResource(ApiContext.PUBLIC, publicApiController);

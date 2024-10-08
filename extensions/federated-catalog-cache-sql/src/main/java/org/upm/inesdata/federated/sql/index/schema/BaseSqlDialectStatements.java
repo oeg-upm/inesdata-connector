@@ -267,4 +267,14 @@ public class BaseSqlDialectStatements implements SqlFederatedCatalogStatements {
     public String getSelectDatasetTemplate() {
         return format("SELECT * FROM %s AS a", getDatasetTable());
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see SqlFederatedCatalogStatements#getSelectExpiredCatalogsTemplate()
+     */
+    @Override
+    public String getSelectExpiredCatalogsTemplate() {
+        return format("SELECT * FROM %s AS a WHERE expired = true", getCatalogTable());
+    }
 }

@@ -120,7 +120,10 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
   public void deleteExpired() {
     transactionContext.execute(() -> {
       try (var connection = getConnection()) {
-        queryExecutor.execute(connection, databaseStatements.getDeleteExpiredCatalogsTemplate(), true);
+        List<Catalog> expiredCatalogs = getExpiredCatalogs();
+        for (Catalog catalog: expiredCatalogs) {
+          this.deleteRelatedCatalogData(connection, catalog);
+        }
         return null;
       } catch (SQLException e) {
         throw new EdcPersistenceException(e);
@@ -161,6 +164,16 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
     });
   }
 
+  private List<Catalog> getExpiredCatalogs() {
+    try (var connection = getConnection()) {
+      String selectCatalog = databaseStatements.getSelectExpiredCatalogsTemplate();
+      return queryExecutor.query(connection, false, this::mapResultSetToCatalog, selectCatalog)
+              .collect(Collectors.toList());
+    } catch (SQLException e) {
+      throw new EdcPersistenceException(e);
+    }
+  }
+
   private void deleteRelatedCatalogData(Connection connection, Catalog catalog) {
     Catalog catalogByParticipantId = getCatalogByParticipantId(catalog.getParticipantId());
 
@@ -180,7 +193,6 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
       String deleteCatalogSql = databaseStatements.getDeleteCatalogByParticipantIdTemplate();
       queryExecutor.execute(connection, deleteCatalogSql, catalog.getParticipantId());
     }
-
   }
 
   private boolean dataServiceExists(String dataServiceId) throws SQLException {

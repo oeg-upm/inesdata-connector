@@ -336,4 +336,11 @@ public interface SqlFederatedCatalogStatements extends SqlStatements {
    * @return the SQL template for selecting a dataset.
    */
   String getSelectDatasetTemplate();
+
+  /**
+   * Retrieves the SQL template for expired catalogs.
+   *
+   * @return the SQL template for selecting expired catalogs.
+   */
+  String getSelectExpiredCatalogsTemplate();
 }

@@ -75,4 +75,24 @@ public interface VocabularyIndex {
      */
     StoreResult<Void> deleteByConnectorId(String connectorId);
 
+    /**
+     * Fetches the {@link Vocabulary} with the given ID from the metadata backend.
+     *
+     * @param vocabularyId A String that represents the Vocabulary ID, in most cases this will be a UUID.
+     * @param connectorId  Id of the connector
+     * @return The {@link Vocabulary} if one was found, or null otherwise.
+     * @throws NullPointerException If {@code vocabularyId} was null or empty.
+     */
+    Vocabulary findByIdAndConnectorId(String vocabularyId, String connectorId);
+
+    /**
+     * Deletes a vocabulary if it exists.
+     *
+     * @param vocabularyId Id of the vocabulary to be deleted.
+     * @param connectorId  Id of the connector
+     * @return {@link StoreResult#success(Object)} if the object was deleted, {@link StoreResult#notFound(String)} when an object with that ID was not found.
+     * @throws EdcPersistenceException if something goes wrong.
+     */
+    StoreResult<Vocabulary> deleteByIdAndConnectorId(String vocabularyId, String connectorId);
+
 }

@@ -120,6 +120,36 @@ public class InMemoryVocabularyIndex implements VocabularyIndex {
         return StoreResult.success();
     }
 
+    @Override
+    public Vocabulary findByIdAndConnectorId(String vocabularyId, String connectorId) {
+        lock.readLock().lock();
+        try {
+            return cache.values().stream()
+                    .filter(vocabulary -> vocabulary.getId().equals(vocabularyId) && vocabulary.getConnectorId().equals(connectorId))
+                    .findFirst()
+                    .orElse(null);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public StoreResult<Vocabulary> deleteByIdAndConnectorId(String vocabularyId, String connectorId) {
+        lock.writeLock().lock();
+        try {
+            var vocabulary = findByIdAndConnectorId(vocabularyId, connectorId);
+            if (vocabulary != null) {
+                cache.remove(vocabularyId);
+                return StoreResult.success(vocabulary);
+            } else {
+                return StoreResult.notFound(format(VOCABULARY_NOT_FOUND_TEMPLATE, vocabularyId));
+            }
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+
     /**
      * Remove a vocabulary from cache based on a key
      */

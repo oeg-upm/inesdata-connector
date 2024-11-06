@@ -39,16 +39,18 @@ public class VocabularyApiController implements VocabularyApi {
     private final VocabularyService service;
     private final Monitor monitor;
     private final JsonObjectValidatorRegistry validator;
+    private final String participantId;
 
     /**
      * Constructor
      */
     public VocabularyApiController(VocabularyService service, TypeTransformerRegistry transformerRegistry,
-                              Monitor monitor, JsonObjectValidatorRegistry validator) {
+                                   Monitor monitor, JsonObjectValidatorRegistry validator, String participantId) {
         this.transformerRegistry = transformerRegistry;
         this.service = service;
         this.monitor = monitor;
         this.validator = validator;
+        this.participantId = participantId;
     }
 
     @POST
@@ -58,6 +60,10 @@ public class VocabularyApiController implements VocabularyApi {
 
         var vocabulary = transformerRegistry.transform(vocabularyJson, Vocabulary.class)
                 .orElseThrow(InvalidRequestException::new);
+
+        if (!participantId.equals(vocabulary.getConnectorId())){
+            throw new InvalidRequestException("Is not possible to create a vocabulary for a different connector");
+        }
 
         var idResponse = service.create(vocabulary)
                 .map(a -> IdResponse.Builder.newInstance()
@@ -99,7 +105,7 @@ public class VocabularyApiController implements VocabularyApi {
     @Path("{id}")
     @Override
     public void removeVocabulary(@PathParam("id") String id) {
-        service.delete(id).orElseThrow(exceptionMapper(Vocabulary.class, id));
+        service.delete(id, participantId).orElseThrow(exceptionMapper(Vocabulary.class, id));
     }
 
     @PUT
@@ -110,7 +116,7 @@ public class VocabularyApiController implements VocabularyApi {
         var vocabularyResult = transformerRegistry.transform(vocabularyJson, Vocabulary.class)
                 .orElseThrow(InvalidRequestException::new);
 
-        service.update(vocabularyResult)
+        service.update(vocabularyResult, participantId)
                 .orElseThrow(exceptionMapper(Vocabulary.class, vocabularyResult.getId()));
     }
 

@@ -10,7 +10,10 @@ dependencies {
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.dsp)
-    implementation(libs.edc.http)
+    implementation(libs.edc.http){
+        exclude("org.eclipse.jetty", "jetty-http")
+        exclude("org.eclipse.jetty", "jetty-server")
+    }
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
@@ -117,15 +120,25 @@ dependencies {
 
     //Vulnerabilities
     implementation(libs.google.protobuf)
+    implementation(libs.jetty.http)
+    implementation(libs.jetty.server)
     constraints {
         implementation(libs.google.protobuf) {
             because("Detected vulnerability on 3.25.3 -- transitive dependency")
+        }
+        implementation(libs.jetty.http) {
+            because("Detected vulnerability on 11.0.23 -- transitive dependency")
+        }
+        implementation(libs.jetty.server) {
+            because("Detected vulnerability on 11.0.23 -- transitive dependency")
         }
     }
     // Forzar la versión globalmente
     configurations.all {
         resolutionStrategy {
             force(libs.google.protobuf)
+            force(libs.jetty.http)
+            force(libs.jetty.server)
         }
     }
 }

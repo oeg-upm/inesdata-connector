@@ -89,4 +89,9 @@ public interface VocabularyStatements extends SqlStatements {
      */
     SqlQueryStatement createQuery(QuerySpec query);
 
+    /**
+     * DELETE clause for vocabularies by ID and connector ID.
+     */
+    String getDeleteVocabularyByIdAndConnectorIdTemplate();
+
 }

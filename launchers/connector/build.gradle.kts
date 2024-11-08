@@ -115,6 +115,8 @@ dependencies {
     implementation(libs.edc.spi.transaction.datasource)
     implementation(libs.edc.spi.transactionspi)
 
+    // Asset Validator
+    implementation(project(":extensions:asset-validator"))
 
     implementation(libs.edc.data.plane.aws.s3)
 

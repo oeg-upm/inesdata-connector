@@ -152,6 +152,8 @@ edc-api-management-lib = { module = "org.eclipse.edc:management-api-lib", versio
 
 #VULNERABILITY
 google-protobuf = { module = "com.google.protobuf:protobuf-java", version = "3.25.5" }
+jetty-http = { module = "org.eclipse.jetty:jetty-http", version = "11.0.24" }
+jetty-server = { module = "org.eclipse.jetty:jetty-server", version = "11.0.24" }
 
 
 [plugins]

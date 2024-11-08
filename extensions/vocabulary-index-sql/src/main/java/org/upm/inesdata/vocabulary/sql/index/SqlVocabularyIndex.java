@@ -152,6 +152,40 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
     }
 
     @Override
+    public StoreResult<Vocabulary> deleteByIdAndConnectorId(String vocabularyId, String connectorId) {
+        Objects.requireNonNull(vocabularyId);
+
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                var vocabulary = findByIdAndConnectorId(vocabularyId, connectorId);
+                if (vocabulary == null) {
+                    return StoreResult.notFound(format(VocabularyIndex.VOCABULARY_NOT_FOUND_TEMPLATE, vocabularyId));
+                }
+
+                queryExecutor.execute(connection, vocabularyStatements.getDeleteVocabularyByIdAndConnectorIdTemplate(), vocabularyId, connectorId);
+
+                return StoreResult.success(vocabulary);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e.getMessage(), e);
+            }
+        });
+    }
+
+    @Override
+    public @Nullable Vocabulary findByIdAndConnectorId(String vocabularyId, String connectorId) {
+        Objects.requireNonNull(vocabularyId);
+        Objects.requireNonNull(connectorId);
+
+        try (var connection = getConnection()) {
+            var querySpec = QuerySpec.Builder.newInstance().filter(criterion("id", "=", vocabularyId)).filter(criterion("connectorId", "=", connectorId)).build();
+            var statement = vocabularyStatements.createQuery(querySpec);
+            return queryExecutor.query(connection, true, this::mapVocabulary, statement.getQueryAsString(), statement.getParameters())
+                    .findFirst().orElse(null);
+        } catch (SQLException e) {
+            throw new EdcPersistenceException(e);
+        }
+    }
+
     public StoreResult<Void> deleteByConnectorId(String connectorId) {
         Objects.requireNonNull(connectorId);
 
@@ -186,5 +220,6 @@ public class SqlVocabularyIndex extends AbstractSqlStore implements VocabularyIn
                 .jsonSchema(resultSet.getString(vocabularyStatements.getJsonSchemaColumn()))
                 .build();
     }
+
 
 }

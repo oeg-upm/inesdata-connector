@@ -2,6 +2,8 @@ package org.upm.inesdata.vocabulary.service;
 
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.transaction.spi.TransactionContext;
+import org.eclipse.edc.web.spi.exception.InvalidRequestException;
+import org.eclipse.edc.web.spi.exception.ObjectNotFoundException;
 import org.upm.inesdata.spi.vocabulary.VocabularyIndex;
 import org.upm.inesdata.spi.vocabulary.VocabularyService;
 import org.upm.inesdata.spi.vocabulary.domain.Vocabulary;
@@ -53,16 +55,32 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
-    public ServiceResult<Vocabulary> delete(String vocabularyId) {
+    public ServiceResult<Vocabulary> delete(String vocabularyId, String participantId) {
         return transactionContext.execute(() -> {
-            var deleted = index.deleteById(vocabularyId);
+            Vocabulary vocabulary = index.findByIdAndConnectorId(vocabularyId, participantId);
+            if (vocabulary == null) {
+                throw new ObjectNotFoundException(Vocabulary.class, vocabularyId);
+            } else if (!vocabulary.getConnectorId().equals(participantId)) {
+                throw new InvalidRequestException("Is not possible to delete a vocabulary for a different connector");
+            }
+
+            var deleted = index.deleteByIdAndConnectorId(vocabularyId, participantId);
             return ServiceResult.from(deleted);
         });
     }
 
+
     @Override
-    public ServiceResult<Vocabulary> update(Vocabulary vocabulary) {
+    public ServiceResult<Vocabulary> update(Vocabulary vocabulary, String participantId) {
         return transactionContext.execute(() -> {
+            Vocabulary vocabularyInDB = index.findByIdAndConnectorId(vocabulary.getId(), vocabulary.getConnectorId());
+            if (vocabularyInDB == null) {
+                throw new ObjectNotFoundException(Vocabulary.class, vocabulary.getId());
+            } else if (!vocabularyInDB.getConnectorId().equals(participantId)) {
+                throw new InvalidRequestException("Is not possible to delete a vocabulary for a different connector");
+
+            }
+
             // Update vocabulary
             var updatedVocabulary = index.updateVocabulary(vocabulary);
             return ServiceResult.from(updatedVocabulary);

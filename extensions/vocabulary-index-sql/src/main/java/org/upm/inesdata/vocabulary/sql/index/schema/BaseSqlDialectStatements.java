@@ -75,4 +75,11 @@ public class BaseSqlDialectStatements implements VocabularyStatements {
         return new SqlQueryStatement(getSelectVocabularyTemplate(), querySpec, new VocabularyMapping(this), operatorTranslator);
     }
 
+    @Override
+    public String getDeleteVocabularyByIdAndConnectorIdTemplate() {
+        return format("DELETE FROM %s WHERE %s = ? AND %s = ?",
+                getVocabularyTable(),
+                getVocabularyIdColumn(),
+                getConnectorIdColumn());
+    }
 }

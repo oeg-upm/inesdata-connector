@@ -38,6 +38,7 @@ include(":extensions:shared-api-configuration")
 include(":extensions:vocabulary-shared-api")
 include(":extensions:vocabulary-shared-retrieval")
 include(":extensions:inesdata-transfer-process-api")
+include(":extensions:asset-validator")
 
 // Connector
 include(":launchers:connector")

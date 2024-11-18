@@ -1,11 +1,9 @@
 package org.upm.inesdata.storageasset.controller;
 
+import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.api.model.IdResponse;
 import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
@@ -13,39 +11,36 @@ import org.eclipse.edc.connector.controlplane.services.spi.asset.AssetService;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.constants.CoreConstants;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
-import org.eclipse.edc.util.string.StringUtils;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
 import org.eclipse.edc.web.spi.exception.ValidationFailureException;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.upm.inesdata.storageasset.service.S3Service;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.web.spi.exception.ServiceResultHandler.exceptionMapper;
 
 @MultipartConfig
-@Consumes(MediaType.MULTIPART_FORM_DATA)
-@Produces(MediaType.APPLICATION_JSON)
 @Path("/s3assets")
 public class StorageAssetApiController implements StorageAssetApi {
+
   private final TypeTransformerRegistry transformerRegistry;
   private final AssetService service;
   private final JsonObjectValidatorRegistry validator;
   private final S3Service s3Service;
-
   private final JsonLd jsonLd;
-
   private final String bucketName;
   private final String region;
 
   public StorageAssetApiController(AssetService service, TypeTransformerRegistry transformerRegistry,
-      JsonObjectValidatorRegistry validator, S3Service s3Service, JsonLd jsonLd, String bucketName, String region) {
+                                   JsonObjectValidatorRegistry validator, S3Service s3Service, JsonLd jsonLd,
+                                   String bucketName, String region) {
     this.transformerRegistry = transformerRegistry;
     this.service = service;
     this.validator = validator;
@@ -55,71 +50,91 @@ public class StorageAssetApiController implements StorageAssetApi {
     this.region = region;
   }
 
+  /**
+   * Handles each chunk upload
+   */
   @POST
-  @Override
-  public JsonObject createStorageAsset(@FormDataParam("file") InputStream fileInputStream,
-      @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("json") JsonObject assetJson) {
-
-    String fileName = fileDetail.getFileName();
-
-    InputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+  @Path("/upload-chunk")
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Produces(MediaType.APPLICATION_JSON)
+  public JsonObject uploadChunk(@HeaderParam("Content-Disposition") String contentDisposition,
+                                @HeaderParam("Chunk-Index") int chunkIndex,
+                                @HeaderParam("Total-Chunks") int totalChunks,
+                                @FormDataParam("json") JsonObject assetJson,
+                                @FormDataParam("file") InputStream fileInputStream) {
 
     JsonObject expand = jsonLd.expand(assetJson).orElseThrow((f) -> new EdcException("Failed to expand request"));
-    // Validación
+
     validator.validate(EDC_ASSET_TYPE, expand).orElseThrow(ValidationFailureException::new);
+    Asset asset = transformerRegistry.transform(expand, Asset.class).orElseThrow(InvalidRequestException::new);
 
-    // Transformación
-    var asset = transformerRegistry.transform(expand, Asset.class).orElseThrow(InvalidRequestException::new);
-
-    // Guardar fichero en MinIO
-    // Calcular el tamaño del fichero manualmente
-    long contentLength = 0;
-    try {
-      contentLength = getFileSize(bufferedInputStream);
-    } catch (IOException e) {
-      throw new EdcException("Failed to process file size", e);
-    }
+    String fileName = contentDisposition.split("filename=")[1].replace("\"", "");
     String folder = String.valueOf(asset.getDataAddress().getProperties().get(CoreConstants.EDC_NAMESPACE+"folder"));
-    String fullKey = StringUtils.isNullOrBlank(folder) || "null".equals(folder)?fileName:(folder.endsWith("/") ? folder + fileName : folder + "/" + fileName);
-    s3Service.uploadFile(fullKey,bufferedInputStream, contentLength);
+
+    // Construct the S3 key for the file, keeping the folder structure
+    String fullKey;
+    if (folder == null || folder.trim().isEmpty() || "null".equals(folder)) {
+      fullKey = fileName;  // No folder, use the file name
+    } else {
+      fullKey = folder.endsWith("/") ? folder + fileName : folder + "/" + fileName;
+    }
+
+    // Handle file upload chunking
     try {
-      setStorageProperties(asset, fullKey);
+      s3Service.uploadChunk(fullKey, fileInputStream, chunkIndex, totalChunks);
 
-      // Creación de asset
-      var idResponse = service.create(asset)
-          .map(a -> IdResponse.Builder.newInstance().id(a.getId()).createdAt(a.getCreatedAt()).build())
-          .orElseThrow(exceptionMapper(Asset.class, asset.getId()));
-
-      return transformerRegistry.transform(idResponse, JsonObject.class)
-          .orElseThrow(f -> new EdcException(f.getFailureDetail()));
-    } catch (Exception e) {
-      // Eliminar el archivo en caso de fallo
+      // Return successful upload status for each chunk
+      return Json.createObjectBuilder()
+              .add("status", "Chunk " + chunkIndex + " uploaded successfully")
+              .build();
+    } catch (IOException e) {
+      // If an error occurs, delete the file from S3
       s3Service.deleteFile(fullKey);
-      throw new EdcException("Failed to process multipart data", e);
+      throw new EdcException("Failed to read or upload chunk", e);
+    } catch (Exception e) {
+      // If an error occurs, delete the file from S3
+      s3Service.deleteFile(fullKey);
+      throw new EdcException("Failed to process chunked data", e);
     }
   }
 
-  private long getFileSize(InputStream inputStream) throws IOException {
-    byte[] buffer = new byte[8192];
-    int bytesRead;
-    long size = 0;
 
-    inputStream.mark(Integer.MAX_VALUE);
+  /**
+   * Finalize upload and create asset with JSON data
+   */
+  @POST
+  @Path("/finalize-upload")
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Produces(MediaType.APPLICATION_JSON)
+  public JsonObject finalizeUpload(@FormDataParam("fileName") String fileName,
+                                   @FormDataParam("json") JsonObject assetJson) {
 
-    while ((bytesRead = inputStream.read(buffer)) != -1) {
-      size += bytesRead;
-    }
+    JsonObject expand = jsonLd.expand(assetJson).orElseThrow((f) -> new EdcException("Failed to expand request"));
 
-    inputStream.reset();
+    validator.validate(EDC_ASSET_TYPE, expand).orElseThrow(ValidationFailureException::new);
+    Asset asset = transformerRegistry.transform(expand, Asset.class).orElseThrow(InvalidRequestException::new);
 
-    return size;
+    // Set storage properties for the asset
+    setStorageProperties(asset, fileName);
+
+    // Create the asset in the service
+    IdResponse idResponse = service.create(asset)
+            .map(a -> IdResponse.Builder.newInstance().id(a.getId()).createdAt(a.getCreatedAt()).build())
+            .orElseThrow(exceptionMapper(Asset.class, asset.getId()));
+
+    // Return the response for the created asset
+    return transformerRegistry.transform(idResponse, JsonObject.class)
+            .orElseThrow(f -> new EdcException(f.getFailureDetail()));
   }
 
+  /**
+   * Set necessary storage properties for the asset in S3.
+   */
   private void setStorageProperties(Asset asset, String fileName) {
     asset.getPrivateProperties().put("storageAssetFile", fileName);
     asset.getDataAddress().setKeyName(fileName);
     asset.getDataAddress().setType("AmazonS3");
-    asset.getDataAddress().getProperties().put(CoreConstants.EDC_NAMESPACE+ "bucketName", bucketName);
-    asset.getDataAddress().getProperties().put(CoreConstants.EDC_NAMESPACE+"region", region);
+    asset.getDataAddress().getProperties().put(CoreConstants.EDC_NAMESPACE + "bucketName", bucketName);
+    asset.getDataAddress().getProperties().put(CoreConstants.EDC_NAMESPACE + "region", region);
   }
 }

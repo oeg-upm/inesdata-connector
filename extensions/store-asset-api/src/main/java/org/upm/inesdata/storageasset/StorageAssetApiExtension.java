@@ -95,8 +95,7 @@ public class StorageAssetApiExtension implements ServiceExtension {
 
         Region region = Region.of(regionName);
 
-        // Crear una instancia de S3Service
-        S3Service s3Service = new S3Service(accessKey, secretKey, endpointOverride, region, bucketName);
+        S3Service s3Service = new S3Service(accessKey, secretKey, endpointOverride, region, bucketName, monitor);
 
         var storageAssetApiController = new StorageAssetApiController(assetService, managementApiTransformerRegistry,
             validator,s3Service,

@@ -26,7 +26,6 @@ import org.upm.inesdata.vocabulary.validator.VocabularyValidator;
 import java.util.Map;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
-import static org.eclipse.edc.spi.system.ServiceExtensionContext.ANONYMOUS_PARTICIPANT;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.EDC_VOCABULARY_TYPE;
 
 /**

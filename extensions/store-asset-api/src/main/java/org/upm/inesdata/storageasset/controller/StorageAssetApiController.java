@@ -110,7 +110,7 @@ public class StorageAssetApiController implements StorageAssetApi {
                                    @FormDataParam("json") JsonObject assetJson) {
 
     JsonObject expand = jsonLd.expand(assetJson).orElseThrow((f) -> new EdcException("Failed to expand request"));
-    
+
     validator.validate(EDC_ASSET_TYPE, expand).orElseThrow(ValidationFailureException::new);
     Asset asset = transformerRegistry.transform(expand, Asset.class).orElseThrow(InvalidRequestException::new);
 

@@ -1,104 +1,130 @@
 package org.upm.inesdata.storageasset.service;
 
-import org.eclipse.edc.spi.EdcException;
-import org.eclipse.edc.web.spi.exception.ObjectConflictException;
+import org.eclipse.edc.spi.monitor.Monitor;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.async.AsyncRequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Configuration;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
-import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.transfer.s3.S3TransferManager;
-import software.amazon.awssdk.transfer.s3.model.CompletedUpload;
-import software.amazon.awssdk.transfer.s3.model.UploadRequest;
-import software.amazon.awssdk.core.async.AsyncRequestBody;
+import software.amazon.awssdk.services.s3.model.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-/**
- * Servicio para manejar operaciones de almacenamiento en S3.
- */
 public class S3Service {
     private final S3AsyncClient s3AsyncClient;
-    private final S3TransferManager transferManager;
     private final String bucketName;
-    private final ExecutorService executorService;
+    private final ConcurrentMap<String, MultipartUploadState> multipartUploadStates = new ConcurrentHashMap<>();
+    private final Monitor monitor;
 
-    public S3Service(String accessKey, String secretKey, String endpointOverride, Region region, String bucketName) {
+    private static final long PART_SIZE = 50 * 1024 * 1024;
+
+    public S3Service(String accessKey, String secretKey, String endpointOverride, Region region, String bucketName, Monitor monitor) {
         this.s3AsyncClient = S3AsyncClient.builder()
-            .region(region)
-            .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
-            .endpointOverride(URI.create(endpointOverride))
-            .serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())
-            .build();
-        this.transferManager = S3TransferManager.builder().s3Client(s3AsyncClient).build();
+                .region(region)
+                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
+                .endpointOverride(URI.create(endpointOverride))
+                .serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())
+                .build();
         this.bucketName = bucketName;
-        this.executorService = Executors.newFixedThreadPool(10); // Crear un pool de hilos fijo
+        this.monitor = monitor;
     }
 
-    public String uploadFile(String key, InputStream inputStream, long contentLength) {
+    public void uploadChunk(String key, InputStream inputStream, int chunkIndex, int totalChunks) throws IOException {
+        MultipartUploadState uploadState = multipartUploadStates.computeIfAbsent(key, k -> initMultipartUpload(key));
 
-        // Verificar si el archivo ya existe
-        boolean exists = doesObjectExist(bucketName, key).join();
-        if (exists) {
-            throw new ObjectConflictException("File with key " + key + " already exists.");
+        byte[] buffer = inputStream.readAllBytes();
+        long contentLength = buffer.length;
+
+        if (contentLength < PART_SIZE && chunkIndex < totalChunks - 1) {
+            throw new IllegalArgumentException("Each chunk (except the last one) must be at least " + PART_SIZE + " bytes");
         }
 
-        PutObjectRequest objectRequest = PutObjectRequest.builder()
-            .bucket(bucketName)
-            .key(key)
-            .build();
+        UploadPartRequest uploadPartRequest = UploadPartRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .uploadId(uploadState.uploadId)
+                .partNumber(chunkIndex + 1)
+                .contentLength(contentLength)
+                .build();
 
-        AsyncRequestBody requestBody = AsyncRequestBody.fromInputStream(inputStream, contentLength, executorService);
+        CompletableFuture<UploadPartResponse> uploadFuture = s3AsyncClient.uploadPart(uploadPartRequest, AsyncRequestBody.fromBytes(buffer));
+        uploadFuture.thenAccept(uploadPartResponse -> {
+            uploadState.completedParts.add(CompletedPart.builder().partNumber(chunkIndex + 1).eTag(uploadPartResponse.eTag()).build());
 
-        UploadRequest uploadRequest = UploadRequest.builder()
-            .putObjectRequest(objectRequest)
-            .requestBody(requestBody)
-            .build();
+            if (chunkIndex == totalChunks - 1) {
+                completeMultipartUpload(key, uploadState);
+                multipartUploadStates.remove(key);
+            }
+        }).exceptionally(e -> {
+            abortMultipartUpload(key, uploadState);
+            multipartUploadStates.remove(key);
+            monitor.warning("Error uploading chunk " + chunkIndex + " for file " + key, e);
+            throw new RuntimeException("Error uploading chunk " + chunkIndex + " for file " + key, e);
+        });
+    }
 
-        CompletableFuture<CompletedUpload> upload = transferManager.upload(uploadRequest).completionFuture();
-        upload.join(); // Esperar a que la carga se complete
+    private MultipartUploadState initMultipartUpload(String key) {
+        CreateMultipartUploadRequest createRequest = CreateMultipartUploadRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+        CreateMultipartUploadResponse createResponse = s3AsyncClient.createMultipartUpload(createRequest).join();
+        monitor.info(" Upload started");
+        return new MultipartUploadState(createResponse.uploadId());
+    }
 
-        return key;
+    private void completeMultipartUpload(String key, MultipartUploadState uploadState) {
+        CompleteMultipartUploadRequest completeRequest = CompleteMultipartUploadRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .uploadId(uploadState.uploadId)
+                .multipartUpload(CompletedMultipartUpload.builder().parts(uploadState.completedParts).build())
+                .build();
+        s3AsyncClient.completeMultipartUpload(completeRequest).join();
+        monitor.info(" Upload completed");
+    }
+
+    private void abortMultipartUpload(String key, MultipartUploadState uploadState) {
+        AbortMultipartUploadRequest abortRequest = AbortMultipartUploadRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .uploadId(uploadState.uploadId)
+                .build();
+        s3AsyncClient.abortMultipartUpload(abortRequest).join();
+        monitor.info("Upload aborted");
+    }
+
+    private static class MultipartUploadState {
+        private final String uploadId;
+        private final List<CompletedPart> completedParts;
+
+        MultipartUploadState(String uploadId) {
+            this.uploadId = uploadId;
+            this.completedParts = new ArrayList<>();
+        }
     }
 
     public void deleteFile(String key) {
-        // Ajustar la clave para incluir la carpeta
-        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-            .bucket(bucketName)
-            .key(key)
-            .build();
-        s3AsyncClient.deleteObject(deleteObjectRequest).join(); // Esperar a que se complete la eliminación
+        try {
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+            s3AsyncClient.deleteObject(deleteObjectRequest).join();
+        } catch (Exception e) {
+            monitor.severe("Error deleting file " + key + ": " + e.getMessage());
+        }
     }
 
     public void close() {
-        transferManager.close();
         s3AsyncClient.close();
-        executorService.shutdown();
-    }
-
-    public CompletableFuture<Boolean> doesObjectExist(String bucketName, String key) {
-        HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
-            .bucket(bucketName)
-            .key(key)
-            .build();
-
-        return s3AsyncClient.headObject(headObjectRequest)
-            .thenApply(response -> true)
-            .exceptionally(ex -> {
-                if (ex.getCause() instanceof NoSuchKeyException || (ex.getCause() instanceof S3Exception && ((S3Exception) ex.getCause()).statusCode() == 404)) {
-                    return false;
-                } else {
-                    throw new RuntimeException("Error checking if object exists", ex);
-                }
-            });
     }
 }

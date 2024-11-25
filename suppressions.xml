@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+   <suppress>
+      <notes><![CDATA[
+		  This false positive doesn't stop appearing with evrything with "sql" in its name. We are never going to use
+		  that library, so we supress it for every maven package
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/.*sql.*@.*$</packageUrl>
+      <cpe>cpe:/a:www-sql_project:www-sql</cpe>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
+      file name: jetty-core-0.5.1.jar
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/jetty\-core@.*$</packageUrl>
+      <cpe>cpe:/a:eclipse:jetty</cpe>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
+      file name: jetty-jakarta-websocket-api-2.0.0.jar
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty\.toolchain/jetty\-jakarta\-websocket\-api@.*$</packageUrl>
+      <cpe>cpe:/a:jetty:jetty</cpe>
+      <cpe>cpe:/a:eclipse:jetty</cpe>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
+      file name: vault-hashicorp-0.7.0.jar
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/vault\-hashicorp@.*$</packageUrl>
+      <cpe>cpe:/a:hashicorp:vault</cpe>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
+      file name: control-plane-spi-0.7.1.jar
+      file name: control-plane-transform-0.7.1.jar
+      file name: data-plane-selector-spi-0.7.1.jar
+      file name: data-plane-spi-0.7.1.jar
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.edc/.*@.*$</packageUrl>
+      <cpe>cpe:/a:plane:plane</cpe>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
+         corrected vulnerability that only fails in Jenkinsfile
+         |    |    |    +--- com.google.crypto.tink:tink:1.15.0
+         |    |    |    |    +--- com.google.code.findbugs:jsr305:3.0.2
+         |    |    |    |    +--- com.google.code.gson:gson:2.10.1
+         |    |    |    |    +--- com.google.errorprone:error_prone_annotations:2.22.0
+         |    |    |    |    \--- com.google.protobuf:protobuf-java:3.25.3 -> 3.25.5
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/com\.google\.protobuf/protobuf\-java@.*$</packageUrl>
+      <cve>CVE-2024-7254</cve>
+   </suppress>
+</suppressions>

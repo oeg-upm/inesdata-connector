@@ -1,0 +1,2 @@
+org.upm.inesdata.api.shared.configuration.SharedApiConfigurationExtension
+org.upm.inesdata.api.shared.configuration.auth.SharedOauth2JwtAuthenticationExtension

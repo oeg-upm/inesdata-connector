@@ -10,7 +10,7 @@ rsApi = "4.0.0"
 
 assertj = "3.26.3"
 mockito = "5.2.0"
-swagger-annotations-jakarta = "2.2.23"
+swagger-annotations-jakarta = "2.2.33"
 
 postgres = "42.7.4"
 lombok = "1.18.30"
@@ -19,11 +19,12 @@ parsson = "1.1.6"
 rseeApi = "10.0.0"
 jersey = "3.1.8"
 aws = "2.30.38"
-swagger = "2.2.25"
+swagger = "2.2.33"
 
 jetty = "11.0.25"
 jetty-websocket = "11.0.25"
 protobuf = "3.25.5"
+puppycrawl-checkstyle = "10.25.1"
 
 [libraries]
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
@@ -170,7 +171,7 @@ jetty-http = { module = "org.eclipse.jetty:jetty-http", version.ref = "jetty" }
 jetty-server = { module = "org.eclipse.jetty:jetty-server", version.ref = "jetty" }
 jetty-annotations = { module = "org.eclipse.jetty:jetty-annotations", version.ref = "jetty" }
 jetty-websocket-server = { module = "org.eclipse.jetty.websocket:websocket-jakarta-server", version.ref = "jetty-websocket" }
-
+puppycrawl-checkstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "puppycrawl-checkstyle" }
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

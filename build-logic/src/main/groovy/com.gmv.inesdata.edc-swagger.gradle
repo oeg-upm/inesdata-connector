@@ -11,6 +11,12 @@ plugins {
 
 dependencies {
     annotationProcessor(libs.edc.autodoc.processor)
+
+    configurations.all {
+        resolutionStrategy {
+            force(libs.puppycrawl.checkstyle)
+        }
+    }
 }
 
 edcBuild {

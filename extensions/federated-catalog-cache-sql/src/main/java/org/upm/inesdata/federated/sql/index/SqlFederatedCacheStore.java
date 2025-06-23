@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -319,7 +320,8 @@ public class SqlFederatedCacheStore extends AbstractSqlStore implements Paginate
 
   private void insertDataServices(Catalog catalog, Connection connection) {
     if (catalog.getDataServices() != null) {
-      for (DataService dataService : catalog.getDataServices()) {
+      Set<DataService> dataServicesToSave = new HashSet<>(catalog.getDataServices());
+      for (DataService dataService : dataServicesToSave) {
         queryExecutor.execute(connection, databaseStatements.getInsertDataServiceTemplate(), dataService.getId(),
             dataService.getEndpointDescription(), dataService.getEndpointUrl());
         queryExecutor.execute(connection, databaseStatements.getInsertCatalogDataServiceTemplate(), catalog.getId(),

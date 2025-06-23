@@ -66,4 +66,18 @@
       <packageUrl regex="true">^pkg:maven/com\.google\.protobuf/protobuf\-java@.*$</packageUrl>
       <cve>CVE-2024-7254</cve>
    </suppress>
+   <suppress>
+      <notes><![CDATA[
+         Dependency linked to Eclipse EDC Connector version 12.0
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty/.*@11.0.25$</packageUrl>
+      <cpe>cpe:/a:eclipse:jetty</cpe>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
+         Dependency linked to Eclipse EDC Connector version 12.0
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty\.websocket/.*@11.0.25$</packageUrl>
+      <cpe>cpe:/a:eclipse:jetty</cpe>
+   </suppress>
 </suppressions>

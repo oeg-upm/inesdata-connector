@@ -2,6 +2,9 @@ package org.upm.inesdata.complexpolicy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.Json;
+
+import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
+import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.connector.controlplane.api.management.policy.transform.JsonObjectFromPolicyDefinitionTransformer;
 import org.eclipse.edc.connector.controlplane.api.management.policy.transform.JsonObjectToPolicyDefinitionTransformer;
 import org.eclipse.edc.connector.controlplane.api.management.policy.validation.PolicyDefinitionValidator;
@@ -52,6 +55,9 @@ public class ComplexPolicyDefinitionApiExtension implements ServiceExtension {
   @Inject
   private TypeManager typeManager;
 
+  @Inject
+  private ApiAuthenticationRegistry authenticationRegistry;
+
   @Override
   public String name() {
     return NAME;
@@ -72,6 +78,9 @@ public class ComplexPolicyDefinitionApiExtension implements ServiceExtension {
           new AtomicConstraintMapper(new LiteralMapper(new ObjectMapper()), new OperatorMapper()));
       ExpressionExtractor expressionExtractor = new ExpressionExtractor(new PolicyValidator(), expressionMapper);
       PolicyMapper policyMapper = new PolicyMapper(expressionExtractor, expressionMapper, transformerRegistry);
+
+	  var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
+	  webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
       webService.registerResource(ApiContext.MANAGEMENT,
         new ComplexPolicyDefinitionApiController(transformerRegistry, service, monitor, validatorRegistry, policyMapper));

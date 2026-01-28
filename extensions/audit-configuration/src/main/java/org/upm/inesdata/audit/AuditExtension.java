@@ -1,5 +1,7 @@
 package org.upm.inesdata.audit;
 
+import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
+import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
@@ -25,6 +27,9 @@ public class AuditExtension implements ServiceExtension {
     @Inject
     private IdentityService identityService;
 
+	@Inject
+	private ApiAuthenticationRegistry authenticationRegistry;
+
     /**
      * Returns the name of the extension.
      *
@@ -42,6 +47,9 @@ public class AuditExtension implements ServiceExtension {
      */
     @Override
     public void initialize(ServiceExtensionContext context) {
+		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
+		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
+
         webService.registerResource(ApiContext.MANAGEMENT, new HttpRequestInterceptor(context.getMonitor(), identityService, context.getParticipantId()));
     }
 }

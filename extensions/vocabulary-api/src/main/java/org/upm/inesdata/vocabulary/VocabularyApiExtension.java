@@ -1,6 +1,9 @@
 package org.upm.inesdata.vocabulary;
 
 import jakarta.json.Json;
+
+import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
+import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
@@ -58,6 +61,9 @@ public class VocabularyApiExtension implements ServiceExtension {
     @Inject
     private JsonObjectValidatorRegistry validator;
 
+	@Inject
+	private ApiAuthenticationRegistry authenticationRegistry;
+
     @Override
     public String name() {
         return NAME;
@@ -86,7 +92,11 @@ public class VocabularyApiExtension implements ServiceExtension {
         managementApiTransformerRegistry.register(new JsonObjectToVocabularyTransformer());
 
         validator.register(EDC_VOCABULARY_TYPE, VocabularyValidator.instance());
-        var vocabularyApiController = new VocabularyApiController(this.vocabularyService(), managementApiTransformerRegistry, monitor, validator, context.getParticipantId());
+
+		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
+		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
+
+		var vocabularyApiController = new VocabularyApiController(this.vocabularyService(), managementApiTransformerRegistry, monitor, validator, context.getParticipantId());
         webService.registerResource(ApiContext.MANAGEMENT, vocabularyApiController);
 
         // contribute to the liveness probe

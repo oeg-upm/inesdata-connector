@@ -1,6 +1,9 @@
 package org.upm.inesdata.countelements;
 
 import jakarta.json.Json;
+
+import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
+import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
@@ -52,6 +55,9 @@ public class CountElementsApiExtension implements ServiceExtension {
     @Inject
     private JsonObjectValidatorRegistry validator;
 
+	@Inject
+	private ApiAuthenticationRegistry authenticationRegistry;
+
     @Override
     public String name() {
         return NAME;
@@ -74,6 +80,9 @@ public class CountElementsApiExtension implements ServiceExtension {
         var jsonLdMapper = typeManager.getMapper(JSON_LD);
         var managementApiTransformerRegistry = transformerRegistry.forContext("management-api");
         managementApiTransformerRegistry.register(new JsonObjectFromCountElementTransformer(factory, jsonLdMapper));
+
+		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
+		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
         var countElementsApiController = new CountElementsApiController(countElementsService(), managementApiTransformerRegistry, validator);
         webService.registerResource(ApiContext.MANAGEMENT, countElementsApiController);

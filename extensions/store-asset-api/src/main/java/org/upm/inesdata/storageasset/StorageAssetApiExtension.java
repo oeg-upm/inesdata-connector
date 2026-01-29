@@ -1,6 +1,6 @@
 package org.upm.inesdata.storageasset;
 
-import jakarta.json.Json;
+import java.util.Map;
 
 import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
 import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
@@ -23,9 +23,9 @@ import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.ApiContext;
 import org.upm.inesdata.storageasset.controller.StorageAssetApiController;
 import org.upm.inesdata.storageasset.service.S3Service;
-import software.amazon.awssdk.regions.Region;
 
-import java.util.Map;
+import jakarta.json.Json;
+import software.amazon.awssdk.regions.Region;
 
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
@@ -104,7 +104,7 @@ public class StorageAssetApiExtension implements ServiceExtension {
 
         S3Service s3Service = new S3Service(accessKey, secretKey, endpointOverride, region, bucketName, monitor);
 
-		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
+		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
 		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
         var storageAssetApiController = new StorageAssetApiController(assetService, managementApiTransformerRegistry, 

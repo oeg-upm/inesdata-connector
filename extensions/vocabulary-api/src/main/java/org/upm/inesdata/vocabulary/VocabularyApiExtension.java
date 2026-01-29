@@ -1,6 +1,6 @@
 package org.upm.inesdata.vocabulary;
 
-import jakarta.json.Json;
+import java.util.Map;
 
 import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
 import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
@@ -26,7 +26,7 @@ import org.upm.inesdata.vocabulary.transformer.JsonObjectFromVocabularyTransform
 import org.upm.inesdata.vocabulary.transformer.JsonObjectToVocabularyTransformer;
 import org.upm.inesdata.vocabulary.validator.VocabularyValidator;
 
-import java.util.Map;
+import jakarta.json.Json;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.EDC_VOCABULARY_TYPE;
@@ -93,7 +93,7 @@ public class VocabularyApiExtension implements ServiceExtension {
 
         validator.register(EDC_VOCABULARY_TYPE, VocabularyValidator.instance());
 
-		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
+		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
 		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
 		var vocabularyApiController = new VocabularyApiController(this.vocabularyService(), managementApiTransformerRegistry, monitor, validator, context.getParticipantId());

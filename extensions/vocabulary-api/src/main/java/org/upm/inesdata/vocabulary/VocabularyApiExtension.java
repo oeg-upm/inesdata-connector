@@ -1,7 +1,6 @@
 package org.upm.inesdata.vocabulary;
 
-import java.util.Map;
-
+import jakarta.json.Json;
 import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
 import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
@@ -26,7 +25,7 @@ import org.upm.inesdata.vocabulary.transformer.JsonObjectFromVocabularyTransform
 import org.upm.inesdata.vocabulary.transformer.JsonObjectToVocabularyTransformer;
 import org.upm.inesdata.vocabulary.validator.VocabularyValidator;
 
-import jakarta.json.Json;
+import java.util.Map;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 import static org.upm.inesdata.spi.vocabulary.domain.Vocabulary.EDC_VOCABULARY_TYPE;
@@ -61,8 +60,8 @@ public class VocabularyApiExtension implements ServiceExtension {
     @Inject
     private JsonObjectValidatorRegistry validator;
 
-	@Inject
-	private ApiAuthenticationRegistry authenticationRegistry;
+    @Inject
+    private ApiAuthenticationRegistry authenticationRegistry;
 
     @Override
     public String name() {
@@ -93,10 +92,10 @@ public class VocabularyApiExtension implements ServiceExtension {
 
         validator.register(EDC_VOCABULARY_TYPE, VocabularyValidator.instance());
 
-		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
-		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
+        var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
+        webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
-		var vocabularyApiController = new VocabularyApiController(this.vocabularyService(), managementApiTransformerRegistry, monitor, validator, context.getParticipantId());
+        var vocabularyApiController = new VocabularyApiController(this.vocabularyService(), managementApiTransformerRegistry, monitor, validator, context.getParticipantId());
         webService.registerResource(ApiContext.MANAGEMENT, vocabularyApiController);
 
         // contribute to the liveness probe

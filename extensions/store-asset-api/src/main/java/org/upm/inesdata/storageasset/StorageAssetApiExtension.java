@@ -1,7 +1,6 @@
 package org.upm.inesdata.storageasset;
 
-import java.util.Map;
-
+import jakarta.json.Json;
 import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
 import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.api.validation.DataAddressValidator;
@@ -23,9 +22,9 @@ import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.ApiContext;
 import org.upm.inesdata.storageasset.controller.StorageAssetApiController;
 import org.upm.inesdata.storageasset.service.S3Service;
-
-import jakarta.json.Json;
 import software.amazon.awssdk.regions.Region;
+
+import java.util.Map;
 
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
@@ -69,8 +68,8 @@ public class StorageAssetApiExtension implements ServiceExtension {
     @Inject
     private Vault vault;
 
-	@Inject
-	private ApiAuthenticationRegistry authenticationRegistry;
+    @Inject
+    private ApiAuthenticationRegistry authenticationRegistry;
 
     @Override
     public String name() {
@@ -104,8 +103,8 @@ public class StorageAssetApiExtension implements ServiceExtension {
 
         S3Service s3Service = new S3Service(accessKey, secretKey, endpointOverride, region, bucketName, monitor);
 
-		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
-		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
+        var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
+        webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
         var storageAssetApiController = new StorageAssetApiController(assetService, managementApiTransformerRegistry, 
             validator, s3Service,

@@ -1,6 +1,5 @@
 package org.upm.inesdata.countelements;
 
-
 import jakarta.json.Json;
 import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
 import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;

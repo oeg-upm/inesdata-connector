@@ -1,7 +1,6 @@
 package org.upm.inesdata.federated;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.json.Json;
+import java.util.Map;
 
 import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
 import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
@@ -36,7 +35,9 @@ import org.upm.inesdata.federated.transformer.JsonObjectFromUiContractOfferTrans
 import org.upm.inesdata.spi.federated.FederatedCatalogCacheService;
 import org.upm.inesdata.spi.federated.index.PaginatedFederatedCacheStoreIndex;
 
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.json.Json;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 /**
@@ -108,7 +109,7 @@ public class FederatedCatalogCacheApiExtension implements ServiceExtension {
         ExpressionExtractor expressionExtractor = new ExpressionExtractor(new PolicyValidator(), expressionMapper);
         PolicyMapper policyMapper = new PolicyMapper(expressionExtractor, expressionMapper, managementApiTransformerRegistry);
 
-		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
+		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
 		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
         var federatedCatalogCacheApiController = new FederatedCatalogCacheApiController(this.federatedCatalogCacheService(), managementApiTransformerRegistry,

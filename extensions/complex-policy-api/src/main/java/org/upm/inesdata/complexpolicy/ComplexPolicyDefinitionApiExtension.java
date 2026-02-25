@@ -2,7 +2,6 @@ package org.upm.inesdata.complexpolicy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.Json;
-
 import org.eclipse.edc.api.auth.spi.AuthenticationRequestFilter;
 import org.eclipse.edc.api.auth.spi.registry.ApiAuthenticationRegistry;
 import org.eclipse.edc.connector.controlplane.api.management.policy.transform.JsonObjectFromPolicyDefinitionTransformer;
@@ -79,8 +78,8 @@ public class ComplexPolicyDefinitionApiExtension implements ServiceExtension {
       ExpressionExtractor expressionExtractor = new ExpressionExtractor(new PolicyValidator(), expressionMapper);
       PolicyMapper policyMapper = new PolicyMapper(expressionExtractor, expressionMapper, transformerRegistry);
 
-	  var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
-	  webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
+      var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
+      webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
       webService.registerResource(ApiContext.MANAGEMENT,
         new ComplexPolicyDefinitionApiController(transformerRegistry, service, monitor, validatorRegistry, policyMapper));

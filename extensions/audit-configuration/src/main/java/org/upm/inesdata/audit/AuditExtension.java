@@ -47,7 +47,7 @@ public class AuditExtension implements ServiceExtension {
      */
     @Override
     public void initialize(ServiceExtensionContext context) {
-		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "shared-api");
+		var authenticationFilter = new AuthenticationRequestFilter(authenticationRegistry, "management-api");
 		webService.registerResource(ApiContext.MANAGEMENT, authenticationFilter);
 
         webService.registerResource(ApiContext.MANAGEMENT, new HttpRequestInterceptor(context.getMonitor(), identityService, context.getParticipantId()));
